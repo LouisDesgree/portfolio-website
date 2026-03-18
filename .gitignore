@@ -27,6 +27,10 @@ dist-ssr
 .claude/
 .agent/
 
+# Large data files
+projects/Final project FinanceAnalysis/s&p500/sp500_stocks.csv
+projects/Final project FinanceAnalysis/MeWars/MiddleEast.csv
+
 # Google Drive sync
 drive_data/
 scripts/credentials.json
