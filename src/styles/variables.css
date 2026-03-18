@@ -1,0 +1,151 @@
+/* ============================================================
+   DESIGN SYSTEM - Dual Theme
+   Dark: Prismatic deep blue-black with spectral accents
+   Light: Hermès-inspired blanc cassé, cognac, bordeaux
+   ============================================================ */
+
+:root {
+  /* === DEPTH LEVELS (blue-black, not warm) === */
+  --bg-void:    #050510;
+  --bg-deep:    #0a0a1a;
+  --bg-surface: #0e0e24;
+  --bg-raised:  #16163a;
+  --bg-line:    #1e1e44;
+
+  /* === TEXT HIERARCHY === */
+  --text-primary:   #e8ecf5;
+  --text-secondary: #a0a8c4;
+  --text-tertiary:  #7880a0;
+  --text-ghost:     #505878;
+
+  /* === SPECTRAL ACCENTS === */
+  --spec-red:    #ff3366;
+  --spec-cyan:   #00ccff;
+  --spec-blue:   #4466ff;
+  --spec-green:  #00ffaa;
+  --spec-violet: #8855ff;
+  --spec-white:  #e8f0ff;
+
+  /* === ACCENT (cool blue-white) === */
+  --accent:       #7090ff;
+  --accent-dim:   #3a4a80;
+  --accent-glow:  #90b0ff;
+  --accent-subtle: #141830;
+
+  /* === FIBONACCI TYPE SCALE === */
+  --text-xs:  1rem;
+  --text-sm:  1.625rem;
+  --text-md:  2.625rem;
+  --text-lg:  4.25rem;
+  --text-xl:  6.875rem;
+
+  /* === FIBONACCI SPACING === */
+  --space-1: 0.5rem;
+  --space-2: 0.8125rem;
+  --space-3: 1.3125rem;
+  --space-4: 2.125rem;
+  --space-5: 3.4375rem;
+  --space-6: 5.5625rem;
+  --space-7: 9rem;
+
+  /* === FONTS === */
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* === GLASS EFFECTS === */
+  --glass-bg: rgba(10, 10, 28, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur: 24px;
+  --glass-hover-border: rgba(112, 144, 255, 0.15);
+  --glass-hover-glow: rgba(112, 144, 255, 0.06);
+  --glass-hover-bg: rgba(12, 12, 32, 0.82);
+  --glass-active-bg: rgba(8, 8, 24, 0.9);
+
+  /* === TILE GLOW === */
+  --tile-glow-color: rgba(112, 144, 255, 0.06);
+  --tile-glow-border: rgba(112, 144, 255, 0.15);
+  --tile-top-line: linear-gradient(90deg, transparent, rgba(112, 144, 255, 0.3), rgba(136, 85, 255, 0.15), transparent);
+  --tile-inner-highlight: rgba(255, 255, 255, 0.015);
+
+  /* === OVERLAY === */
+  --overlay-bg: rgba(3, 3, 12, 0.7);
+  --expanded-bg: rgba(8, 8, 22, 0.96);
+
+  /* === TRANSITIONS === */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+
+  /* === LAYOUT === */
+  --section-max-width: 1200px;
+  --section-padding: var(--space-6);
+  --nav-width: 60px;
+}
+
+/* ============================================================
+   LIGHT THEME — Hermès Luxury
+   Blanc cassé, cognac, bordeaux, warm grain
+   ============================================================ */
+[data-theme="light"] {
+  /* === DEPTH LEVELS (warm blanc cassé) === */
+  --bg-void:    #F8F4EE;
+  --bg-deep:    #F2EDE4;
+  --bg-surface: #EBE5DA;
+  --bg-raised:  #DDD6C8;
+  --bg-line:    #CEC5B4;
+
+  /* === TEXT HIERARCHY (warm espresso tones) === */
+  --text-primary:   #1C140D;
+  --text-secondary: #4A3D30;
+  --text-tertiary:  #7A6C5A;
+  --text-ghost:     #A69780;
+
+  /* === SPECTRAL — muted luxury tones === */
+  --spec-red:    #8B2D3E;
+  --spec-cyan:   #1A6B60;
+  --spec-blue:   #2E4B8C;
+  --spec-green:  #2D6B4F;
+  --spec-violet: #5C3D7A;
+  --spec-white:  #1C140D;
+
+  /* === ACCENT (Hermès orange) === */
+  --accent:       #CC4E1A;
+  --accent-dim:   #A33E14;
+  --accent-glow:  #E05A20;
+  --accent-subtle: #F5E8DD;
+
+  /* === GLASS EFFECTS (light) === */
+  --glass-bg: rgba(248, 244, 238, 0.82);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: 24px;
+  --glass-hover-border: rgba(204, 78, 26, 0.18);
+  --glass-hover-glow: rgba(204, 78, 26, 0.05);
+  --glass-hover-bg: rgba(255, 252, 248, 0.88);
+  --glass-active-bg: rgba(242, 237, 228, 0.95);
+
+  /* === TILE GLOW === */
+  --tile-glow-color: rgba(204, 78, 26, 0.05);
+  --tile-glow-border: rgba(204, 78, 26, 0.15);
+  --tile-top-line: linear-gradient(90deg, transparent, rgba(204, 78, 26, 0.25), rgba(139, 45, 62, 0.12), transparent);
+  --tile-inner-highlight: rgba(255, 255, 255, 0.4);
+
+  /* === OVERLAY === */
+  --overlay-bg: rgba(28, 20, 13, 0.3);
+  --expanded-bg: rgba(248, 244, 238, 0.97);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --text-xs:  0.9375rem;
+    --text-sm:  1.25rem;
+    --text-md:  1.75rem;
+    --text-lg:  2.625rem;
+    --text-xl:  4.25rem;
+    --section-padding: var(--space-4);
+    --nav-width: 0px;
+  }
+}
