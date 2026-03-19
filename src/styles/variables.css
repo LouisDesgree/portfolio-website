@@ -87,7 +87,7 @@
 }
 
 /* ============================================================
-   LIGHT THEME — Hermès Luxury
+   LIGHT THEME - Hermès Luxury
    Blanc cassé, cognac, bordeaux, warm grain
    ============================================================ */
 [data-theme="light"] {
@@ -104,7 +104,7 @@
   --text-tertiary:  #7A6C5A;
   --text-ghost:     #A69780;
 
-  /* === SPECTRAL — muted luxury tones === */
+  /* === SPECTRAL - muted luxury tones === */
   --spec-red:    #8B2D3E;
   --spec-cyan:   #1A6B60;
   --spec-blue:   #2E4B8C;

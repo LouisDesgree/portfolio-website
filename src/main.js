@@ -120,7 +120,7 @@ function renderPreviews() {
   renderProjectsPreview();
   renderEduPreview();
 
-  // About preview — rich multi-stat layout
+  // About preview - rich multi-stat layout
   const aboutPrev = document.getElementById('about-preview');
   if (aboutPrev) {
     const isEn = t({ en: true, fr: false });

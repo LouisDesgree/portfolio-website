@@ -1,5 +1,5 @@
 /* ============================================================
-   BENTO DASHBOARD LAYOUT — Pro Max + Dual Theme
+   BENTO DASHBOARD LAYOUT - Pro Max + Dual Theme
    Glassmorphism tiles, staggered entrances, refined hover,
    active states, backdrop overlay, premium typography.
    ============================================================ */
@@ -70,7 +70,7 @@ html, body {
   animation: tileEnter 0.7s var(--ease-out) both;
 }
 
-/* Accent top edge — gradient glow line */
+/* Accent top edge - gradient glow line */
 .tile::before {
   content: '';
   position: absolute;

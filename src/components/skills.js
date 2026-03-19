@@ -204,7 +204,7 @@ export function initSkills() {
   const segCount = 300;
   const scaleXZ = 120;
   const scaleY = 80;
-  // Random seed — different starting shape every page load
+  // Random seed - different starting shape every page load
   const seed = Math.random() * Math.PI * 2;
 
   for (let band = 0; band < bandCount; band++) {
@@ -660,7 +660,7 @@ export function initSkills() {
       }
     });
 
-    // Lissajous clean drift — slightly faster than before
+    // Lissajous clean drift - slightly faster than before
     if (lissajousGroup) {
       lissajousGroup.rotation.y = t * 0.05;
       lissajousGroup.rotation.x = Math.sin(t * 0.025) * 0.15;

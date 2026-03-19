@@ -1,5 +1,5 @@
 // ============================================================
-// Abstract Lineal Mesh — Parametric ribbon curves
+// Abstract Lineal Mesh - Parametric ribbon curves
 // Flowing 3D Lissajous ribbons projected to 2D with mesh grid.
 // Vivid pink/purple/magenta palette on dark background.
 // ============================================================
@@ -97,7 +97,7 @@ export class LightFragmentation {
     const phi = u * Math.PI * 2 * p + t * 0.5;
     const theta = u * Math.PI * 2 * q + t * 0.3;
 
-    // Mouse reactivity — subtle warp
+    // Mouse reactivity - subtle warp
     const mx = this.mouseX * 0.15;
     const my = this.mouseY * 0.15;
 
@@ -123,7 +123,7 @@ export class LightFragmentation {
   _draw() {
     const { ctx, width, height, time } = this;
 
-    // Dark gradient background — deep navy
+    // Dark gradient background - deep navy
     const bgGrad = ctx.createLinearGradient(0, 0, width, height);
     bgGrad.addColorStop(0, '#060a14');
     bgGrad.addColorStop(0.5, '#080c1a');

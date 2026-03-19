@@ -10,7 +10,7 @@ function generateVCard() {
     `EMAIL:${contact.email}`,
     `TEL;TYPE=CELL:${contact.phone}`,
     'ADR;TYPE=HOME:;;Paris;;France',
-    'NOTE:Computer Engineering · Data Science · Luxury & Communication',
+    'NOTE:Software Engineer - Data Scientist - Python, ML, Full-Stack - LVMH, Fendi Alumni',
     'END:VCARD'
   ].join('\r\n');
   const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
