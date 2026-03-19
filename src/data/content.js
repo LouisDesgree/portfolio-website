@@ -14,32 +14,32 @@ export const nav = {
 
 export const hero = {
   subtitle: {
-    en: 'Software Engineer · Data Scientist · Luxury Tech (LVMH, Fendi) · Python, ML, Full-Stack',
-    fr: 'Ingénieur Logiciel · Data Scientist · Tech Luxe (LVMH, Fendi) · Python, ML, Full-Stack',
+    en: 'Computer Engineering · Data Science · Communication',
+    fr: 'Ingénierie Informatique · Data Science · Communication',
   },
   availability: {
-    en: 'Seeking Software Engineering or Data roles · Paris / Remote · March 2026',
-    fr: 'Recherche postes Ingénierie Logicielle ou Data · Paris / Remote · Mars 2026',
+    en: 'Open to opportunities · Paris / Remote · March 2026',
+    fr: 'Ouvert aux opportunités · Paris / Remote · Mars 2026',
   },
 };
 
 export const about = {
   paragraphs: [
     {
-      en: 'Most engineers don\'t speak luxury, and most luxury professionals don\'t code. I do both. I build <strong>data-driven tools and systems</strong> at the intersection of technology, fashion, and finance, turning complex engineering into solutions that non-technical teams actually use.',
-      fr: 'La plupart des ingénieurs ne parlent pas le langage du luxe, et la plupart des professionnels du luxe ne codent pas. Je fais les deux. Je conçois des <strong>outils et systèmes data-driven</strong> à l\'intersection de la technologie, de la mode et de la finance, transformant l\'ingénierie complexe en solutions que les équipes non-techniques utilisent réellement.',
+      en: 'I\'m a software engineer with a background in both tech and luxury. I studied computer engineering at Epitech for five years, spent time working at Fendi and LVMH, then went to UCLA for data science. These days I mostly build <strong>data tools, automation systems, and internal platforms</strong>.',
+      fr: 'Je suis ingénieur informatique avec un parcours entre tech et luxe. J\'ai étudié l\'ingénierie informatique à Epitech pendant cinq ans, travaillé chez Fendi et LVMH, puis suivi un programme de data science à UCLA. Aujourd\'hui, je construis principalement des <strong>outils data, des systèmes d\'automatisation et des plateformes internes</strong>.',
     },
     {
-      en: 'At <strong>Fendi</strong> (LVMH), my role sat between the Communication department and the tech team. On one side, I built an automated system tracking 100+ influencers across Instagram, TikTok, and Twitter, with daily analytics reports that became a fixture in CEO meetings. On the other, I helped launch Fendi\'s TikTok globally across 7 countries, growing it to +150K subscribers, and coordinated celebrity campaigns (Dybala, Benzema) that drew 25,000+ people to the Palazzo della Civiltà. In between, I was auditing Java codebases and working on MLOps pipelines with the IS&T team in Milan.',
-      fr: 'Chez <strong>Fendi</strong> (LVMH), mon rôle se situait entre le département Communication et l\'équipe tech. D\'un côté, j\'ai construit un système automatisé suivant 100+ influenceurs sur Instagram, TikTok et Twitter, avec des rapports analytiques quotidiens devenus incontournables en comité de direction. De l\'autre, j\'ai contribué au lancement mondial de TikTok Fendi dans 7 pays, développant le canal à +150K abonnés, et coordonné des campagnes célébrités (Dybala, Benzema) ayant attiré 25 000+ personnes au Palazzo della Civiltà. Entre les deux, j\'auditais des codebases Java et travaillais sur les pipelines MLOps avec l\'équipe IS&T à Milan.',
+      en: 'My time at <strong>Fendi</strong> (LVMH) was split between the Communication team and IT. One day I\'d be setting up an influencer tracking system across 3 platforms, the next I\'d be helping coordinate a fashion show in Milan. I also contributed to the global TikTok launch (7 countries, +150K subscribers) and helped with celebrity event logistics at the Palazzo della Civiltà.',
+      fr: 'Mon passage chez <strong>Fendi</strong> (LVMH) se partageait entre l\'équipe Communication et l\'IT. Un jour je mettais en place un système de suivi d\'influenceurs sur 3 plateformes, le lendemain j\'aidais à coordonner un défilé à Milan. J\'ai aussi contribué au lancement mondial de TikTok (7 pays, +150K abonnés) et participé à la logistique d\'événements célébrités au Palazzo della Civiltà.',
     },
     {
-      en: 'At <strong>UCLA</strong>, I graduated top of my class (3.97 GPA, with Distinction) in Data Science and Cybersecurity, building a full-stack AI forecasting platform as my capstone. Before that, <strong>five years at Epitech</strong> across 135+ projects and 10 programming languages gave me the engineering foundation. What connects it all is the ability to explain technical work clearly to people who aren\'t technical.',
-      fr: 'À <strong>UCLA</strong>, j\'ai été major de promotion (GPA 3.97, mention Distinction) en Data Science et Cybersécurité, construisant une plateforme de prévision IA full-stack comme projet final. Avant cela, <strong>cinq ans à Epitech</strong> à travers 135+ projets et 10 langages de programmation m\'ont donné les fondations techniques. Ce qui relie tout, c\'est la capacité à expliquer un travail technique clairement à des personnes qui ne le sont pas.',
+      en: 'I completed a Data Science and Cybersecurity certificate at <strong>UCLA</strong> (3.97 GPA), where I built an AI forecasting platform as my capstone. Before that, <strong>Epitech</strong> gave me five years of project-based learning: 135+ projects, 10 languages, from low-level C to full-stack web.',
+      fr: 'J\'ai obtenu un certificat en Data Science et Cybersécurité à <strong>UCLA</strong> (GPA 3.97), où j\'ai construit une plateforme de prévision IA comme projet final. Avant cela, <strong>Epitech</strong> m\'a donné cinq ans d\'apprentissage par projets : 135+ projets, 10 langages, du C bas niveau au web full-stack.',
     },
     {
-      en: 'I started building things long before I could write code: soldering circuits at 9, assembling 3D printers at 12, then a full <strong>InMoov humanoid robot</strong>. Outside of work, I race sailboats, fly FPV drones, and build furniture. Right now I\'m developing <strong>General Commander</strong>, an AI agent platform for automated knowledge gathering and investment strategy.',
-      fr: 'J\'ai commencé à construire des choses bien avant de savoir coder : fer à souder à 9 ans, imprimante 3D à 12 ans, puis un <strong>robot humanoïde InMoov</strong> complet. En dehors du travail, je fais de la voile de compétition, du drone FPV et de la menuiserie. En ce moment, je développe <strong>General Commander</strong>, une plateforme d\'agents IA pour la veille automatisée et la stratégie d\'investissement.',
+      en: 'I\'ve been tinkering with hardware since I was a kid: soldering at 9, 3D printers at 12, then an <strong>InMoov humanoid robot</strong>. I also sail competitively, fly FPV drones, and build furniture. Currently working on <strong>General Commander</strong>, a side project for AI-powered knowledge gathering and investment research.',
+      fr: 'Je bricole du hardware depuis gamin : fer à souder à 9 ans, imprimante 3D à 12, puis un <strong>robot humanoïde InMoov</strong>. Je fais aussi de la voile de compétition, du drone FPV et de la menuiserie. En ce moment, je travaille sur <strong>General Commander</strong>, un projet perso d\'agents IA pour la veille et la recherche d\'investissement.',
     },
   ],
   stats: {
