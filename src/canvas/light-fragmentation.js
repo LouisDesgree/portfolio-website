@@ -60,7 +60,7 @@ export class LightFragmentation {
   }
 
   _onResize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.5 : 2);
     const parent = this.canvas.parentElement || document.body;
     const rect = parent.getBoundingClientRect();
     this.width = rect.width;
@@ -134,9 +134,9 @@ export class LightFragmentation {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    const ribbonCount = this.isMobile ? 2 : 4;
-    const linesPerRibbon = this.isMobile ? 30 : 55;
-    const segments = this.isMobile ? 100 : 180;
+    const ribbonCount = this.isMobile ? 2 : 3;
+    const linesPerRibbon = this.isMobile ? 30 : 35;
+    const segments = this.isMobile ? 100 : 120;
 
     for (let ribbon = 0; ribbon < ribbonCount; ribbon++) {
       const ribbonPhase = ribbon * 2.1 + time * 0.2;
@@ -188,7 +188,7 @@ export class LightFragmentation {
     }
 
     // Cross-lines (u-direction) for mesh grid look
-    const crossLines = this.isMobile ? 20 : 40;
+    const crossLines = this.isMobile ? 20 : 25;
     for (let ribbon = 0; ribbon < ribbonCount; ribbon++) {
       const ribbonPhase = ribbon * 2.1 + time * 0.2;
       const ribbonRotY = ribbon * 0.8 + Math.sin(time * 0.15 + ribbon) * 0.3;

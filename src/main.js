@@ -24,7 +24,10 @@ function initTheme() {
   document.documentElement.setAttribute('data-theme', theme);
   updateThemeUI(theme);
 
+  let themeToggling = false;
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    if (themeToggling) return;
+    themeToggling = true;
     const current = document.documentElement.getAttribute('data-theme') || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
@@ -32,6 +35,7 @@ function initTheme() {
     updateThemeUI(next);
     // Re-render skills canvas with new colors
     initSkills();
+    setTimeout(() => { themeToggling = false; }, 600);
   });
 }
 
@@ -95,22 +99,22 @@ function renderPersonal() {
   const isEn = t({ en: true, fr: false });
 
   const interests = p.interests.map(i =>
-    `<div style="display:inline-flex;align-items:center;gap:7px;background:var(--accent-subtle);border:1px solid var(--glass-border);border-radius:6px;padding:5px 11px;font-family:var(--font-mono);font-size:0.6rem;transition:all 0.2s ease;cursor:default">
-      <span style="font-size:0.7rem">${i.icon}</span>
-      <span style="color:var(--text-secondary)">${t(i.label)}</span>
+    `<div class="interest-pill">
+      <span class="interest-icon">${i.icon}</span>
+      <span class="interest-label">${t(i.label)}</span>
     </div>`
   ).join('');
 
   const cp = p.currentProject;
   el.innerHTML = `
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">${interests}</div>
-    <div style="border-top:1px solid var(--glass-border);padding-top:10px;margin-top:4px">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-        <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 8px var(--tile-glow-color)"></span>
-        <span style="font-family:var(--font-mono);font-size:0.5rem;color:var(--accent);letter-spacing:0.12em">${isEn ? 'CURRENT PROJECT' : 'PROJET EN COURS'}</span>
+    <div class="interest-pills">${interests}</div>
+    <div class="current-project-section">
+      <div class="status-indicator" style="margin-bottom:6px;margin-top:0">
+        <span class="status-dot"></span>
+        <span class="status-label">${isEn ? 'CURRENT PROJECT' : 'PROJET EN COURS'}</span>
       </div>
-      <div style="font-family:var(--font-heading);font-size:0.85rem;color:var(--text-primary);margin-bottom:5px;font-weight:400">${cp.name}</div>
-      <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--text-tertiary);line-height:1.6">${t(cp.desc)}</div>
+      <div class="current-project-name">${cp.name}</div>
+      <div class="current-project-desc">${t(cp.desc)}</div>
     </div>
   `;
 }
@@ -125,24 +129,24 @@ function renderPreviews() {
   if (aboutPrev) {
     const isEn = t({ en: true, fr: false });
     aboutPrev.innerHTML = `
-      <div style="display:flex;gap:14px;margin-bottom:12px">
-        <div style="padding:6px 0">
-          <span style="font-family:var(--font-mono);font-size:1.5rem;font-weight:200;color:var(--text-primary);text-shadow:0 0 30px var(--tile-glow-color)">3</span>
-          <span style="font-family:var(--font-mono);font-size:0.48rem;color:var(--text-ghost);margin-left:5px;letter-spacing:0.08em">${isEn ? 'INDUSTRIES' : 'INDUSTRIES'}</span>
+      <div class="preview-stats">
+        <div class="preview-stat">
+          <span class="preview-stat-value">3</span>
+          <span class="preview-stat-label">${isEn ? 'INDUSTRIES' : 'INDUSTRIES'}</span>
         </div>
-        <div style="padding:6px 0">
-          <span style="font-family:var(--font-mono);font-size:1.5rem;font-weight:200;color:var(--text-primary);text-shadow:0 0 30px var(--tile-glow-color)">6</span>
-          <span style="font-family:var(--font-mono);font-size:0.48rem;color:var(--text-ghost);margin-left:5px;letter-spacing:0.08em">${isEn ? 'ROLES' : 'POSTES'}</span>
+        <div class="preview-stat">
+          <span class="preview-stat-value">6</span>
+          <span class="preview-stat-label">${isEn ? 'ROLES' : 'POSTES'}</span>
         </div>
-        <div style="padding:6px 0">
-          <span style="font-family:var(--font-mono);font-size:1.5rem;font-weight:200;color:var(--text-primary);text-shadow:0 0 30px var(--tile-glow-color)">65+</span>
-          <span style="font-family:var(--font-mono);font-size:0.48rem;color:var(--text-ghost);margin-left:5px;letter-spacing:0.08em">${isEn ? 'SKILLS' : 'COMP.'}</span>
+        <div class="preview-stat">
+          <span class="preview-stat-value">65+</span>
+          <span class="preview-stat-label">${isEn ? 'SKILLS' : 'COMP.'}</span>
         </div>
       </div>
-      <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--text-tertiary);margin-bottom:8px;letter-spacing:0.03em">tech · luxury · finance · audiovisual</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
-        <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 8px var(--tile-glow-color)"></span>
-        <span style="font-family:var(--font-mono);font-size:0.5rem;color:var(--accent);letter-spacing:0.1em">WORLDWIDE</span>
+      <div class="preview-domains">tech \u00b7 luxury \u00b7 finance \u00b7 audiovisual</div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-label">WORLDWIDE</span>
       </div>
     `;
   }

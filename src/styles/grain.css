@@ -2,7 +2,7 @@
 .grain-overlay {
   position: fixed;
   inset: 0;
-  z-index: 500;
+  z-index: var(--z-grain);
   pointer-events: none;
   filter: url(#grain-filter);
   opacity: 0.035;

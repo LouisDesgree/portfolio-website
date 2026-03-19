@@ -39,13 +39,13 @@ export function renderProjectsExpanded() {
     const year = epitechProjects[yearKey];
     if (!year) return '';
     return `
-      <div style="margin-bottom:var(--space-4)">
-        <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-secondary);margin-bottom:8px;letter-spacing:0.1em">${year.label} <span style="color:var(--text-ghost)">${year.period}</span></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div class="epitech-year">
+        <div class="epitech-year-label">${year.label} <span class="epitech-year-period">${year.period}</span></div>
+        <div class="epitech-grid">
           ${year.projects.map(p => `
-            <div style="background:var(--bg-surface);border:1px solid rgba(255,255,255,0.04);padding:6px 10px;border-radius:4px;font-size:0.7rem;min-width:100px;${p.starred ? 'border-color:rgba(112,144,255,0.2)' : ''}${p.team ? '' : ''}">
-              <div style="font-weight:400;color:var(--text-primary);margin-bottom:2px">${p.name}${p.count ? ` (${p.count})` : ''}</div>
-              <div style="font-family:var(--font-mono);font-size:0.55rem;color:var(--text-ghost)">${p.lang}${p.team ? ' · team' : ''}</div>
+            <div class="epitech-project ${p.starred ? 'epitech-project--starred' : ''}">
+              <div class="epitech-project-name">${p.name}${p.count ? ` (${p.count})` : ''}</div>
+              <div class="epitech-project-meta">${p.lang}${p.team ? ' \u00b7 team' : ''}</div>
             </div>
           `).join('')}
         </div>
@@ -55,11 +55,11 @@ export function renderProjectsExpanded() {
 
   // Main projects
   const mainHTML = projects.map((proj, i) => `
-    <div style="background:var(--bg-surface);border:1px solid ${proj.featured ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)'};padding:var(--space-4);border-radius:4px;${proj.featured ? 'grid-column:1/-1' : ''}">
-      <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-ghost);margin-bottom:8px">${proj.context ? t(proj.context) : `p(${i})`}</div>
-      <div style="font-size:1.1rem;font-weight:400;color:var(--text-primary);margin-bottom:8px">${t(proj.title)}</div>
-      <p style="font-size:0.8rem;color:var(--text-tertiary);line-height:1.6;margin-bottom:12px">${t(proj.desc)}</p>
-      <div style="display:flex;flex-wrap:wrap;gap:6px">${proj.tags.map(tag => `<span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--text-tertiary);border:1px solid rgba(255,255,255,0.06);padding:2px 8px;border-radius:2px">${tag}</span>`).join('')}</div>
+    <div class="project-expanded-card ${proj.featured ? 'project-expanded-card--featured' : ''}">
+      <div class="project-expanded-context">${proj.context ? t(proj.context) : `p(${i})`}</div>
+      <div class="project-expanded-title">${t(proj.title)}</div>
+      <p class="project-expanded-desc">${t(proj.desc)}</p>
+      <div class="project-expanded-tags">${proj.tags.map(tag => `<span class="project-expanded-tag">${tag}</span>`).join('')}</div>
     </div>
   `).join('');
 
@@ -76,10 +76,10 @@ export function renderProjectsExpanded() {
 
   const techSidebar = epitechTechStack.languages.map(l => {
     const icon = iconMap[l.name] || '';
-    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-      ${icon ? `<i class="${icon}" style="font-size:16px;color:var(--text-secondary);width:20px;text-align:center"></i>` : '<span style="width:20px"></span>'}
-      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-primary)">${l.name}</span>
-      <span style="font-family:var(--font-mono);font-size:0.55rem;color:var(--text-tertiary);margin-left:auto">${l.projects} proj</span>
+    return `<div class="tech-row">
+      ${icon ? `<i class="${icon} tech-icon"></i>` : '<span class="tech-icon-spacer"></span>'}
+      <span class="tech-name">${l.name}</span>
+      <span class="tech-count">${l.projects} proj</span>
     </div>`;
   }).join('');
 
@@ -87,34 +87,29 @@ export function renderProjectsExpanded() {
   const tools = ['Docker', 'Git', 'Linux', 'Pandas', 'NumPy', 'React'];
   const toolsHTML = tools.map(name => {
     const icon = iconMap[name] || '';
-    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-      ${icon ? `<i class="${icon}" style="font-size:16px;color:var(--text-secondary);width:20px;text-align:center"></i>` : ''}
-      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-primary)">${name}</span>
+    return `<div class="tech-row">
+      ${icon ? `<i class="${icon} tech-icon"></i>` : ''}
+      <span class="tech-name">${name}</span>
     </div>`;
   }).join('');
 
   return `
-    <h2 style="font-family:var(--font-heading);font-size:var(--text-md);font-weight:200;color:var(--text-primary);margin-bottom:var(--space-3)">${isEn ? 'Projects' : 'Projets'}</h2>
-    <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-tertiary);margin-bottom:var(--space-5);letter-spacing:0.1em">
-      ${epitechTechStack.totalProjects}+ ${isEn ? 'PROJECTS' : 'PROJETS'} · ${epitechTechStack.totalYears} ${isEn ? 'YEARS' : 'ANS'} · ${epitechTechStack.languages.length} ${isEn ? 'LANGUAGES' : 'LANGAGES'}
+    <h2 class="expanded-heading expanded-heading--compact">${isEn ? 'Projects' : 'Projets'}</h2>
+    <div class="expanded-subtitle">
+      ${epitechTechStack.totalProjects}+ ${isEn ? 'PROJECTS' : 'PROJETS'} \u00b7 ${epitechTechStack.totalYears} ${isEn ? 'YEARS' : 'ANS'} \u00b7 ${epitechTechStack.languages.length} ${isEn ? 'LANGUAGES' : 'LANGAGES'}
     </div>
-
-    <div style="display:grid;grid-template-columns:200px 1fr;gap:var(--space-5)">
-      <!-- Left: Tech stack with icons -->
+    <div class="projects-layout">
       <div>
-        <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px">${isEn ? 'Languages' : 'Langages'}</div>
+        <div class="projects-sidebar-heading">${isEn ? 'Languages' : 'Langages'}</div>
         ${techSidebar}
-        <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.15em;margin:16px 0 12px">${isEn ? 'Tools' : 'Outils'}</div>
+        <div class="projects-sidebar-heading projects-sidebar-heading--spaced">${isEn ? 'Tools' : 'Outils'}</div>
         ${toolsHTML}
       </div>
-
-      <!-- Right: Projects + Epitech map -->
       <div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-4);margin-bottom:var(--space-5)">
+        <div class="projects-main-grid">
           ${mainHTML}
         </div>
-
-        <h3 style="font-family:var(--font-heading);font-size:1.2rem;font-weight:300;color:var(--text-primary);margin-bottom:var(--space-3)">Epitech ${isEn ? 'Project Map' : 'Carte des Projets'}</h3>
+        <h3 class="expanded-subheading">Epitech ${isEn ? 'Project Map' : 'Carte des Projets'}</h3>
         ${epitechHTML}
       </div>
     </div>

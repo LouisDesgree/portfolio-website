@@ -16,7 +16,7 @@
   --text-primary:   #e8ecf5;
   --text-secondary: #a0a8c4;
   --text-tertiary:  #7880a0;
-  --text-ghost:     #505878;
+  --text-ghost:     #6B7394;
 
   /* === SPECTRAL ACCENTS === */
   --spec-red:    #ff3366;
@@ -56,7 +56,7 @@
   /* === GLASS EFFECTS === */
   --glass-bg: rgba(10, 10, 28, 0.75);
   --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-blur: 24px;
+  --glass-blur: 8px;
   --glass-hover-border: rgba(112, 144, 255, 0.15);
   --glass-hover-glow: rgba(112, 144, 255, 0.06);
   --glass-hover-bg: rgba(12, 12, 32, 0.82);
@@ -79,6 +79,29 @@
   --duration-fast: 150ms;
   --duration-normal: 300ms;
   --duration-slow: 600ms;
+  --duration-instant: 80ms;
+
+  /* === Z-INDEX LAYERS === */
+  --z-base: 1;
+  --z-tile-accent: 2;
+  --z-nav: 100;
+  --z-tooltip: 200;
+  --z-grain: 500;
+  --z-backdrop: 900;
+  --z-expanded: 1000;
+  --z-expanded-close: 1010;
+  --z-skills-card: 1020;
+
+  /* === SHADOWS (elevation model) === */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.15);
+  --shadow-xl: 0 12px 48px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+
+  /* === RADII === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
 
   /* === LAYOUT === */
   --section-max-width: 1200px;
@@ -102,7 +125,7 @@
   --text-primary:   #1C140D;
   --text-secondary: #4A3D30;
   --text-tertiary:  #7A6C5A;
-  --text-ghost:     #A69780;
+  --text-ghost:     #8E7F68;
 
   /* === SPECTRAL - muted luxury tones === */
   --spec-red:    #8B2D3E;
@@ -121,7 +144,7 @@
   /* === GLASS EFFECTS (light) === */
   --glass-bg: rgba(248, 244, 238, 0.82);
   --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-blur: 24px;
+  --glass-blur: 8px;
   --glass-hover-border: rgba(204, 78, 26, 0.18);
   --glass-hover-glow: rgba(204, 78, 26, 0.05);
   --glass-hover-bg: rgba(255, 252, 248, 0.88);

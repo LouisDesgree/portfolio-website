@@ -9,6 +9,7 @@ let nodePositions = {};
 let lissajousGroup, particles;
 let expandedNodeId = null;
 let pointerDownPos = null;
+let currentResizeObserver = null;
 const CLICK_THRESHOLD = 5;
 
 function isLight() {
@@ -83,14 +84,50 @@ function makePillLabel(text, textColor, bgColor, size) {
   return sprite;
 }
 
+function cleanupSkills() {
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+
+  // Dispose meshes
+  nodeMeshes.forEach(m => { m.geometry?.dispose(); m.material?.dispose(); });
+  glowMeshes.forEach(m => { m.geometry?.dispose(); m.material?.dispose(); });
+  labelSprites.forEach(s => { if (s.material?.map) s.material.map.dispose(); s.material?.dispose(); });
+  edgeLines.forEach(l => { l.geometry?.dispose(); l.material?.dispose(); });
+
+  if (lissajousGroup) {
+    lissajousGroup.children.forEach(child => {
+      child.geometry?.dispose();
+      child.material?.dispose();
+    });
+  }
+
+  if (particles) { particles.geometry?.dispose(); particles.material?.dispose(); }
+
+  // Full scene cleanup
+  if (scene) {
+    scene.traverse(obj => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (obj.material.map) obj.material.map.dispose();
+        obj.material.dispose();
+      }
+    });
+    scene.clear();
+  }
+
+  if (renderer) { renderer.dispose(); renderer.domElement.remove(); renderer = null; }
+  if (controls) { controls.dispose(); controls = null; }
+  if (currentResizeObserver) { currentResizeObserver.disconnect(); currentResizeObserver = null; }
+
+  nodeMeshes = []; edgeLines = []; labelSprites = []; glowMeshes = [];
+  scene = null; camera = null; lissajousGroup = null; particles = null;
+  expandedNodeId = null;
+}
+
 export function initSkills() {
   const container = document.getElementById('skills-canvas')?.parentElement;
   if (!container) return;
 
-  // Cleanup
-  if (animId) cancelAnimationFrame(animId);
-  if (renderer) { renderer.dispose(); renderer.domElement.remove(); }
-  nodeMeshes = []; edgeLines = []; labelSprites = []; glowMeshes = [];
+  cleanupSkills();
 
   const rect = container.getBoundingClientRect();
   const W = rect.width, H = rect.height;
@@ -114,7 +151,8 @@ export function initSkills() {
   // --- Renderer ---
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(W, H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const isMobileDevice = window.innerWidth <= 768;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileDevice ? 1.5 : 2));
   renderer.domElement.style.cssText = 'position:absolute;inset:0;border-radius:14px;z-index:1';
   container.appendChild(renderer.domElement);
 
@@ -200,8 +238,8 @@ export function initSkills() {
   // === 3D GOLDEN-RATIO LISSAJOUS FIELD (clean grid, random seed) ===
   const PHI = (1 + Math.sqrt(5)) / 2;
   lissajousGroup = new THREE.Group();
-  const bandCount = 50;
-  const segCount = 300;
+  const bandCount = 30;  // was 50
+  const segCount = 200;  // was 300
   const scaleXZ = 120;
   const scaleY = 80;
   // Random seed - different starting shape every page load
@@ -535,6 +573,7 @@ export function initSkills() {
     // Just clear any stale inline styles
     expandedCard.style.cssText = '';
     expandedCard.classList.add('active');
+    expandedCard.setAttribute('aria-hidden', 'false');
   }
 
   // --- Close expanded card (immediate) ---
@@ -542,6 +581,7 @@ export function initSkills() {
     cancelClose();
     if (!expandedCard) return;
     expandedCard.classList.remove('active');
+    expandedCard.setAttribute('aria-hidden', 'true');
     expandedNodeId = null;
     resetSceneHighlight();
   }
@@ -558,34 +598,41 @@ export function initSkills() {
     });
   }
 
-  // --- Hover: open expanded card on node hover ---
+  // --- Hover: open expanded card on node hover (raycaster throttled via rAF) ---
+  let raycastPending = false;
   renderer.domElement.addEventListener('mousemove', (e) => {
     const r = renderer.domElement.getBoundingClientRect();
     mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
     mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(nodeMeshes);
+    if (!raycastPending) {
+      raycastPending = true;
+      requestAnimationFrame(() => {
+        raycastPending = false;
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObjects(nodeMeshes);
 
-    if (hits.length > 0) {
-      const nd = hits[0].object.userData.node;
-      cancelClose();
+        if (hits.length > 0) {
+          const nd = hits[0].object.userData.node;
+          cancelClose();
 
-      // Only update if hovering a different node
-      if (hoveredNode !== nd.id) {
-        hoveredNode = nd.id;
-        if (tooltip) tooltip.style.opacity = '0';
-        // Update card content without closing first (no blink)
-        openExpandedCard(nd, hits[0].object);
-      }
+          // Only update if hovering a different node
+          if (hoveredNode !== nd.id) {
+            hoveredNode = nd.id;
+            if (tooltip) tooltip.style.opacity = '0';
+            // Update card content without closing first (no blink)
+            openExpandedCard(nd, hits[0].object);
+          }
 
-      renderer.domElement.style.cursor = 'pointer';
-    } else {
-      if (hoveredNode) {
-        hoveredNode = null;
-        scheduleClose();
-      }
-      if (tooltip) tooltip.style.opacity = '0';
-      renderer.domElement.style.cursor = 'grab';
+          renderer.domElement.style.cursor = 'pointer';
+        } else {
+          if (hoveredNode) {
+            hoveredNode = null;
+            scheduleClose();
+          }
+          if (tooltip) tooltip.style.opacity = '0';
+          renderer.domElement.style.cursor = 'grab';
+        }
+      });
     }
   });
 
@@ -677,12 +724,13 @@ export function initSkills() {
   animate();
 
   // Resize
-  const ro = new ResizeObserver(() => {
+  if (currentResizeObserver) currentResizeObserver.disconnect();
+  currentResizeObserver = new ResizeObserver(() => {
     const r = container.getBoundingClientRect();
     if (r.width < 10 || r.height < 10) return;
     camera.aspect = r.width / r.height;
     camera.updateProjectionMatrix();
     renderer.setSize(r.width, r.height);
   });
-  ro.observe(container);
+  currentResizeObserver.observe(container);
 }
