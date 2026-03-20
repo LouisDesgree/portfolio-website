@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { skills, projects, experiences } from '../data/content.js';
 import { t, getLang } from '../i18n.js';
+import { trackSkillView } from '../utils/analytics.js';
 
 let renderer, scene, camera, controls, animId;
 let nodeMeshes = [], edgeLines = [], labelSprites = [], glowMeshes = [];
@@ -565,6 +566,7 @@ export function initSkills() {
     if (!expandedCard) return;
     cancelClose();
     expandedNodeId = node.id;
+    trackSkillView(node.id, node.label, node.cluster);
 
     expandedCard.innerHTML = buildCardHTML(node);
     highlightForNode(node.id);

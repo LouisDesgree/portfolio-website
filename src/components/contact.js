@@ -1,5 +1,6 @@
 import { contact, languages, hero } from '../data/content.js';
 import { t, getLang } from '../i18n.js';
+import { trackVCardDownload } from '../utils/analytics.js';
 
 function generateVCard() {
   const vcard = [
@@ -47,6 +48,7 @@ export function renderContact() {
   // Attach vCard download handler
   document.getElementById('vcard-btn')?.addEventListener('click', (e) => {
     e.stopPropagation();
+    trackVCardDownload();
     generateVCard();
   });
 }

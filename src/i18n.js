@@ -2,6 +2,8 @@
 // i18n - Bilingual support (EN/FR)
 // ============================================================
 
+import { trackLangSwitch } from './utils/analytics.js';
+
 const STORAGE_KEY = 'portfolio-lang';
 let currentLang = 'en';
 const listeners = [];
@@ -27,6 +29,7 @@ export function setLang(lang) {
   if (lang !== 'en' && lang !== 'fr') return;
   currentLang = lang;
   localStorage.setItem(STORAGE_KEY, lang);
+  trackLangSwitch(lang);
   document.documentElement.lang = lang;
   updateToggleUI();
   listeners.forEach(fn => fn(lang));
