@@ -81,7 +81,19 @@ function expandTile(tileEl, key, renderContent) {
   // Content container
   const inner = document.createElement('div');
   inner.className = 'tile-expanded-inner';
-  inner.innerHTML = renderContent();
+  const result = renderContent();
+  if (typeof result === 'string') {
+    inner.innerHTML = result;
+  } else {
+    inner.innerHTML = result.html;
+    if (result.onUnmount) {
+      overlay._onUnmount = result.onUnmount;
+    }
+    if (result.onMount) {
+      // Schedule mount callback after DOM insertion
+      requestAnimationFrame(() => result.onMount(inner));
+    }
+  }
 
   overlay.appendChild(closeBtn);
   overlay.appendChild(inner);
@@ -128,6 +140,9 @@ function closeTile() {
   const overlay = currentExpanded;
   const backdrop = currentBackdrop;
   const sourceTile = currentTileEl;
+
+  // Run cleanup callback if set
+  if (overlay._onUnmount) overlay._onUnmount();
 
   overlay.classList.remove('full');
   if (backdrop) backdrop.classList.remove('visible');

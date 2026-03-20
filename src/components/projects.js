@@ -1,6 +1,9 @@
 import { projects } from '../data/content.js';
 import { epitechProjects, epitechTechStack } from '../data/epitech-projects.js';
 import { t, getLang } from '../i18n.js';
+import { Constellation } from '../canvas/constellation.js';
+
+let constellation = null;
 
 export function renderProjectsPreview() {
   const el = document.getElementById('projects-preview');
@@ -63,55 +66,33 @@ export function renderProjectsExpanded() {
     </div>
   `).join('');
 
-  // Devicon class mapping
-  const iconMap = {
-    'C': 'devicon-c-plain', 'C++': 'devicon-cplusplus-plain', 'Python': 'devicon-python-plain',
-    'Haskell': 'devicon-haskell-plain', 'JavaScript': 'devicon-javascript-plain',
-    'TypeScript': 'devicon-typescript-plain', 'Assembly': 'devicon-linux-plain',
-    'Kotlin': 'devicon-kotlin-plain', 'Swift': 'devicon-swift-plain', 'Shell': 'devicon-bash-plain',
-    'Docker': 'devicon-docker-plain', 'Git': 'devicon-git-plain',
-    'Pandas': 'devicon-pandas-plain', 'NumPy': 'devicon-numpy-plain',
-    'React': 'devicon-react-original', 'Linux': 'devicon-linux-plain',
-  };
-
-  const techSidebar = epitechTechStack.languages.map(l => {
-    const icon = iconMap[l.name] || '';
-    return `<div class="tech-row">
-      ${icon ? `<i class="${icon} tech-icon"></i>` : '<span class="tech-icon-spacer"></span>'}
-      <span class="tech-name">${l.name}</span>
-      <span class="tech-count">${l.projects} proj</span>
-    </div>`;
-  }).join('');
-
-  // Extra tools
-  const tools = ['Docker', 'Git', 'Linux', 'Pandas', 'NumPy', 'React'];
-  const toolsHTML = tools.map(name => {
-    const icon = iconMap[name] || '';
-    return `<div class="tech-row">
-      ${icon ? `<i class="${icon} tech-icon"></i>` : ''}
-      <span class="tech-name">${name}</span>
-    </div>`;
-  }).join('');
-
-  return `
+  const html = `
+    <canvas class="projects-constellation"></canvas>
     <h2 class="expanded-heading expanded-heading--compact">${isEn ? 'Projects' : 'Projets'}</h2>
     <div class="expanded-subtitle">
       ${epitechTechStack.totalProjects}+ ${isEn ? 'PROJECTS' : 'PROJETS'} \u00b7 ${epitechTechStack.totalYears} ${isEn ? 'YEARS' : 'ANS'} \u00b7 ${epitechTechStack.languages.length} ${isEn ? 'LANGUAGES' : 'LANGAGES'}
     </div>
-    <div class="projects-layout">
-      <div>
-        <div class="projects-sidebar-heading">${isEn ? 'Languages' : 'Langages'}</div>
-        ${techSidebar}
-        <div class="projects-sidebar-heading projects-sidebar-heading--spaced">${isEn ? 'Tools' : 'Outils'}</div>
-        ${toolsHTML}
-      </div>
-      <div>
-        <div class="projects-main-grid">
-          ${mainHTML}
-        </div>
-        <h3 class="expanded-subheading">Epitech ${isEn ? 'Project Map' : 'Carte des Projets'}</h3>
-        ${epitechHTML}
-      </div>
+    <div class="projects-main-grid">
+      ${mainHTML}
     </div>
+    <h3 class="expanded-subheading">Epitech ${isEn ? 'Project Map' : 'Carte des Projets'}</h3>
+    ${epitechHTML}
   `;
+
+  return {
+    html,
+    onMount(container) {
+      const canvas = container.querySelector('.projects-constellation');
+      if (canvas) {
+        constellation = new Constellation(canvas);
+        constellation.start();
+      }
+    },
+    onUnmount() {
+      if (constellation) {
+        constellation.stop();
+        constellation = null;
+      }
+    },
+  };
 }

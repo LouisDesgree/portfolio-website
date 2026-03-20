@@ -18,8 +18,8 @@ export const hero = {
     fr: 'Ingénierie Informatique · Data Science · Communication',
   },
   availability: {
-    en: 'Open to opportunities · Paris / Remote · March 2026',
-    fr: 'Ouvert aux opportunités · Paris / Remote · Mars 2026',
+    en: 'Available for hire · Worldwide',
+    fr: 'Disponible · Monde entier',
   },
 };
 
@@ -68,8 +68,8 @@ export const experiences = [
     location:{ en: 'Paris', fr: 'Paris' },
     date:    '2025',
     desc:    {
-      en: 'Embedded in the Financial Consolidation team for four months. Attended every cross-company meeting to keep three entities aligned on insurance obligations and reporting standards. Built an XHTML-based financial taxonomy engine that automated the Group\'s consolidation reporting. Co-translated the full annual financial report into English, mastering bilingual finance terminology along the way. That experience sparked a lasting interest in stock markets and investment.',
-      fr: 'Intégré à l\'équipe de Consolidation Financière pendant quatre mois. Présent à toutes les réunions inter-sociétés pour maintenir la clarté entre 3 entités sur les obligations liées aux assurances et les normes de reporting. Construction d\'un moteur de taxonomie financière en XHTML automatisant le reporting de consolidation du Groupe. Co-traduction intégrale du rapport financier annuel en anglais, maîtrisant la terminologie financière bilingue en partant de zéro. Cette expérience a éveillé un intérêt durable pour les marchés et l\'investissement.',
+      en: 'Embedded in the Financial Consolidation team for four months. Attended every cross-company meeting to keep three entities aligned on insurance obligations and reporting standards. Built an XHTML-based financial taxonomy engine that automated the Group\'s consolidation reporting. Translated the full annual financial report from French to English in-house, saving the cost of external translators and picking up bilingual finance terminology along the way. That experience sparked a lasting interest in stock markets and investment.',
+      fr: 'Intégré à l\'équipe de Consolidation Financière pendant quatre mois. Présent à toutes les réunions inter-sociétés pour maintenir la clarté entre 3 entités sur les obligations liées aux assurances et les normes de reporting. Construction d\'un moteur de taxonomie financière en XHTML automatisant le reporting de consolidation du Groupe. Traduction intégrale du rapport financier annuel du français vers l\'anglais en interne, économisant le coût de traducteurs externes et apprenant la terminologie financière bilingue au passage. Cette expérience a éveillé un intérêt durable pour les marchés et l\'investissement.',
     },
     relatedSkills: ['python', 'datasci', 'excel', 'typescript', 'javascript', 'comm', 'teamwork'],
   },
@@ -101,8 +101,8 @@ export const experiences = [
     location:{ en: 'Rome, Italy', fr: 'Rome, Italie' },
     date:    '2022',
     desc:    {
-      en: 'Dual role bridging Communication and Technology, reporting directly to Cristiana Monfardini (CCO). Built an automated influencer analytics system tracking 100+ creators across 3 platforms, with daily reports used in CEO executive meetings. Led Fendi\'s global TikTok launch across 7+ countries, growing the channel by +150K subscribers. Coordinated celebrity campaigns (Dybala, Benzema) reaching 25,000+ live attendees with videomapping on the Palazzo della Civiltà. Audited Java and HTML/CSS codebases and worked with IS&T Milan on MLOps data pipelines. Also coordinated fashion shows across Milan, Paris, and New York.',
-      fr: 'Rôle double entre Communication et Technologie, reportant directement à Cristiana Monfardini (Directrice de la Communication Monde). Construction d\'un système analytique automatisé suivant 100+ créateurs sur 3 plateformes, avec des rapports quotidiens utilisés en comité de direction CEO. Pilotage du lancement mondial TikTok de Fendi dans 7+ pays, développant le canal de +150K abonnés. Coordination de campagnes célébrités (Dybala, Benzema) devant 25 000+ spectateurs avec vidéomapping sur le Palazzo della Civiltà. Audit de codebases Java et HTML/CSS, collaboration avec l\'IS&T Milan sur les pipelines MLOps. Coordination des défilés à Milan, Paris et New York.',
+      en: 'Dual role between Communication and IT, reporting to Cristiana Monfardini (CCO). Built an automated influencer analytics system tracking 100+ creators across 3 platforms, with daily reports used in CEO meetings. Helped coordinate Fendi\'s global TikTok launch across 7+ countries, growing the channel by +150K subscribers. Assisted on celebrity campaigns (Dybala, Benzema) for 25,000+ attendees with videomapping on the Palazzo della Civiltà. Audited Java and HTML/CSS codebases and worked with IS&T Milan on MLOps data pipelines. Also helped coordinate fashion shows across Milan, Paris, and New York.',
+      fr: 'Rôle double entre Communication et IT, rattaché à Cristiana Monfardini (Directrice de la Communication Monde). Construction d\'un système analytique automatisé suivant 100+ créateurs sur 3 plateformes, avec des rapports quotidiens utilisés en comité de direction. Contribution au lancement mondial TikTok de Fendi dans 7+ pays, développant le canal de +150K abonnés. Assistance sur les campagnes célébrités (Dybala, Benzema) devant 25 000+ spectateurs avec vidéomapping sur le Palazzo della Civiltà. Audit de codebases Java et HTML/CSS, collaboration avec l\'IS&T Milan sur les pipelines MLOps. Aide à la coordination des défilés à Milan, Paris et New York.',
     },
     relatedSkills: ['python', 'java', 'mlops', 'datasci', 'social', 'comm', 'luxury', 'fashion', 'celebrity', 'videomapping', 'events', 'emplify', 'radarly', 'analytics', 'excel'],
   },
@@ -282,13 +282,13 @@ export const projects = [
     id: 'fendi-celebrity-campaigns',
     title:  { en: 'Celebrity Campaigns · Dybala & Benzema', fr: 'Campagnes Célébrités · Dybala & Benzema' },
     desc:   {
-      en: 'Managed two high-profile celebrity partnerships. Paulo Dybala / AS Roma: directed the arrival event in Rome, handling logistics, PR, media analysis, and photo direction for 25,000 attendees with videomapping on the Palazzo della Civiltà. Karim Benzema / Fendi Faster: ran the sneaker ambassadorship end-to-end, including Instagram coordination, competitor benchmarking, and ROI tracking.',
-      fr: 'Gestion de deux partenariats célébrités de premier plan. Paulo Dybala / AS Roma : direction de l\'événement d\'arrivée à Rome avec logistique, RP, analyse d\'impact médiatique et direction photo pour 25 000 spectateurs avec vidéomapping sur le Palazzo della Civiltà. Karim Benzema / Fendi Faster : gestion end-to-end de l\'ambassadorship sneaker, coordination Instagram, benchmark concurrentiel et suivi ROI.',
+      en: 'Helped coordinate two celebrity partnerships. Paulo Dybala / AS Roma: assisted with the arrival event in Rome, supporting logistics, PR, media analysis, and photo direction for 25,000 attendees with videomapping on the Palazzo della Civiltà. Karim Benzema / Fendi Faster: helped run the sneaker ambassadorship, including Instagram coordination, competitor benchmarking, and ROI tracking.',
+      fr: 'Contribution à la coordination de deux partenariats célébrités. Paulo Dybala / AS Roma : assistance sur l\'événement d\'arrivée à Rome, support logistique, RP, analyse d\'impact médiatique et direction photo pour 25 000 spectateurs avec vidéomapping sur le Palazzo della Civiltà. Karim Benzema / Fendi Faster : participation à la gestion de l\'ambassadorship sneaker, coordination Instagram, benchmark concurrentiel et suivi ROI.',
     },
     tags: ['PR', 'Event Management', 'Videomapping', 'Media Analysis', 'Social Media'],
     link: null,
     relatedSkills: ['celebrity', 'comm', 'events', 'social', 'videomapping', 'luxury'],
-    context: { en: 'Fendi · 25K Live Audience', fr: 'Fendi · 25K Spectateurs' },
+    context: { en: 'Fendi · Communication', fr: 'Fendi · Communication' },
   },
   {
     id: 'fendi-fashion-shows',
@@ -330,8 +330,8 @@ export const projects = [
     id: 'taxonomy-engine',
     title:  { en: 'Financial Taxonomy Engine', fr: 'Moteur de Taxonomie Financière' },
     desc:   {
-      en: 'Built an XHTML-based financial taxonomy engine that automated Havas Group\'s consolidation reporting, replacing a manual workflow used across the entire finance department.',
-      fr: 'Construction d\'un moteur de taxonomie financière en XHTML automatisant le reporting de consolidation du Groupe Havas, remplaçant un workflow manuel utilisé par l\'ensemble de la direction financière.',
+      en: 'Built a proof of concept for an XHTML-based financial taxonomy engine, demonstrating the approach to stakeholders before it was greenlit. The final tool automated Havas Group\'s consolidation reporting, replacing a manual workflow used across the entire finance department.',
+      fr: 'Construction d\'un proof of concept pour un moteur de taxonomie financière en XHTML, démontrant l\'approche aux décideurs avant validation. L\'outil final a automatisé le reporting de consolidation du Groupe Havas, remplaçant un workflow manuel utilisé par l\'ensemble de la direction financière.',
     },
     tags: ['XHTML', 'Finance', 'Automation', 'Data Processing'],
     link: null,
