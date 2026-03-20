@@ -26,20 +26,20 @@ export const hero = {
 export const about = {
   paragraphs: [
     {
-      en: 'I\'m a software engineer with a background in both tech and luxury. I studied computer engineering at Epitech for five years, spent time working at Fendi and LVMH, then went to UCLA for data science. These days I mostly build <strong>data tools, automation systems, and internal platforms</strong>.',
-      fr: 'Je suis ingénieur informatique avec un parcours entre tech et luxe. J\'ai étudié l\'ingénierie informatique à Epitech pendant cinq ans, travaillé chez Fendi et LVMH, puis suivi un programme de data science à UCLA. Aujourd\'hui, je construis principalement des <strong>outils data, des systèmes d\'automatisation et des plateformes internes</strong>.',
+      en: 'I\'m a software engineer with a background in tech, finance, and marketing-communication. I studied computer engineering at Epitech for five years, spent time working at Fendi and LVMH, then completed a one-year data science and cybersecurity program at UCLA. These days I mostly build <strong>data management tools, automation systems, and internal solutions</strong>, aligning strategic development priorities with user and client journeys.',
+      fr: 'Je suis ingénieur informatique avec un parcours entre tech, finances et marketing-communication. J\'ai étudié l\'ingénierie informatique à Epitech pendant cinq ans, travaillé chez Fendi et LVMH, puis suivi un programme d\'un an en data science et cybersécurité à UCLA. Aujourd\'hui, je construis principalement des <strong>outils de pilotage des data, des systèmes d\'automatisation et des solutions internes</strong>, en faisant coïncider priorités de développement stratégiques et parcours utilisateur/client.',
     },
     {
-      en: 'My time at <strong>Fendi</strong> (LVMH) was split between the Communication team and IT. One day I\'d be setting up an influencer tracking system across 3 platforms, the next I\'d be helping coordinate a fashion show in Milan. I also contributed to the global TikTok launch (7 countries, +150K subscribers) and helped with celebrity event logistics at the Palazzo della Civiltà.',
-      fr: 'Mon passage chez <strong>Fendi</strong> (LVMH) se partageait entre l\'équipe Communication et l\'IT. Un jour je mettais en place un système de suivi d\'influenceurs sur 3 plateformes, le lendemain j\'aidais à coordonner un défilé à Milan. J\'ai aussi contribué au lancement mondial de TikTok (7 pays, +150K abonnés) et participé à la logistique d\'événements célébrités au Palazzo della Civiltà.',
+      en: 'My time at <strong>Fendi</strong> (LVMH) was split between the Communication team and IT. One day I\'d be setting up an influencer tracking system across 3 platforms, the next I\'d be helping coordinate a fashion show in Milan. I also participated in the global TikTok launch (7 countries, +150K subscribers) and helped with celebrity event logistics at the Palazzo della Civiltà.',
+      fr: 'Mon passage chez <strong>Fendi</strong> (LVMH) se partageait entre l\'équipe Communication et l\'IT. Un jour, je mettais en place un système de suivi d\'influenceurs sur 3 plateformes, le lendemain j\'aidais à coordonner un défilé à Milan. J\'ai aussi participé au lancement mondial de TikTok (7 pays, +150K abonnés) et participé à la logistique d\'événements de célébrités au Palazzo della Civiltà.',
     },
     {
-      en: 'I completed a Data Science and Cybersecurity certificate at <strong>UCLA</strong> (3.97 GPA), where I built an AI forecasting platform as my capstone. Before that, <strong>Epitech</strong> gave me five years of project-based learning: 135+ projects, 10 languages, from low-level C to full-stack web.',
-      fr: 'J\'ai obtenu un certificat en Data Science et Cybersécurité à <strong>UCLA</strong> (GPA 3.97), où j\'ai construit une plateforme de prévision IA comme projet final. Avant cela, <strong>Epitech</strong> m\'a donné cinq ans d\'apprentissage par projets : 135+ projets, 10 langages, du C bas niveau au web full-stack.',
+      en: 'I completed a Data Science and Cybersecurity certificate at <strong>UCLA</strong> (3.97 GPA), where I built an AI forecasting platform as my capstone. Before that, I spent 5 years at <strong>Epitech</strong> in a project-based organization: 135+ projects, 10 languages, from low-level C to full-stack web.',
+      fr: 'J\'ai obtenu un certificat en Data Science et Cybersécurité à <strong>UCLA</strong> (GPA 3.97), où j\'ai construit une plateforme de prévision IA comme projet final. Avant cela, j\'ai passé 5 ans à <strong>Epitech</strong> dans une organisation par projets : 135+ projets, 10 langages, du C bas niveau au web full-stack.',
     },
     {
-      en: 'I\'ve been tinkering with hardware since I was a kid: soldering at 9, 3D printers at 12, then an <strong>InMoov humanoid robot</strong>. I also sail competitively, fly FPV drones, and build furniture. Currently working on <strong>General Commander</strong>, a side project for AI-powered knowledge gathering and investment research.',
-      fr: 'Je bricole du hardware depuis gamin : fer à souder à 9 ans, imprimante 3D à 12, puis un <strong>robot humanoïde InMoov</strong>. Je fais aussi de la voile de compétition, du drone FPV et de la menuiserie. En ce moment, je travaille sur <strong>General Commander</strong>, un projet perso d\'agents IA pour la veille et la recherche d\'investissement.',
+      en: 'I\'ve been passionate about hardware since childhood: soldering, building 3D printers and an <strong>InMoov humanoid robot</strong>. I also sail competitively, fly FPV drones, and build furniture. Currently working on <strong>General Commander</strong>, a personal project for AI-powered knowledge gathering and investment research.',
+      fr: 'Je suis passionné de hardware depuis l\'enfance : soudure, fabrication d\'imprimante 3D et de <strong>robot humanoïde InMoov</strong>. Je fais aussi de la voile de compétition, du drone FPV et de la menuiserie. En ce moment, je travaille sur <strong>General Commander</strong>, un projet personnel d\'agents IA pour la veille et la recherche d\'investissement.',
     },
   ],
   stats: {
@@ -68,8 +68,8 @@ export const experiences = [
     location:{ en: 'Paris', fr: 'Paris' },
     date:    '2025',
     desc:    {
-      en: 'Embedded in the Financial Consolidation team for four months. Attended every cross-company meeting to keep three entities aligned on insurance obligations and reporting standards. Built an XHTML-based financial taxonomy engine that automated the Group\'s consolidation reporting. Translated the full annual financial report from French to English in-house, saving the cost of external translators and picking up bilingual finance terminology along the way. That experience sparked a lasting interest in stock markets and investment.',
-      fr: 'Intégré à l\'équipe de Consolidation Financière pendant quatre mois. Présent à toutes les réunions inter-sociétés pour maintenir la clarté entre 3 entités sur les obligations liées aux assurances et les normes de reporting. Construction d\'un moteur de taxonomie financière en XHTML automatisant le reporting de consolidation du Groupe. Traduction intégrale du rapport financier annuel du français vers l\'anglais en interne, économisant le coût de traducteurs externes et apprenant la terminologie financière bilingue au passage. Cette expérience a éveillé un intérêt durable pour les marchés et l\'investissement.',
+      en: 'Embedded in the Financial Consolidation team for four months. Attended every cross-company meeting to keep three entities aligned on insurance obligations and reporting standards. Built an XHTML-based financial taxonomy engine that automated the Group\'s consolidation reporting. Translated the full annual financial report from French to English in-house, mastering bilingual finance terminology. That experience sparked a lasting interest in stock markets and investment.',
+      fr: 'Intégré à l\'équipe de Consolidation Financière pendant quatre mois. Présent à toutes les réunions inter-sociétés pour maintenir la clarté entre 3 entités sur les obligations liées aux assurances et les normes de reporting. Construction d\'un moteur de taxonomie financière en XHTML automatisant le reporting de consolidation du Groupe. Traduction intégrale du rapport financier annuel du français vers l\'anglais en interne, et maîtrise de la terminologie financière. Cette expérience a éveillé un intérêt durable pour les marchés et l\'investissement.',
     },
     relatedSkills: ['python', 'datasci', 'excel', 'typescript', 'javascript', 'comm', 'teamwork'],
   },
@@ -79,8 +79,8 @@ export const experiences = [
     location:{ en: 'Place de la Concorde', fr: 'Place de la Concorde' },
     date:    '2024',
     desc:    {
-      en: 'Part of a five-person core team organizing 2,500 volunteers at the Place de la Concorde, one of the Games\' highest-profile venues. Handled volunteer intake, numbering, problem resolution, and accommodation. Made it possible for operational teams to locate and deploy their assigned groups in real time.',
-      fr: 'Membre d\'une équipe de 5 personnes organisant 2 500 bénévoles Place de la Concorde, l\'un des sites phares des Jeux. Gestion de l\'accueil, numérotation, résolution de problèmes et hébergement des bénévoles. Mise en place d\'un système permettant aux équipes opérationnelles de localiser et déployer rapidement leurs groupes assignés en temps réel.',
+      en: 'Part of a five-person core team managing 2,500 volunteers at the Place de la Concorde, one of the Games\' highest-profile venues. Handled volunteer intake, numbering, problem resolution, and accommodation. Made it possible for operational teams to locate and deploy their assigned groups in real time.',
+      fr: 'Membre d\'une équipe de 5 personnes pour gérer 2 500 bénévoles Place de la Concorde, l\'un des sites phares des Jeux. Gestion de l\'accueil, numérotation, résolution de problèmes et hébergement des bénévoles. Mise en place d\'un système permettant aux équipes opérationnelles de localiser et déployer rapidement leurs groupes assignés en temps réel.',
     },
     relatedSkills: ['events', 'teamwork', 'comm'],
   },
@@ -90,8 +90,8 @@ export const experiences = [
     location:{ en: 'Paris', fr: 'Paris' },
     date:    '2023',
     desc:    {
-      en: 'Evaluated and benchmarked 10+ premium venues against technical, commercial, and logistical criteria. Delivered organizational briefs and secured the Gustave Eiffel Hall for the final event. Managed vendor coordination and on-site production.',
-      fr: 'Évaluation et benchmark de 10+ lieux premium selon des critères techniques, commerciaux et logistiques. Rédaction de briefs organisationnels et sélection de la Salle Gustave Eiffel pour l\'événement final. Coordination fournisseurs et production sur site.',
+      en: 'Evaluated and benchmarked 10+ premium venues against technical, commercial, and logistical criteria. Delivered organizational briefs. Managed vendor coordination and on-site production.',
+      fr: 'Évaluation et benchmark de 10+ lieux premium selon des critères techniques, commerciaux et logistiques. Rédaction de briefs organisationnels, coordination fournisseurs et production sur site.',
     },
     relatedSkills: ['events', 'luxury', 'comm', 'teamwork', 'ppt'],
   },
@@ -258,8 +258,8 @@ export const projects = [
     id: 'influencer-dashboard',
     title:  { en: 'Influencer Analytics Engine', fr: 'Moteur Analytique Influenceurs' },
     desc:   {
-      en: 'Built an automated daily reporting system tracking 100+ influencers across Instagram, TikTok, and Twitter. Combined data from LVMH tools (Emplify, Radarly) to surface engagement metrics, sentiment shifts, and emerging trends. The reports went directly to the CEO and became a fixture in weekly executive meetings.',
-      fr: 'Construction d\'un système de reporting quotidien automatisé suivant 100+ influenceurs sur Instagram, TikTok et Twitter. Croisement de données depuis les outils LVMH (Emplify, Radarly) pour faire remonter les métriques d\'engagement, les évolutions de sentiment et les tendances émergentes. Les rapports étaient transmis directement au CEO et sont devenus un rendez-vous hebdomadaire en comité de direction.',
+      en: 'Built an automated daily reporting system tracking 100+ influencers across Instagram, TikTok, and Twitter. Combined data from LVMH tools (Emplify, Radarly) to surface engagement metrics, sentiment shifts, and emerging trends. Reports went directly to the CEO, delivered through educational materials I developed to support strategic decision-making.',
+      fr: 'Construction d\'un système de reporting quotidien automatisé suivant 100+ influenceurs sur Instagram, TikTok et Twitter. Croisement de données depuis les outils LVMH (Emplify, Radarly) pour faire remonter les métriques d\'engagement, les évolutions de sentiment et les tendances émergentes. Les rapports étaient transmis directement au CEO, sur des supports pédagogiques que j\'ai développés pour l\'aide à la décision stratégique.',
     },
     tags: ['Emplify', 'Radarly', 'Google Analytics', 'Excel', 'Data Analysis'],
     link: null,
@@ -295,7 +295,7 @@ export const projects = [
     title:  { en: 'Fashion Shows · Milan, Paris, New York', fr: 'Défilés · Milan, Paris, New York' },
     desc:   {
       en: 'Coordinated Fendi fashion shows across 3 cities, managing catwalk logistics, VIP guest lists, and media accreditation. Remotely directed the Fendi x Marc Jacobs show in New York while simultaneously launching the Fendi Home store. Curated a private exposition and gala at Villa Medici for select international press.',
-      fr: 'Coordination des défilés Fendi sur 3 villes, gestion de la logistique catwalk, listes VIP et accréditations média. Direction à distance du défilé Fendi x Marc Jacobs à New York avec lancement simultané du Fendi Home store. Curation d\'une exposition privée et gala à la Villa Médicis pour la presse internationale.',
+      fr: 'Coordination des défilés Fendi dans 3 villes, gestion de la logistique catwalk, listes VIP et accréditations média. Direction à distance du défilé Fendi x Marc Jacobs à New York avec lancement simultané du Fendi Home store. Curation d\'une exposition privée et gala à la Villa Médicis pour la presse internationale.',
     },
     tags: ['Fashion Shows', 'Event Management', 'Logistics', 'PR'],
     link: null,
