@@ -12,6 +12,10 @@ import { initI18n, onLangChange, toggleLang, t } from './i18n.js';
 import * as content from './data/content.js';
 import { initSkills } from './components/skills.js';
 import { initTiles } from './components/tiles.js';
+import {
+  initAnalytics, trackThemeSwitch, trackScrollDepth,
+  trackOutboundClick, setupHeroCanvasTracking,
+} from './utils/analytics.js';
 import { renderAboutExpanded } from './components/about.js';
 import { renderExperienceExpanded, renderExpPreview } from './components/experience.js';
 import { renderProjectsExpanded, renderProjectsPreview } from './components/projects.js';
@@ -34,6 +38,7 @@ function initTheme() {
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     updateThemeUI(next);
+    trackThemeSwitch(next);
     // Re-render skills canvas with new colors
     initSkills();
     setTimeout(() => { themeToggling = false; }, 600);
@@ -48,6 +53,7 @@ function updateThemeUI(theme) {
 }
 
 function init() {
+  initAnalytics();
   initI18n();
   initTheme();
 
@@ -85,6 +91,7 @@ function init() {
   if (bgCanvas) {
     const attractor = new LightFragmentation(bgCanvas);
     attractor.init();
+    setupHeroCanvasTracking(bgCanvas);
 
     document.addEventListener('mousemove', (e) => {
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -92,6 +99,28 @@ function init() {
       attractor.setMousePosition(nx, ny);
     });
   }
+
+  // Scroll depth tracking
+  const scrollMilestones = new Set();
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const pct = Math.round((window.scrollY / docHeight) * 100);
+    [25, 50, 75, 100].forEach(m => {
+      if (pct >= m && !scrollMilestones.has(m)) {
+        scrollMilestones.add(m);
+        trackScrollDepth(m);
+      }
+    });
+  }, { passive: true });
+
+  // Outbound link tracking (delegated)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (link && link.hostname !== window.location.hostname) {
+      trackOutboundClick(link.href);
+    }
+  });
 
   updateI18n();
 }

@@ -5,11 +5,14 @@
 // ============================================================
 
 import gsap from 'gsap';
+import { trackTileOpen, trackTileClose, trackTileScrollDepth } from '../utils/analytics.js';
 
 let currentExpanded = null;
 let currentBackdrop = null;
 let currentTileEl = null;
 let expandTimeline = null;
+let currentTileKey = null;
+let tileOpenedAt = 0;
 
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,13 +41,16 @@ export function initTiles(expandedContentRenderers) {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && currentExpanded) {
-      closeTile();
+      closeTile('escape');
     }
   });
 }
 
 function expandTile(tileEl, key, renderContent) {
   if (expandTimeline?.isActive() || currentExpanded) return;
+  currentTileKey = key;
+  tileOpenedAt = performance.now();
+  trackTileOpen(key);
 
   const rect = tileEl.getBoundingClientRect();
   currentTileEl = tileEl;
@@ -61,7 +67,7 @@ function expandTile(tileEl, key, renderContent) {
   // Create backdrop
   const backdrop = document.createElement('div');
   backdrop.className = 'tile-backdrop';
-  backdrop.addEventListener('click', closeTile);
+  backdrop.addEventListener('click', () => closeTile('backdrop'));
   document.body.appendChild(backdrop);
   currentBackdrop = backdrop;
 
@@ -78,7 +84,7 @@ function expandTile(tileEl, key, renderContent) {
   closeBtn.className = 'tile-expanded-close';
   closeBtn.textContent = '\u2715 ESC';
   closeBtn.setAttribute('aria-label', 'Close expanded view');
-  closeBtn.addEventListener('click', closeTile);
+  closeBtn.addEventListener('click', () => closeTile('button'));
   gsap.set(closeBtn, { opacity: 0, x: 20 });
 
   // Content container (hidden initially)
@@ -95,6 +101,20 @@ function expandTile(tileEl, key, renderContent) {
       overlay._onUnmount = result.onUnmount;
     }
   }
+
+  // Track scroll depth within expanded tile
+  const scrollMilestones = new Set();
+  inner.addEventListener('scroll', () => {
+    const scrollHeight = inner.scrollHeight - inner.clientHeight;
+    if (scrollHeight <= 0) return;
+    const pct = Math.round((inner.scrollTop / scrollHeight) * 100);
+    [25, 50, 75, 100].forEach(m => {
+      if (pct >= m && !scrollMilestones.has(m)) {
+        scrollMilestones.add(m);
+        trackTileScrollDepth(key, m);
+      }
+    });
+  }, { passive: true });
 
   overlay.appendChild(closeBtn);
   overlay.appendChild(inner);
@@ -186,8 +206,13 @@ function expandTile(tileEl, key, renderContent) {
   }, 0.5 * dur);
 }
 
-function closeTile() {
+function closeTile(method = 'unknown') {
   if (!currentExpanded || expandTimeline?.isActive()) return;
+
+  if (currentTileKey) {
+    const duration = performance.now() - tileOpenedAt;
+    trackTileClose(currentTileKey, method, duration);
+  }
 
   const overlay = currentExpanded;
   const backdrop = currentBackdrop;
@@ -216,6 +241,7 @@ function closeTile() {
       currentExpanded = null;
       currentBackdrop = null;
       expandTimeline = null;
+      currentTileKey = null;
 
       if (sourceTile) {
         sourceTile.setAttribute('aria-expanded', 'false');
