@@ -126,6 +126,6 @@ export const epitechTechStack = {
     { name: { en: 'Concurrent Programming', fr: 'Programmation Concurrente' }, id: 'concurrent', count: 2 },
     { name: { en: 'Low-Level / Assembly', fr: 'Bas Niveau / Assembleur' }, id: 'lowlevel', count: 1 },
   ],
-  totalProjects: 130,
+  totalProjects: 135,
   totalYears: 5,
 };
