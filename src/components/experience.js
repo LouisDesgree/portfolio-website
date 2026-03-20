@@ -5,7 +5,7 @@ export function renderExpPreview() {
   const preview = document.getElementById('exp-preview');
   const footer = document.getElementById('exp-footer');
   if (!preview) return;
-  const top3 = experiences.slice(0, 3);
+  const top3 = experiences.slice(0, 2);
   preview.innerHTML = top3.map(exp =>
     `<div class="exp-preview-item">
       <div class="exp-preview-role">${t(exp.role)}</div>
