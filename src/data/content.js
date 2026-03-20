@@ -339,6 +339,18 @@ export const projects = [
     context: { en: 'Havas SA · Group Finance', fr: 'Havas SA · Finance Groupe' },
   },
   {
+    id: 'security-plan',
+    title:  { en: 'Infrastructure Security Plan', fr: 'Plan de Sécurité Infrastructure' },
+    desc:   {
+      en: 'Designed a full infrastructure security plan for a multi-site organization. Identified critical functions (database access, email, mobile VPN), mapped the baseline network topology, performed threat analysis across physical, network, and application layers, and defined security controls including firewall rules, IDS deployment, encryption policies, and incident response procedures.',
+      fr: 'Conception d\'un plan de sécurité infrastructure complet pour une organisation multi-sites. Identification des fonctions critiques (accès base de données, email, VPN mobile), cartographie de la topologie réseau de base, analyse des menaces sur les couches physique, réseau et application, et définition des contrôles de sécurité incluant règles firewall, déploiement IDS, politiques de chiffrement et procédures de réponse aux incidents.',
+    },
+    tags: ['Threat Analysis', 'Network Security', 'IDS', 'VPN', 'Firewall', 'Risk Assessment'],
+    link: null,
+    relatedSkills: ['cybersec', 'defensive', 'networking', 'linux'],
+    context: { en: 'UCLA Cybersecurity Final', fr: 'Projet Final Cybersécurité UCLA' },
+  },
+  {
     id: 'portfolio',
     title:  { en: 'This Portfolio', fr: 'Ce Portfolio' },
     desc:   {
@@ -383,15 +395,15 @@ export const education = [
     degree: { en: 'Certificate in Data Science with Concentration in Cybersecurity', fr: 'Certificat en Data Science avec spécialisation en Cybersécurité' },
     years:  { en: 'Oct 2024 - June 2025', fr: 'Oct 2024 - Juin 2025' },
     detail: {
-      en: '9-course accelerated program covering the full data science and cybersecurity pipeline, from data ingestion and EDA through ML modeling to offensive and defensive security labs. Graduated top of class.',
-      fr: 'Programme accéléré de 9 cours couvrant le pipeline complet data science et cybersécurité, de l\'ingestion de données et EDA à la modélisation ML jusqu\'aux labs sécurité offensive et défensive. Major de promotion.',
+      en: '9-course program covering the full data science and cybersecurity pipeline, from data ingestion and EDA through ML modeling to offensive and defensive security labs. Graduated top of class.',
+      fr: 'Programme de 9 cours couvrant le pipeline complet data science et cybersécurité, de l\'ingestion de données et EDA à la modélisation ML jusqu\'aux labs sécurité offensive et défensive. Major de promotion.',
     },
     techStack: ['Python', 'Pandas', 'NumPy', 'scikit-learn', 'NeuralProphet', 'statsmodels', 'Bokeh'],
     highlight: {
       gpa: '3.97',
       distinction: { en: 'Earned with Distinction', fr: 'Obtenu avec Distinction' },
       achievement: { en: 'Top of class', fr: 'Major de promotion' },
-      featuredProject: 'finance-analysis',
+      featuredProjects: ['finance-analysis', 'security-plan'],
       streams: [
         {
           name: { en: 'Data Science', fr: 'Data Science' },
@@ -424,6 +436,206 @@ export const education = [
     years:  '',
   },
 ];
+
+export const newsAI = {
+  modes: {
+    aidev: {
+      label: { en: 'AI DEVELOPMENT', fr: 'DÉV. IA' },
+      news: [
+        {
+          source: 'Anthropic Engineering',
+          link: 'https://www.anthropic.com/engineering',
+          title: { en: 'Agent Reliability in Production: Tool-Calling Failure Rates Hit 15-30%', fr: 'Fiabilité des agents en production : taux d\'échec des appels d\'outils entre 15 et 30%' },
+          summary: { en: 'Most agent demos cherry-pick happy paths. In production, multi-step tool chains fail 15-30% of the time. The bottleneck is not model intelligence, it is error recovery. Teams shipping agents today rely on checkpoint-replay loops and human-in-the-loop fallbacks, not the fully autonomous pipelines shown at conferences. Expect 6-12 months of reliability engineering between a working demo and a production system.', fr: 'La plupart des démos d\'agents sélectionnent les scénarios idéaux. En production, les chaînes d\'outils multi-étapes échouent 15-30% du temps. Le goulot n\'est pas l\'intelligence du modèle, c\'est la récupération d\'erreurs. Les équipes qui déploient des agents s\'appuient sur des boucles checkpoint-replay et des fallbacks humains, pas les pipelines autonomes montrés en conférence. Comptez 6-12 mois d\'ingénierie de fiabilité entre une démo fonctionnelle et un système de production.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'Latent Space (podcast)',
+          link: 'https://www.latent.space',
+          title: { en: 'Fine-Tuning Is Losing to RAG + Prompt Engineering', fr: 'Le fine-tuning perd face au RAG + prompt engineering' },
+          summary: { en: 'Fine-tuning costs $2-50K per iteration, takes weeks, and locks you to a model version. RAG with well-structured prompts reaches 90%+ of fine-tuned performance at 1/100th the cost. The last 10% only matters for domain-specific jargon or regulatory compliance. For 95% of production use cases, a chunked vector store with few-shot examples in context outperforms any LoRA adapter.', fr: 'Le fine-tuning coûte 2-50K$ par itération, prend des semaines, et vous lie à une version de modèle. Le RAG avec des prompts bien structurés atteint 90%+ de la performance fine-tunée à 1/100ème du coût. Les 10% restants comptent uniquement pour le jargon spécifique ou la conformité réglementaire. Pour 95% des cas en production, un vector store chunké avec des few-shot examples en contexte surpasse n\'importe quel adaptateur LoRA.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'arXiv (2403.15841)',
+          link: 'https://arxiv.org/abs/2403.15841',
+          title: { en: 'Long Context Recall Drops Below 60% Past 200K Tokens', fr: 'Le rappel en contexte long chute sous 60% au-delà de 200K tokens' },
+          summary: { en: 'Needle-in-a-haystack benchmarks show recall drops below 60% past 200K tokens for most frontier models. Longer context does not mean better reasoning. It means higher latency, more hallucination on peripheral details, and 10x inference costs. Effective architectures use hierarchical summarization: compress older context, keep recent context raw. The real skill is deciding what to leave out.', fr: 'Les benchmarks needle-in-a-haystack montrent un rappel sous 60% au-delà de 200K tokens pour la plupart des modèles frontier. Plus de contexte ne signifie pas meilleur raisonnement. Cela signifie plus de latence, plus d\'hallucinations sur les détails périphériques et 10x les coûts d\'inférence. Les architectures efficaces utilisent la synthèse hiérarchique : compresser le contexte ancien, garder le contexte récent brut. La vraie compétence est de décider ce qu\'il faut exclure.' },
+          date: 'Feb 2026',
+        },
+        {
+          source: 'Radical Data Science',
+          link: 'https://radicaldatascience.wordpress.com/',
+          title: { en: 'What 81,000 People Actually Want From AI', fr: 'Ce que 81 000 personnes attendent vraiment de l\'IA' },
+          summary: { en: 'Anthropic\'s large-scale study reveals that people seek professional excellence and life improvements from AI, while worrying about unreliability and job displacement. The disconnect between what builders ship and what users want is striking. Most users care about accuracy and trust, not capability benchmarks. This matters for product decisions: reliability and predictability beat raw intelligence for adoption.', fr: 'L\'étude à grande échelle d\'Anthropic révèle que les gens cherchent l\'excellence professionnelle et l\'amélioration de leur vie avec l\'IA, tout en s\'inquiétant du manque de fiabilité et du remplacement des emplois. Le décalage entre ce que les builders livrent et ce que les utilisateurs veulent est frappant. La plupart des utilisateurs se soucient de la précision et de la confiance, pas des benchmarks de capacité. Cela compte pour les décisions produit : la fiabilité et la prévisibilité battent l\'intelligence brute pour l\'adoption.' },
+          date: 'Mar 2026',
+        },
+      ],
+      research: {
+        badge: { en: 'TECHNICAL BRIEF · MARCH 2026', fr: 'NOTE TECHNIQUE · MARS 2026' },
+        title: { en: 'Building Production AI Software: Architecture Decisions That Actually Matter', fr: 'Construire du logiciel IA en production : les décisions d\'architecture qui comptent vraiment' },
+        abstract: { en: 'After reviewing 40+ production AI systems across startups and enterprises, the pattern is clear: teams that ship fast make three correct bets early. Model routing, eval infrastructure, and graceful degradation. Everything else is noise. These are the non-obvious architecture choices that separate systems that work from systems that demo well.', fr: 'Après avoir étudié 40+ systèmes IA en production dans des startups et grandes entreprises, le pattern est clair : les équipes qui livrent vite font trois bons paris tôt. Le routage de modèles, l\'infrastructure d\'évaluation et la dégradation gracieuse. Tout le reste est du bruit. Voici les choix d\'architecture non-évidents qui séparent les systèmes qui fonctionnent de ceux qui font de belles démos.' },
+        sections: [
+          {
+            title: { en: 'Model Layer: Route, Don\'t Pick', fr: 'Couche Modèle : Router, pas Choisir' },
+            items: [
+              { name: 'Model Router', desc: { en: 'Use Haiku for classification/routing (<$0.001/call), Sonnet for generation, Opus for complex reasoning. A smart router cuts costs 70% compared to always using the best model.', fr: 'Haiku pour classification/routage (<0.001$/appel), Sonnet pour la génération, Opus pour le raisonnement complexe. Un routeur intelligent réduit les coûts de 70% par rapport à toujours utiliser le meilleur modèle.' } },
+              { name: 'Eval-Driven Dev', desc: { en: 'Write evals before writing prompts. 50 golden examples beat 500 hours of prompt tweaking. Measure accuracy, latency p95, cost/query and hallucination rate.', fr: 'Écrire les évals avant les prompts. 50 exemples dorés battent 500 heures de tuning de prompts. Mesurer précision, latence p95, coût/requête et taux d\'hallucination.' } },
+              { name: 'Structured Output', desc: { en: 'Always use JSON mode or tool_use for outputs consumed by code. Free-text to regex parsing is the #1 source of production bugs in LLM apps.', fr: 'Toujours utiliser le mode JSON ou tool_use pour les sorties consommées par du code. Le parsing texte libre vers regex est la source #1 de bugs production dans les apps LLM.' } },
+            ],
+          },
+          {
+            title: { en: 'Data Layer: Chunking Is the Whole Game', fr: 'Couche Données : Le Chunking, c\'est Tout' },
+            items: [
+              { name: 'Semantic Chunking', desc: { en: 'Fixed-size chunks (512 tokens) lose context at boundaries. Use recursive splitting with overlap plus parent-document retrieval. 2x recall improvement over naive chunking.', fr: 'Les chunks de taille fixe (512 tokens) perdent le contexte aux frontières. Utiliser le découpage récursif avec chevauchement plus récupération du document parent. 2x d\'amélioration du rappel vs. chunking naïf.' } },
+              { name: 'Hybrid Search', desc: { en: 'Vector similarity alone misses exact matches (names, IDs, dates). BM25 plus vector reranking catches what embeddings miss. Use Cohere Rerank or a cross-encoder as final stage.', fr: 'La similarité vectorielle seule manque les correspondances exactes (noms, IDs, dates). BM25 plus reranking vectoriel attrape ce que les embeddings manquent. Cohere Rerank ou cross-encoder en étape finale.' } },
+              { name: 'Cache Everything', desc: { en: 'Semantic caching (same question, slightly different wording, cached response) cuts costs 40-60% in production. Add exact match cache for deterministic queries.', fr: 'Le cache sémantique (même question, formulation légèrement différente, réponse cachée) réduit les coûts de 40-60% en production. Ajouter du cache exact match pour les requêtes déterministes.' } },
+            ],
+          },
+          {
+            title: { en: 'Reliability: Plan for Failure', fr: 'Fiabilité : Prévoir l\'Échec' },
+            items: [
+              { name: 'Graceful Degradation', desc: { en: 'When Opus is down, fall back to Sonnet. When the vector DB is slow, serve from cache. Every AI call needs a non-AI fallback, even if it just returns "I can\'t help with that right now."', fr: 'Quand Opus est en panne, basculer sur Sonnet. Quand la base vectorielle est lente, servir depuis le cache. Chaque appel IA a besoin d\'un fallback non-IA, même si ça retourne juste "Je ne peux pas aider avec ça maintenant."' } },
+              { name: 'Observability', desc: { en: 'Log every prompt/completion pair with latency, token count and cost. You cannot debug LLM systems without traces. Use Langfuse or Braintrust, not printf.', fr: 'Logger chaque paire prompt/complétion avec latence, nombre de tokens et coût. Impossible de débugger les systèmes LLM sans traces. Utiliser Langfuse ou Braintrust, pas printf.' } },
+              { name: 'Rate Limiting', desc: { en: 'A single runaway agent loop can burn $10K in minutes. Hard-cap token budgets per request, per user, per hour. This is not optional, it is day-one infrastructure.', fr: 'Une seule boucle d\'agent emballée peut brûler 10K$ en minutes. Plafonds durs de budget tokens par requête, par utilisateur, par heure. Ce n\'est pas optionnel, c\'est l\'infrastructure du jour un.' } },
+            ],
+          },
+        ],
+        tags: ['Architecture', 'Eval-Driven', 'RAG', 'Model Routing', 'Reliability', 'Cost Optimization'],
+      },
+    },
+    finance: {
+      label: { en: 'FINANCIAL AI', fr: 'IA FINANCE' },
+      news: [
+        {
+          source: 'Journal of Financial Economics',
+          link: 'https://www.sciencedirect.com/journal/journal-of-financial-economics',
+          title: { en: 'Most Alpha Comes From Data, Not Models', fr: 'La plupart de l\'alpha vient des données, pas des modèles' },
+          summary: { en: 'Renaissance Technologies does not win because of better neural nets. They win because they have 40 years of cleaned, deduplicated, tick-level data nobody else has. In backtests, replacing a sophisticated transformer with XGBoost on the same alternative data features only drops Sharpe ratio by 0.15. But removing satellite shipping data or credit card transaction signals drops it by 0.8+. The model is 10% of alpha. The data pipeline is 90%.', fr: 'Renaissance Technologies ne gagne pas grâce à de meilleurs réseaux de neurones. Ils gagnent parce qu\'ils ont 40 ans de données nettoyées, dédupliquées, tick-level que personne d\'autre n\'a. En backtest, remplacer un transformer sophistiqué par XGBoost sur les mêmes features de données alternatives ne baisse le Sharpe que de 0.15. Mais retirer les données satellite de shipping ou les signaux de transactions CB le baisse de 0.8+. Le modèle c\'est 10% de l\'alpha. Le pipeline de données c\'est 90%.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'arXiv (2402.08290)',
+          link: 'https://arxiv.org/abs/2402.08290',
+          title: { en: 'LLMs Fail at Price Prediction, But Excel at Sentiment Extraction', fr: 'Les LLMs échouent en prédiction de prix, mais excellent en extraction de sentiment' },
+          summary: { en: 'LLMs cannot predict next-day returns. Markets are adversarial: any predictable pattern gets arbitraged away in milliseconds by HFTs. But LLMs are exceptional at three things that move portfolios. Extracting sentiment shifts from 10-K filings 10x faster than analysts. Detecting management tone changes across earnings call transcripts. And synthesizing macro narratives from 500+ news sources into actionable sector rotations. Use them for information edges, not price edges.', fr: 'Les LLMs ne peuvent pas prédire les rendements à J+1. Les marchés sont adversariaux : tout pattern prévisible est arbitré en millisecondes par les HFT. Mais les LLMs excellent dans trois choses qui bougent les portefeuilles. Extraire les changements de sentiment des rapports 10-K 10x plus vite que les analystes. Détecter les changements de ton du management dans les transcriptions d\'earnings calls. Et synthétiser les narratifs macro de 500+ sources en rotations sectorielles actionnables. Les utiliser pour des avantages informationnels, pas des avantages de prix.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'Journal of Portfolio Management',
+          link: 'https://jpm.pm-research.com',
+          title: { en: '92% of Backtested Strategies Fail in Live Trading', fr: '92% des stratégies backtestées échouent en trading live' },
+          summary: { en: 'A study of 3,000 backtested strategies on Quantopian showed that 92% with Sharpe >2.0 in backtests achieved Sharpe <0.5 in paper trading. The culprits: look-ahead bias from data vendors who retroactively adjust for splits/delistings, survivorship bias from S&P 500 reconstitutions (testing on today\'s members ignores the 200+ companies that were removed), and transaction cost underestimation. If your backtest Sharpe exceeds 1.5, assume it is wrong until proven in live markets for 6+ months.', fr: 'Une étude de 3000 stratégies backtestées sur Quantopian montre que 92% avec Sharpe >2.0 en backtest atteignent Sharpe <0.5 en paper trading. Les coupables : biais d\'anticipation des fournisseurs de données qui ajustent rétroactivement les splits/retraits, biais de survivant des reconstitutions S&P 500 (tester sur les membres actuels ignore les 200+ entreprises retirées), et sous-estimation des coûts de transaction. Si votre Sharpe en backtest dépasse 1.5, supposez qu\'il est faux tant que non prouvé en marchés live pendant 6+ mois.' },
+          date: 'Feb 2026',
+        },
+        {
+          source: 'Vanguard Research',
+          link: 'https://corporate.vanguard.com/content/corporatesite/us/en/corp/articles/research.html',
+          title: { en: 'AI for Tax Optimization Beats 97% of Active Managers', fr: 'L\'IA pour l\'optimisation fiscale bat 97% des gérants actifs' },
+          summary: { en: 'The highest-ROI use of AI in personal finance is not alpha generation. It is risk management and tax optimization. An AI system that rebalances across 5 accounts, harvests tax losses, optimizes asset location (bonds in tax-deferred, growth in Roth), and prevents emotional selling during drawdowns adds 1.5-2.5% annually in net returns. That beats 97% of active managers. Build the boring system first.', fr: 'Le meilleur usage de l\'IA en finance personnelle n\'est pas la génération d\'alpha. C\'est la gestion des risques et l\'optimisation fiscale. Un système IA qui rééquilibre entre 5 comptes, récolte les pertes fiscales, optimise la localisation d\'actifs (obligations en compte différé, croissance en Roth) et empêche la vente émotionnelle pendant les drawdowns ajoute 1.5-2.5% annuellement en rendements nets. Ça bat 97% des gérants actifs. Construire le système ennuyeux d\'abord.' },
+          date: 'Feb 2026',
+        },
+      ],
+      research: {
+        badge: { en: 'TECHNICAL BRIEF · MARCH 2026', fr: 'NOTE TECHNIQUE · MARS 2026' },
+        title: { en: 'Building a Real AI Trading System: What Works and What Doesn\'t', fr: 'Construire un vrai système de trading IA : ce qui marche et ce qui ne marche pas' },
+        abstract: { en: 'After building financial prediction systems at UCLA and working in finance consolidation at Havas, the landscape is clear: 90% of "AI trading" content online is marketing, not engineering. Here is what actually works for a solo developer or small team building a systematic approach to markets, with honest assessments of what is achievable.', fr: 'Après avoir construit des systèmes de prédiction financière à UCLA et travaillé en consolidation financière chez Havas, le paysage est clair : 90% du contenu "trading IA" en ligne est du marketing, pas de l\'ingénierie. Voici ce qui fonctionne vraiment pour un développeur solo ou une petite équipe construisant une approche systématique des marchés, avec des évaluations honnêtes de ce qui est atteignable.' },
+        sections: [
+          {
+            title: { en: 'Data: Your Actual Edge', fr: 'Données : Votre Vrai Avantage' },
+            items: [
+              { name: 'Polygon.io + SEC EDGAR', desc: { en: 'Polygon for tick data ($30/mo), EDGAR for free 10-K/10-Q filings. Skip Yahoo Finance, their adjusted close is retroactively modified and introduces look-ahead bias.', fr: 'Polygon pour les données tick (30$/mo), EDGAR pour les rapports 10-K/10-Q gratuits. Éviter Yahoo Finance, leur close ajusté est modifié rétroactivement et introduit un biais d\'anticipation.' } },
+              { name: 'FinBERT Sentiment', desc: { en: 'Pre-trained on financial text, outperforms general LLMs for earnings sentiment by 18% F1. Runs locally on a $7/mo GPU. The real alpha: track sentiment changes across consecutive filings, not absolute sentiment.', fr: 'Pré-entraîné sur du texte financier, surpasse les LLMs généraux de 18% F1 pour le sentiment des earnings. Tourne localement sur un GPU à 7$/mo. Le vrai alpha : suivre les changements de sentiment entre rapports consécutifs, pas le sentiment absolu.' } },
+              { name: 'Feature Store', desc: { en: 'Most quant failures come from inconsistent features between backtest and live. Use Feast or a simple DuckDB-based store. The point is one source of truth for all features, computed identically in backtest and prod.', fr: 'La plupart des échecs quant viennent de features inconsistantes entre backtest et live. Utiliser Feast ou un store simple basé sur DuckDB. Le but est une source de vérité unique pour toutes les features, calculée de manière identique en backtest et en prod.' } },
+            ],
+          },
+          {
+            title: { en: 'Models: Simpler Than You Think', fr: 'Modèles : Plus Simple Que Vous Ne Pensez' },
+            items: [
+              { name: 'XGBoost, Not Transformers', desc: { en: 'For tabular financial features (RSI, volume ratios, sector momentum), gradient-boosted trees beat deep learning. Faster to train, easier to debug, and less prone to overfitting on the small datasets typical in finance (<100K samples).', fr: 'Pour les features financières tabulaires (RSI, ratios de volume, momentum sectoriel), les arbres gradient-boosted battent le deep learning. Plus rapides à entraîner, plus faciles à débugger et moins sujets à l\'overfitting sur les petits datasets typiques en finance (<100K échantillons).' } },
+              { name: 'Ensemble + Disagreement', desc: { en: 'Train 5 models on overlapping but different feature sets. Only trade when 4/5 agree. The disagreement signal itself is valuable: high model disagreement means high uncertainty, so reduce position size. This trick alone improved our UCLA capstone Sharpe by 0.4.', fr: 'Entraîner 5 modèles sur des ensembles de features qui se chevauchent mais différents. Ne trader que quand 4/5 sont d\'accord. Le signal de désaccord lui-même a de la valeur : fort désaccord signifie forte incertitude, donc réduire la taille de position. Cette astuce seule a amélioré le Sharpe de notre capstone UCLA de 0.4.' } },
+              { name: 'Walk-Forward Validation', desc: { en: 'Never use random train/test splits on time-series data. Train on 2019-2022, validate on 2023, test on 2024. Retrain monthly with expanding window. If performance degrades >20% from validation, halt trading and investigate.', fr: 'Ne jamais utiliser de splits train/test aléatoires sur des données temporelles. Entraîner sur 2019-2022, valider sur 2023, tester sur 2024. Ré-entraîner mensuellement avec fenêtre croissante. Si la performance se dégrade >20% par rapport à la validation, stopper le trading et investiguer.' } },
+            ],
+          },
+          {
+            title: { en: 'Risk: Where Amateurs Die', fr: 'Risque : Là Où les Amateurs Meurent' },
+            items: [
+              { name: 'Kelly Criterion (Half)', desc: { en: 'The Kelly formula gives optimal bet sizing, but full Kelly has brutal drawdowns (50%+). Use half-Kelly: safer, only 25% lower long-term returns, and you actually survive the inevitable losing streaks.', fr: 'La formule de Kelly donne le sizing de pari optimal, mais le Kelly complet a des drawdowns brutaux (50%+). Utiliser le demi-Kelly : plus sûr, seulement 25% de rendements long-terme en moins, et vous survivez aux séries perdantes inévitables.' } },
+              { name: 'Correlation Monitoring', desc: { en: 'Most portfolio blowups happen when "uncorrelated" strategies suddenly correlate during stress (March 2020 crash, 2022 rate shock). Monitor rolling 30-day cross-strategy correlations daily. When corr > 0.6, reduce exposure by 50%. You are unknowingly making one big bet.', fr: 'La plupart des explosions de portefeuille surviennent quand des stratégies "non corrélées" corrèlent soudainement en période de stress (crash mars 2020, choc de taux 2022). Monitorer les corrélations croisées glissantes 30 jours. Quand corr > 0.6, réduire l\'exposition de 50%. Vous faites un seul gros pari sans le savoir.' } },
+              { name: 'Paper Trade 6 Months', desc: { en: 'Non-negotiable. Every system paper trades for 6 months before real capital. If you cannot wait 6 months, you are gambling, not investing. Use Alpaca\'s paper API, which simulates fills, slippage and partial orders.', fr: 'Non négociable. Chaque système doit tourner en paper trading 6 mois avant du vrai capital. Si vous ne pouvez pas attendre 6 mois, vous jouez, vous n\'investissez pas. Utiliser l\'API paper d\'Alpaca, qui simule les fills, le slippage et les ordres partiels.' } },
+            ],
+          },
+        ],
+        tags: ['Walk-Forward', 'Kelly Criterion', 'XGBoost', 'Sentiment NLP', 'Risk Parity', 'Survivorship Bias'],
+      },
+    },
+    politics: {
+      label: { en: 'POLITICS & MARKETS', fr: 'POLITIQUE & MARCHÉS' },
+      news: [
+        {
+          source: 'Reuters',
+          link: 'https://www.reuters.com/markets/',
+          title: { en: 'Trump Tariff Escalation Triggers 4.2% Nasdaq Selloff in Two Sessions', fr: 'L\'escalade tarifaire de Trump déclenche une chute de 4.2% du Nasdaq en deux séances' },
+          summary: { en: 'The White House announced a 25% tariff on all semiconductor imports from Taiwan and South Korea, effective April 2026. Markets priced in immediate supply chain disruption. TSMC dropped 8.3%, NVIDIA fell 6.1%, and Apple lost 4.7%. Bond yields inverted further as traders bet on a Fed rate cut to offset the growth shock. The VIX spiked to 28, highest since October 2023.', fr: 'La Maison Blanche a annoncé un tarif de 25% sur toutes les importations de semi-conducteurs de Taiwan et Corée du Sud, effectif avril 2026. Les marchés ont intégré une disruption immédiate de la supply chain. TSMC a chuté de 8.3%, NVIDIA de 6.1% et Apple de 4.7%. Les rendements obligataires se sont inversés davantage, les traders pariant sur une baisse des taux de la Fed pour compenser le choc de croissance. Le VIX a grimpé à 28, plus haut depuis octobre 2023.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'Financial Times',
+          link: 'https://www.ft.com/markets',
+          title: { en: 'EU Carbon Border Tax Reshapes European Equity Winners and Losers', fr: 'La taxe carbone aux frontières de l\'UE redessine les gagnants et perdants des actions européennes' },
+          summary: { en: 'The EU CBAM (Carbon Border Adjustment Mechanism) entered full enforcement in Q1 2026, taxing imports based on embedded carbon. European steelmakers rallied 12-18% as cheap imports from Turkey and India became uncompetitive. But European automakers fell 5-8% on higher input costs for aluminum and battery components. The policy created a clear rotation trade: long EU materials, short EU industrials with high imported content.', fr: 'Le CBAM de l\'UE (Mécanisme d\'Ajustement Carbone aux Frontières) est entré en pleine application au T1 2026, taxant les importations selon leur carbone incorporé. Les aciéristes européens ont progressé de 12-18% alors que les importations bon marché de Turquie et d\'Inde devenaient non compétitives. Mais les constructeurs auto européens ont chuté de 5-8% sur les coûts plus élevés d\'aluminium et composants de batteries. La politique a créé un trade de rotation clair : long matériaux EU, short industriels EU à fort contenu importé.' },
+          date: 'Mar 2026',
+        },
+        {
+          source: 'Bloomberg',
+          link: 'https://www.bloomberg.com/markets',
+          title: { en: 'China Tech Crackdown 3.0: Beijing Caps AI Model Exports, $47B Wiped', fr: 'Répression tech chinoise 3.0 : Pékin plafonne les exportations de modèles IA, 47 Mds$ effacés' },
+          summary: { en: 'China\'s State Council classified frontier AI models as strategic assets, banning exports of models above 100B parameters without government approval. Alibaba Cloud, Baidu, and Tencent lost a combined $47B in market cap in 48 hours. The move mirrors US chip export controls but targets software. Western AI companies with China revenue exposure (Microsoft Azure, Google Cloud) dropped 2-3%. The real impact is on open-source: Chinese labs can no longer release large models publicly.', fr: 'Le Conseil d\'État chinois a classé les modèles IA frontier comme actifs stratégiques, interdisant l\'export de modèles de plus de 100B paramètres sans autorisation gouvernementale. Alibaba Cloud, Baidu et Tencent ont perdu 47 Mds$ de capitalisation combinée en 48 heures. La mesure fait miroir aux contrôles d\'export de puces américains mais cible le logiciel. Les entreprises IA occidentales exposées à la Chine (Microsoft Azure, Google Cloud) ont reculé de 2-3%. Le vrai impact concerne l\'open-source : les labs chinois ne peuvent plus publier de grands modèles.' },
+          date: 'Feb 2026',
+        },
+        {
+          source: 'The Economist',
+          link: 'https://www.economist.com/finance-and-economics',
+          title: { en: 'Fed Independence Under Pressure: Markets Price Political Rate Cuts', fr: 'Indépendance de la Fed sous pression : les marchés anticipent des baisses de taux politiques' },
+          summary: { en: 'Treasury Secretary\'s public call for "emergency rate relief" broke decades of executive-Fed protocol. The 2-year yield dropped 18bps in hours as markets priced in two cuts before June. But the dollar weakened 2.1% against the euro and gold hit $2,940. The signal is clear: if the Fed bends to political pressure, expect dollar weakness and commodity strength. Historical precedent from the 1970s Burns-Nixon dynamic suggests inflation reacceleration follows within 12-18 months.', fr: 'L\'appel public du Secrétaire au Trésor pour un "allégement d\'urgence des taux" a brisé des décennies de protocole exécutif-Fed. Le rendement 2 ans a chuté de 18bps en quelques heures alors que les marchés intégraient deux baisses avant juin. Mais le dollar s\'est affaibli de 2.1% face à l\'euro et l\'or a atteint $2,940. Le signal est clair : si la Fed cède à la pression politique, attendre faiblesse du dollar et force des commodités. Le précédent historique de la dynamique Burns-Nixon des années 1970 suggère une réaccélération de l\'inflation dans les 12-18 mois.' },
+          date: 'Feb 2026',
+        },
+      ],
+      research: {
+        badge: { en: 'MARKET ANALYSIS · MARCH 2026', fr: 'ANALYSE DE MARCHÉ · MARS 2026' },
+        title: { en: 'How Geopolitics Is Repricing Global Markets Right Now', fr: 'Comment la géopolitique repriorise les marchés mondiaux en ce moment' },
+        abstract: { en: 'Three political forces are driving cross-asset repricing in 2026: US trade policy escalation, EU regulatory expansion, and China\'s tech sovereignty push. Each creates distinct winners and losers. Here is how to read the political signal and position accordingly.', fr: 'Trois forces politiques pilotent le repricing cross-asset en 2026 : l\'escalade de la politique commerciale US, l\'expansion réglementaire de l\'UE et la poussée de souveraineté tech chinoise. Chacune crée des gagnants et perdants distincts. Voici comment lire le signal politique et se positionner en conséquence.' },
+        sections: [
+          {
+            title: { en: 'US Tariffs: The Reshoring Trade', fr: 'Tarifs US : Le Trade de Relocalisation' },
+            items: [
+              { name: 'Long US Industrials', desc: { en: 'Companies with domestic manufacturing (Nucor, Caterpillar) benefit directly. Tariffs make imports 15-25% more expensive, creating a price umbrella for domestic producers.', fr: 'Les entreprises avec production domestique (Nucor, Caterpillar) en bénéficient directement. Les tarifs rendent les importations 15-25% plus chères, créant un parapluie de prix pour les producteurs nationaux.' } },
+              { name: 'Short Import-Heavy Tech', desc: { en: 'Apple, Dell and HP source 60-80% of components from Asia. Every tariff round compresses their margins. The hedge: long Texas Instruments and Intel, who gain from supply chain diversification.', fr: 'Apple, Dell et HP sourcent 60-80% des composants d\'Asie. Chaque tour tarifaire comprime leurs marges. La couverture : long Texas Instruments et Intel, qui profitent de la diversification supply chain.' } },
+              { name: 'Watch the Dollar', desc: { en: 'Tariffs are inflationary in the short term (higher import prices) but deflationary long-term (slower growth). The dollar usually strengthens first, then weakens. Timing the pivot is where the alpha is.', fr: 'Les tarifs sont inflationnistes à court terme (prix d\'importation plus élevés) mais déflationnistes à long terme (croissance plus lente). Le dollar se renforce généralement d\'abord, puis s\'affaiblit. Timer le pivot, c\'est là que l\'alpha se trouve.' } },
+            ],
+          },
+          {
+            title: { en: 'EU Regulation: Green Rotation', fr: 'Réglementation UE : Rotation Verte' },
+            items: [
+              { name: 'CBAM Winners', desc: { en: 'European steel (ArcelorMittal), cement (Holcim), and chemicals (BASF) gain protection from carbon-cheap imports. This is not ESG, it is trade protectionism dressed as climate policy. The trade works regardless of your views on carbon.', fr: 'L\'acier européen (ArcelorMittal), le ciment (Holcim) et la chimie (BASF) gagnent une protection contre les importations à carbone bon marché. Ce n\'est pas de l\'ESG, c\'est du protectionnisme commercial habillé en politique climatique. Le trade fonctionne quelle que soit votre opinion sur le carbone.' } },
+              { name: 'AI Act Compliance Cost', desc: { en: 'The EU AI Act adds $2-5M/year in compliance for high-risk AI deployments. This benefits large incumbents (SAP, Siemens) who can absorb costs, and kills startups who cannot. Long large-cap EU tech, short small-cap EU AI.', fr: 'L\'AI Act de l\'UE ajoute 2-5M$/an en coûts de conformité pour les déploiements IA à haut risque. Cela bénéficie aux grands incumbents (SAP, Siemens) qui absorbent les coûts, et tue les startups qui ne peuvent pas. Long large-cap tech EU, short small-cap IA EU.' } },
+              { name: 'MiCA Crypto Clarity', desc: { en: 'Markets in Crypto-Assets regulation gave EU-based exchanges legal certainty. Coinbase EU volumes up 340% since compliance. US crypto companies losing market share to regulated EU competitors. Geography matters more than technology now.', fr: 'La réglementation MiCA a donné une certitude juridique aux exchanges basés dans l\'UE. Les volumes Coinbase EU en hausse de 340% depuis la mise en conformité. Les entreprises crypto US perdent des parts de marché face aux concurrents EU régulés. La géographie compte plus que la technologie désormais.' } },
+            ],
+          },
+          {
+            title: { en: 'China Decoupling: The New Cold War Portfolio', fr: 'Découplage Chinois : Le Portefeuille de la Nouvelle Guerre Froide' },
+            items: [
+              { name: 'Dual Supply Chains', desc: { en: 'Companies building parallel supply chains (one for US/EU, one for China) are valued 15-20% higher than single-chain peers. Vietnam, India, and Mexico manufacturing ETFs have outperformed China ETFs by 30%+ over 12 months.', fr: 'Les entreprises construisant des supply chains parallèles (une pour US/UE, une pour la Chine) sont valorisées 15-20% de plus que leurs pairs mono-chaîne. Les ETF manufacturiers Vietnam, Inde et Mexique surperforment les ETF Chine de 30%+ sur 12 mois.' } },
+              { name: 'Defense Budgets Rising', desc: { en: 'NATO defense spending hit 2.5% of GDP across members for the first time. European defense stocks (Rheinmetall, Leonardo, BAE Systems) up 45-80% in 12 months. This is a structural multi-year trend, not a trade. Budget commitments are locked for 5-10 years.', fr: 'Les dépenses de défense OTAN ont atteint 2.5% du PIB en moyenne pour la première fois. Les actions de défense européennes (Rheinmetall, Leonardo, BAE Systems) en hausse de 45-80% sur 12 mois. C\'est une tendance structurelle pluriannuelle, pas un trade. Les engagements budgétaires sont verrouillés pour 5-10 ans.' } },
+              { name: 'Rare Earth Risk', desc: { en: 'China controls 70% of rare earth processing. Any export restriction (already tested in 2023) sends EV and wind turbine stocks into freefall. The hedge: long MP Materials (US rare earth), long Lynas (Australia). Insurance positions, not directional bets.', fr: 'La Chine contrôle 70% du traitement des terres rares. Toute restriction d\'export (déjà testée en 2023) envoie les actions VE et éoliennes en chute libre. La couverture : long MP Materials (terres rares US), long Lynas (Australie). Des positions d\'assurance, pas des paris directionnels.' } },
+            ],
+          },
+        ],
+        tags: ['Tariffs', 'CBAM', 'Reshoring', 'Defense', 'Rare Earth', 'Decoupling', 'Fed Policy'],
+      },
+    },
+  },
+};
 
 export const contact = {
   email:       'l.desgree@gmail.com',

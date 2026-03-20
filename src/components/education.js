@@ -16,10 +16,6 @@ export function renderEduPreview() {
       <div class="edu-preview-degree">${ucla ? t(ucla.degree) : ''}</div>
     </div>
     <div class="edu-preview-highlights">
-      <span class="edu-preview-gpa">${ucla?.highlight ? `GPA ${ucla.highlight.gpa}` : ''}</span>
-      <span class="exp-preview-dot">&middot;</span>
-      <span>${ucla?.highlight ? t(ucla.highlight.distinction) : ''}</span>
-      <span class="exp-preview-dot">&middot;</span>
       <span>2021 - 2026</span>
     </div>
   `;
@@ -39,8 +35,9 @@ export function renderEducationExpanded() {
       if (edu.detail) html += `<p class="edu-detail">${t(edu.detail)}</p>`;
       if (edu.highlight) {
         const h = edu.highlight;
-        if (h.featuredProject) {
-          const proj = projects.find(p => p.id === h.featuredProject);
+        const fpIds = h.featuredProjects || (h.featuredProject ? [h.featuredProject] : []);
+        fpIds.forEach(fpId => {
+          const proj = projects.find(p => p.id === fpId);
           if (proj) {
             html += `<div class="edu-featured-project">`;
             html += `<div class="edu-featured-label">${getLang() === 'fr' ? 'Projet phare' : 'Featured project'}</div>`;
@@ -49,7 +46,7 @@ export function renderEducationExpanded() {
             html += `<div class="edu-featured-tags">${proj.tags.map(tag => `<span class="edu-project-tag">${tag}</span>`).join('')}</div>`;
             html += `</div>`;
           }
-        }
+        });
         html += `<div class="edu-highlight-summary">GPA ${h.gpa} \u00b7 ${t(h.distinction)} \u00b7 ${t(h.achievement)}</div>`;
       }
       html += `</div>`;

@@ -1,13 +1,18 @@
 // ============================================================
-// Tile expand/collapse system
-// Click a tile -> backdrop overlay + fullscreen overlay with content
-// Escape or X or backdrop click -> returns to dashboard
+// Tile expand/collapse system — GSAP-powered
+// Click a tile -> orchestrated morph to fullscreen with depth
+// Escape or X or backdrop click -> choreographed reverse
 // ============================================================
+
+import gsap from 'gsap';
 
 let currentExpanded = null;
 let currentBackdrop = null;
 let currentTileEl = null;
-let isAnimating = false;
+let expandTimeline = null;
+
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function initTiles(expandedContentRenderers) {
   const tiles = document.querySelectorAll('[data-expand]');
@@ -20,7 +25,6 @@ export function initTiles(expandedContentRenderers) {
       }
     });
 
-    // Keyboard accessibility: Enter or Space triggers expand
     tile.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -32,7 +36,6 @@ export function initTiles(expandedContentRenderers) {
     });
   });
 
-  // Escape key closes
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && currentExpanded) {
       closeTile();
@@ -41,29 +44,28 @@ export function initTiles(expandedContentRenderers) {
 }
 
 function expandTile(tileEl, key, renderContent) {
-  if (currentExpanded || isAnimating) return;
-  isAnimating = true;
+  if (expandTimeline?.isActive() || currentExpanded) return;
 
   const rect = tileEl.getBoundingClientRect();
-
-  // Track which tile opened the overlay
   currentTileEl = tileEl;
   tileEl.setAttribute('aria-expanded', 'true');
-  tileEl.classList.add('tile--expanding');
 
-  // Create backdrop overlay
+  const isMobile = window.innerWidth <= 768;
+  const dur = prefersReducedMotion() ? 0.01 : 1;
+
+  // Collect other tiles for depth effect
+  const otherTiles = gsap.utils.toArray('.tile').filter(
+    t => t !== tileEl && !t.classList.contains('tile--name')
+  );
+
+  // Create backdrop
   const backdrop = document.createElement('div');
   backdrop.className = 'tile-backdrop';
   backdrop.addEventListener('click', closeTile);
   document.body.appendChild(backdrop);
   currentBackdrop = backdrop;
 
-  // Trigger backdrop fade-in
-  requestAnimationFrame(() => {
-    backdrop.classList.add('visible');
-  });
-
-  // Create overlay
+  // Create overlay at tile position
   const overlay = document.createElement('div');
   overlay.className = 'tile-expanded';
   overlay.style.top = rect.top + 'px';
@@ -71,16 +73,19 @@ function expandTile(tileEl, key, renderContent) {
   overlay.style.width = rect.width + 'px';
   overlay.style.height = rect.height + 'px';
 
-  // Close button
+  // Close button (hidden initially)
   const closeBtn = document.createElement('button');
   closeBtn.className = 'tile-expanded-close';
   closeBtn.textContent = '\u2715 ESC';
   closeBtn.setAttribute('aria-label', 'Close expanded view');
   closeBtn.addEventListener('click', closeTile);
+  gsap.set(closeBtn, { opacity: 0, x: 20 });
 
-  // Content container
+  // Content container (hidden initially)
   const inner = document.createElement('div');
   inner.className = 'tile-expanded-inner';
+  gsap.set(inner, { opacity: 0 });
+
   const result = renderContent();
   if (typeof result === 'string') {
     inner.innerHTML = result;
@@ -89,19 +94,14 @@ function expandTile(tileEl, key, renderContent) {
     if (result.onUnmount) {
       overlay._onUnmount = result.onUnmount;
     }
-    if (result.onMount) {
-      // Schedule mount callback after DOM insertion
-      requestAnimationFrame(() => result.onMount(inner));
-    }
   }
 
   overlay.appendChild(closeBtn);
   overlay.appendChild(inner);
   document.body.appendChild(overlay);
-
   currentExpanded = overlay;
 
-  // Simple focus trap: keep focus within the expanded overlay
+  // Focus trap
   overlay.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
       const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
@@ -122,48 +122,223 @@ function expandTile(tileEl, key, renderContent) {
     }
   });
 
-  // Animate to full screen
-  requestAnimationFrame(() => {
-    overlay.classList.add('full');
-    // Focus close button after expand animation completes
-    setTimeout(() => {
+  // === GSAP EXPAND TIMELINE ===
+  expandTimeline = gsap.timeline({
+    onComplete() {
       closeBtn.focus();
-      isAnimating = false;
-      tileEl.classList.remove('tile--expanding');
-    }, 500);
+      // Fire onMount callback after animation settles
+      if (typeof result !== 'string' && result.onMount) {
+        result.onMount(inner);
+      }
+    },
   });
+
+  // Phase 1: Departure — other tiles push back
+  const depthProps = isMobile
+    ? { scale: 0.96, opacity: 0.3, duration: 0.3 * dur, stagger: 0.015, ease: 'power2.inOut' }
+    : { scale: 0.95, opacity: 0.4, filter: 'blur(3px)', duration: 0.35 * dur, stagger: 0.02, ease: 'power2.inOut' };
+
+  expandTimeline.to(otherTiles, depthProps, 0);
+
+  // Source tile fades out
+  expandTimeline.to(tileEl, {
+    opacity: 0,
+    scale: 0.97,
+    duration: 0.2 * dur,
+    ease: 'power2.in',
+  }, 0);
+
+  // Backdrop fades in
+  expandTimeline.to(backdrop, {
+    opacity: 1,
+    duration: 0.4 * dur,
+    ease: 'power2.out',
+  }, 0.1 * dur);
+
+  // Phase 2: Morph overlay to fullscreen
+  expandTimeline.to(overlay, {
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100dvh',
+    borderRadius: 0,
+    duration: 0.5 * dur,
+    ease: 'power3.out',
+  }, 0.12 * dur);
+
+  // Phase 3: Content entrance
+  expandTimeline.to(closeBtn, {
+    opacity: 1,
+    x: 0,
+    duration: 0.3 * dur,
+    ease: 'power2.out',
+  }, 0.5 * dur);
+
+  // Reveal inner container
+  expandTimeline.to(inner, {
+    opacity: 1,
+    duration: 0.15 * dur,
+  }, 0.45 * dur);
+
+  // Stagger content children
+  expandTimeline.add(() => {
+    animateContentEntrance(inner, overlay, dur, isMobile);
+  }, 0.5 * dur);
 }
 
 function closeTile() {
-  if (!currentExpanded || isAnimating) return;
-  isAnimating = true;
+  if (!currentExpanded || expandTimeline?.isActive()) return;
+
   const overlay = currentExpanded;
   const backdrop = currentBackdrop;
   const sourceTile = currentTileEl;
+  const inner = overlay.querySelector('.tile-expanded-inner');
+  const closeBtn = overlay.querySelector('.tile-expanded-close');
 
-  // Run cleanup callback if set
+  // Cleanup callback
   if (overlay._onUnmount) overlay._onUnmount();
+  if (overlay._scrollObserver) overlay._scrollObserver.disconnect();
 
-  overlay.classList.remove('full');
-  if (backdrop) backdrop.classList.remove('visible');
+  // Get source tile rect for morph-back
+  const rect = sourceTile ? sourceTile.getBoundingClientRect() : null;
 
-  // Update ARIA on source tile
-  if (sourceTile) {
-    sourceTile.setAttribute('aria-expanded', 'false');
+  const otherTiles = gsap.utils.toArray('.tile').filter(
+    t => t !== sourceTile && !t.classList.contains('tile--name')
+  );
+
+  const isMobile = window.innerWidth <= 768;
+  const dur = prefersReducedMotion() ? 0.01 : 1;
+
+  expandTimeline = gsap.timeline({
+    onComplete() {
+      overlay.remove();
+      if (backdrop) backdrop.remove();
+      currentExpanded = null;
+      currentBackdrop = null;
+      expandTimeline = null;
+
+      if (sourceTile) {
+        sourceTile.setAttribute('aria-expanded', 'false');
+        sourceTile.focus();
+        currentTileEl = null;
+      }
+    },
+  });
+
+  // Phase 1: Content fades out fast
+  if (closeBtn) {
+    expandTimeline.to(closeBtn, {
+      opacity: 0, x: 20,
+      duration: 0.12 * dur,
+      ease: 'power2.in',
+    }, 0);
   }
 
-  // Remove after animation
-  setTimeout(() => {
-    overlay.remove();
-    if (backdrop) backdrop.remove();
-    currentExpanded = null;
-    currentBackdrop = null;
-    isAnimating = false;
+  if (inner) {
+    expandTimeline.to(inner, {
+      opacity: 0, y: -15,
+      duration: 0.18 * dur,
+      ease: 'power2.in',
+    }, 0);
+  }
 
-    // Return focus to the source tile
-    if (sourceTile) {
-      sourceTile.focus();
-      currentTileEl = null;
-    }
-  }, 500);
+  // Phase 2: Morph overlay back to tile
+  if (rect) {
+    expandTimeline.to(overlay, {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      borderRadius: 14,
+      duration: 0.4 * dur,
+      ease: 'power3.inOut',
+    }, 0.12 * dur);
+  }
+
+  // Backdrop fades out
+  if (backdrop) {
+    expandTimeline.to(backdrop, {
+      opacity: 0,
+      duration: 0.3 * dur,
+      ease: 'power2.inOut',
+    }, 0.15 * dur);
+  }
+
+  // Phase 3: Other tiles return
+  const returnProps = isMobile
+    ? { scale: 1, opacity: 1, duration: 0.35 * dur, stagger: 0.015, ease: 'power2.out' }
+    : { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4 * dur, stagger: 0.02, ease: 'power2.out' };
+
+  expandTimeline.to(otherTiles, returnProps, 0.2 * dur);
+
+  // Source tile fades back in
+  if (sourceTile) {
+    expandTimeline.to(sourceTile, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.3 * dur,
+      ease: 'power2.out',
+    }, 0.3 * dur);
+  }
+}
+
+function animateContentEntrance(container, overlay, dur, isMobile) {
+  if (prefersReducedMotion()) return;
+
+  const stagger = isMobile ? 0.04 : 0.07;
+
+  // Heading
+  const heading = container.querySelector('.expanded-heading');
+  if (heading) {
+    gsap.from(heading, {
+      y: 20, opacity: 0,
+      duration: 0.4 * dur,
+      ease: 'power2.out',
+    });
+  }
+
+  // Subtitle
+  const subtitle = container.querySelector('.expanded-subtitle');
+  if (subtitle) {
+    gsap.from(subtitle, {
+      y: 15, opacity: 0,
+      duration: 0.35 * dur,
+      delay: 0.06,
+      ease: 'power2.out',
+    });
+  }
+
+  // Stagger targets — paragraphs, timeline items, cards
+  const staggerTargets = container.querySelectorAll(
+    '.expanded-paragraph, .exp-item, .project-expanded-card, .edu-card'
+  );
+  if (staggerTargets.length) {
+    gsap.from(staggerTargets, {
+      y: 25,
+      opacity: 0,
+      duration: 0.45 * dur,
+      stagger,
+      ease: 'power2.out',
+    });
+  }
+
+  // Below-fold content: IntersectionObserver for scroll reveals
+  const belowFold = container.querySelectorAll('.epitech-year, .edu-featured-project');
+  if (belowFold.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          gsap.from(entry.target, {
+            y: 20, opacity: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { root: overlay, threshold: 0.1 });
+
+    belowFold.forEach(el => observer.observe(el));
+    overlay._scrollObserver = observer;
+  }
 }

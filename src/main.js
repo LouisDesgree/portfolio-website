@@ -17,6 +17,7 @@ import { renderExperienceExpanded, renderExpPreview } from './components/experie
 import { renderProjectsExpanded, renderProjectsPreview } from './components/projects.js';
 import { renderEducationExpanded, renderEduPreview } from './components/education.js';
 import { renderContact } from './components/contact.js';
+import { renderNewsPreview, renderNewsExpanded } from './components/news.js';
 
 function initTheme() {
   const saved = localStorage.getItem('theme');
@@ -57,6 +58,7 @@ function init() {
   renderPreviews();
   renderContact();
   renderPersonal();
+  renderNewsPreview();
   initSkills();
 
   // Init tile expand system
@@ -65,6 +67,7 @@ function init() {
     experience: renderExperienceExpanded,
     projects: renderProjectsExpanded,
     education: renderEducationExpanded,
+    news: renderNewsExpanded,
   });
 
   // Re-render on language change
@@ -72,6 +75,7 @@ function init() {
     renderPreviews();
     renderContact();
     renderPersonal();
+    renderNewsPreview();
     initSkills();
     updateI18n();
   });
