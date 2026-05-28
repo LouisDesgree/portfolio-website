@@ -20,7 +20,7 @@
 
   let lang = localStorage.getItem("vision:lang");
   if (lang !== "en" && lang !== "fr") {
-    lang = navigator.language && navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en";
+    lang = "en";
   }
 
   function getLang() { return lang; }
