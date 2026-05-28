@@ -383,7 +383,7 @@ kbd {
 /* Tabbar */
 .tabbar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
@@ -399,11 +399,16 @@ kbd {
   font-weight: 500;
   padding: 6px;
   transition: var(--transition);
+  text-decoration: none;
 }
 .tab:hover { color: var(--text-2); }
 .tab.active { color: var(--primary); }
 .tab.active svg path,
 .tab.active svg circle { stroke: var(--primary); }
+.tab.tab-external { color: var(--accent); }
+.tab.tab-external:hover { color: var(--text); background: rgba(184, 123, 88, 0.06); }
+.tab.tab-external svg path,
+.tab.tab-external svg circle { stroke: currentColor; }
 
 /* ============================================================
    Generic blocks
