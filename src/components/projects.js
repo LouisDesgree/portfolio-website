@@ -63,6 +63,7 @@ export function renderProjectsExpanded() {
       <div class="project-expanded-title">${t(proj.title)}</div>
       <p class="project-expanded-desc">${t(proj.desc)}</p>
       <div class="project-expanded-tags">${proj.tags.map(tag => `<span class="project-expanded-tag">${tag}</span>`).join('')}</div>
+      ${proj.link ? `<a class="project-expanded-link" href="${proj.link}" target="${proj.link.startsWith('/') ? '_self' : '_blank'}" rel="noopener">${proj.linkLabel ? t(proj.linkLabel) : (isEn ? 'View live' : 'Voir en live')} →</a>` : ''}
     </div>
   `).join('');
 

@@ -907,6 +907,18 @@ html, body {
 .project-expanded-desc { font-size: 0.8rem; color: var(--text-tertiary); line-height: 1.6; margin-bottom: 12px; }
 .project-expanded-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .project-expanded-tag { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-tertiary); border: 1px solid rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 2px; }
+.project-expanded-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease;
+}
+.project-expanded-link:hover { border-bottom-color: var(--accent); }
 .epitech-year { margin-bottom: var(--space-4); }
 .epitech-year-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 0.1em; }
 .epitech-year-period { color: var(--text-ghost); }

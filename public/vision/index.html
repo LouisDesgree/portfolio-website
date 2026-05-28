@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vision — Analyse financière nodale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236b9a9c'/%3E%3Cstop offset='1' stop-color='%23355a5c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cline x1='14' y1='22' x2='50' y2='22' stroke='url(%23g)' stroke-width='2.5' stroke-linecap='round' opacity='0.55'/%3E%3Cpath d='M10 10 L32 50 L54 10' stroke='url(%23g)' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='32' cy='34' r='3' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Brand SVG symbols (réutilisables via <use href="#vision-mark"/>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#6b9a9c" />
+        <stop offset="100%" stop-color="#355a5c" />
+      </linearGradient>
+      <linearGradient id="logoGradMono" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#2d2a26" />
+        <stop offset="100%" stop-color="#2d2a26" />
+      </linearGradient>
+      <linearGradient id="logoGradInverted" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="100%" stop-color="#ffffff" />
+      </linearGradient>
+      <symbol id="vision-mark" viewBox="0 0 64 64">
+        <line x1="14" y1="22" x2="50" y2="22" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.55" />
+        <path d="M 10 10 L 32 50 L 54 10" stroke="url(#logoGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <circle cx="32" cy="34" r="3" fill="url(#logoGrad)" />
+      </symbol>
+      <symbol id="vision-mark-mono" viewBox="0 0 64 64">
+        <line x1="14" y1="22" x2="50" y2="22" stroke="url(#logoGradMono)" stroke-width="2.5" stroke-linecap="round" opacity="0.55" />
+        <path d="M 10 10 L 32 50 L 54 10" stroke="url(#logoGradMono)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <circle cx="32" cy="34" r="3" fill="url(#logoGradMono)" />
+      </symbol>
+      <symbol id="vision-mark-inverted" viewBox="0 0 64 64">
+        <line x1="14" y1="22" x2="50" y2="22" stroke="url(#logoGradInverted)" stroke-width="2.5" stroke-linecap="round" opacity="0.55" />
+        <path d="M 10 10 L 32 50 L 54 10" stroke="url(#logoGradInverted)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <circle cx="32" cy="34" r="3" fill="url(#logoGradInverted)" />
+      </symbol>
+      <symbol id="vision-mark-pure" viewBox="0 0 64 64">
+        <path d="M 10 10 L 32 50 L 54 10" stroke="url(#logoGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <div id="app">
+    <!-- ============================================================
+         ONBOARDING
+         ============================================================ -->
+
+    <!-- Welcome -->
+    <section id="welcome" class="screen onboarding active">
+      <div class="onboarding-card">
+        <div class="logo-big">
+          <svg width="88" height="88" aria-label="Vision">
+            <use href="#vision-mark" />
+          </svg>
+        </div>
+        <h1 class="brand">Vision</h1>
+        <p class="brand-tagline">L'analyse financière nodale</p>
+        <p class="onboarding-text">
+          Une couche d'analyse au-dessus de ton broker. Compose tes propres
+          pipelines d'analyse — ou laisse Vision le faire pour toi.
+        </p>
+        <button class="btn-primary" data-go="signup">Commencer</button>
+        <button class="btn-ghost" data-go="shell">Continuer en mode démo</button>
+      </div>
+    </section>
+
+    <!-- Create account -->
+    <section id="signup" class="screen onboarding">
+      <div class="onboarding-card">
+        <button class="back" data-go="welcome">← Retour</button>
+        <h2>Créer un compte</h2>
+        <p class="subtle">Connecte-toi avec ton fournisseur préféré.</p>
+        <div class="oauth-list">
+          <button class="oauth-btn" data-provider="apple" data-go="api-key">
+            <span class="oauth-icon"></span>
+            Continuer avec Apple
+          </button>
+          <button class="oauth-btn" data-provider="google" data-go="api-key">
+            <span class="oauth-icon google"></span>
+            Continuer avec Google
+          </button>
+          <button class="oauth-btn" data-provider="facebook" data-go="api-key">
+            <span class="oauth-icon facebook"></span>
+            Continuer avec Facebook
+          </button>
+        </div>
+        <p class="oauth-footer">
+          En continuant tu acceptes les CGU et la politique de confidentialité.
+        </p>
+      </div>
+    </section>
+
+    <!-- API key -->
+    <section id="api-key" class="screen onboarding">
+      <div class="onboarding-card">
+        <button class="back" data-go="signup">← Retour</button>
+        <h2>Clé API pour l'IA</h2>
+        <p class="subtle">
+          Renseigne une clé OpenAI ou Anthropic pour activer les analyses IA.
+          Tu peux skipper — les analyses statistiques restent disponibles.
+        </p>
+        <form id="api-form" class="form-stack">
+          <label>
+            <span>Provider</span>
+            <select id="api-provider">
+              <option value="openai">OpenAI</option>
+              <option value="anthropic">Anthropic</option>
+              <option value="custom">Custom (URL)</option>
+            </select>
+          </label>
+          <label>
+            <span>Clé</span>
+            <input type="password" id="api-key-input" placeholder="sk-…" autocomplete="off" />
+          </label>
+          <label>
+            <span>Secret (optionnel)</span>
+            <input type="password" id="api-secret-input" placeholder="•••" autocomplete="off" />
+          </label>
+          <div class="row-buttons">
+            <button type="button" class="btn-ghost" data-go="shell">Skip</button>
+            <button type="submit" class="btn-primary">Valider</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         APP SHELL
+         ============================================================ -->
+    <div id="shell" class="hidden">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="logo-small">
+            <svg width="26" height="26" aria-label="Vision">
+              <use href="#vision-mark" />
+            </svg>
+          </div>
+          <span class="brand-mini">Vision</span>
+        </div>
+        <div class="topbar-mid">
+          <button class="cmdk-trigger" id="cmdk-trigger" title="Command palette">
+            <span>Rechercher…</span>
+            <kbd>⌘K</kbd>
+          </button>
+          <span id="api-status" class="api-status">
+            <span class="dot"></span>
+            <span class="api-status-label">Mode démo (pas de clé IA)</span>
+          </span>
+        </div>
+        <div class="topbar-right">
+          <span class="user-avatar">L</span>
+        </div>
+      </header>
+
+      <main id="main">
+        <!-- Home -->
+        <section id="home" class="screen active">
+          <div class="page-header">
+            <h2>Vue d'ensemble</h2>
+            <p class="subtle">Tes analyses + tes actus du jour.</p>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <div class="card-header">
+                <h3>Résultats des analyses</h3>
+                <button class="link" data-go-tab="auto-analysis">Tout voir →</button>
+              </div>
+              <div id="home-analysis-summary"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3>Actualités importantes</h3>
+                <button class="link">Configurer</button>
+              </div>
+              <ul id="home-news" class="news-list"></ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Valeur du portefeuille (90j)</h3>
+              <div class="card-actions">
+                <span class="kpi-big" id="home-portfolio-value">—</span>
+                <span class="kpi-delta" id="home-portfolio-delta">—</span>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height: 180px;">
+              <canvas id="home-portfolio-chart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Portfolio -->
+        <section id="portfolio" class="screen">
+          <div class="page-header">
+            <h2>Votre portefeuille</h2>
+            <button class="btn-primary small" id="add-asset-btn">
+              + Renseigner un actif
+            </button>
+          </div>
+          <div class="grid three" id="portfolio-cards"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Performance comparée</h3>
+            </div>
+            <div class="chart-wrap" style="height: 280px;">
+              <canvas id="portfolio-comparison-chart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Auto analysis -->
+        <section id="auto-analysis" class="screen">
+          <div class="page-header">
+            <h2>Notre analyse</h2>
+            <p class="subtle">
+              Toutes les métriques calculées de la même façon pour tout le monde — chaque chiffre est expliqué.
+            </p>
+          </div>
+
+          <!-- Score composite -->
+          <div class="card score-card">
+            <div class="score-badge" id="auto-score">—</div>
+            <div class="score-body">
+              <h3 id="auto-score-title">—</h3>
+              <p id="auto-score-summary" class="subtle">—</p>
+              <div class="score-axes" id="auto-score-axes"></div>
+            </div>
+          </div>
+
+          <!-- Performance vs marché -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Performance vs S&P 500</h3>
+              <span class="subtle" id="auto-vs-market">—</span>
+            </div>
+            <div class="chart-wrap" style="height: 220px;">
+              <canvas id="auto-vs-market-chart"></canvas>
+            </div>
+            <div class="metric-grid" id="auto-market-metrics"></div>
+          </div>
+
+          <!-- Métriques rendement -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Rendement ajusté du risque</h3>
+              <span class="subtle">Quel rendement par unité de risque pris ?</span>
+            </div>
+            <div class="metric-grid" id="auto-return-metrics"></div>
+          </div>
+
+          <!-- Métriques risque -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Risque</h3>
+              <span class="subtle">Qu'est-ce que tu peux perdre, et dans quelle queue ?</span>
+            </div>
+            <div class="metric-grid" id="auto-risk-metrics"></div>
+          </div>
+
+          <!-- Diversification -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Diversification</h3>
+              <span class="subtle">Tes positions sont-elles réellement indépendantes ?</span>
+            </div>
+            <div class="grid two">
+              <div>
+                <p class="subtle alloc-subtitle">Allocation par valeur</p>
+                <div class="chart-wrap" style="height: 200px;">
+                  <canvas id="auto-allocation-chart"></canvas>
+                </div>
+              </div>
+              <div>
+                <p class="subtle alloc-subtitle">Contribution au risque</p>
+                <div class="chart-wrap" style="height: 200px;">
+                  <canvas id="auto-risk-attribution-chart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="metric-grid" id="auto-div-metrics"></div>
+          </div>
+
+          <!-- Insights narrative -->
+          <div class="card narrative-card">
+            <div class="card-header">
+              <h3>💬 Insights</h3>
+              <span class="subtle">Analyse générée automatiquement</span>
+            </div>
+            <div id="auto-narrative" class="narrative-body"></div>
+          </div>
+
+          <!-- Diagnostic règles -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Diagnostic règles métier</h3>
+              <span class="subtle">Hardcodé — auditable</span>
+            </div>
+            <div id="auto-rules" class="rules-list"></div>
+          </div>
+
+          <!-- Recommandations -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Recommandations</h3>
+              <span class="subtle">Actions concrètes basées sur ton diagnostic</span>
+            </div>
+            <ul id="auto-recos" class="recos-list"></ul>
+          </div>
+
+          <!-- Le saviez-vous -->
+          <div class="card glossary-card">
+            <div class="card-header">
+              <h3>📚 Le saviez-vous ?</h3>
+              <button class="link" id="auto-tip-next">Métrique suivante →</button>
+            </div>
+            <div id="auto-tip" class="glossary-body"></div>
+          </div>
+        </section>
+
+        <!-- Brand identity (accessible via cmdk) -->
+        <section id="brand" class="screen brand-screen">
+          <div class="brand-hero">
+            <svg width="120" height="120" aria-label="Vision"><use href="#vision-mark" /></svg>
+            <div>
+              <p class="brand-eyebrow">Identité graphique</p>
+              <h1 class="brand-headline">Vision</h1>
+              <p class="brand-subhead">Le système visuel qui définit Vision — du pixel à la phrase.</p>
+            </div>
+          </div>
+
+          <!-- LOGO -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">01</span>
+              <h2>Le Mark</h2>
+              <p>Un V qui converge — la perception qui se focalise sur la donnée.</p>
+            </div>
+            <div class="brand-mark-anatomy">
+              <div class="brand-mark-display">
+                <svg width="240" height="240" aria-label="Vision Mark"><use href="#vision-mark" /></svg>
+              </div>
+              <div class="brand-anatomy-notes">
+                <div><strong>Le V</strong> — convergence, focus, attention dirigée.</div>
+                <div><strong>La ligne horizontale</strong> — baseline marché, l'horizon de référence.</div>
+                <div><strong>Le point focal</strong> — l'insight qui émerge de l'analyse.</div>
+              </div>
+            </div>
+            <div class="brand-variations">
+              <p class="brand-label">Variations</p>
+              <div class="brand-variation-grid">
+                <div class="brand-variation"><div class="brand-tile"><svg width="64" height="64"><use href="#vision-mark" /></svg></div><span>Couleur</span></div>
+                <div class="brand-variation"><div class="brand-tile"><svg width="64" height="64"><use href="#vision-mark-mono" /></svg></div><span>Mono</span></div>
+                <div class="brand-variation"><div class="brand-tile dark"><svg width="64" height="64"><use href="#vision-mark-inverted" /></svg></div><span>Inversé</span></div>
+                <div class="brand-variation"><div class="brand-tile"><svg width="64" height="64"><use href="#vision-mark-pure" /></svg></div><span>Pur (icône)</span></div>
+              </div>
+            </div>
+            <div class="brand-lockups">
+              <p class="brand-label">Verrouillages</p>
+              <div class="brand-lockup">
+                <svg width="40" height="40"><use href="#vision-mark" /></svg>
+                <span class="lockup-word">Vision</span>
+              </div>
+              <div class="brand-lockup vertical">
+                <svg width="64" height="64"><use href="#vision-mark" /></svg>
+                <div>
+                  <span class="lockup-word">Vision</span>
+                  <span class="lockup-tag">L'analyse financière nodale</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- COULEURS -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">02</span>
+              <h2>Palette</h2>
+              <p>Trois familles nommées + trois signaux sémantiques.</p>
+            </div>
+            <div class="palette-group">
+              <h3>Aperture <span class="palette-role">— Primary · focus, analyse</span></h3>
+              <div class="palette-row" id="palette-aperture"></div>
+            </div>
+            <div class="palette-group">
+              <h3>Paper <span class="palette-role">— Accent · chaleur, papier d'analyse</span></h3>
+              <div class="palette-row" id="palette-paper"></div>
+            </div>
+            <div class="palette-group">
+              <h3>Insight <span class="palette-role">— Accent secondaire · compréhension</span></h3>
+              <div class="palette-row" id="palette-insight"></div>
+            </div>
+            <div class="palette-group">
+              <h3>Sémantique <span class="palette-role">— États : gain, vigilance, perte</span></h3>
+              <div class="palette-row" id="palette-semantic"></div>
+            </div>
+            <div class="palette-group">
+              <h3>Vellum <span class="palette-role">— Backgrounds</span></h3>
+              <div class="palette-row" id="palette-bg"></div>
+            </div>
+          </section>
+
+          <!-- TYPO -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">03</span>
+              <h2>Typographie</h2>
+              <p><strong>Inter</strong> pour l'UI, <strong>JetBrains Mono</strong> pour les nombres. C'est tout.</p>
+            </div>
+            <div class="typo-grid">
+              <div class="typo-row"><div class="typo-spec">Display · 36 / 800 / −0.02em</div><div class="typo-sample typo-display">L'analyse, posément.</div></div>
+              <div class="typo-row"><div class="typo-spec">H1 · 28 / 700 / −0.01em</div><div class="typo-sample typo-h1">Notre analyse</div></div>
+              <div class="typo-row"><div class="typo-spec">H2 · 22 / 700</div><div class="typo-sample typo-h2">Performance ajustée du risque</div></div>
+              <div class="typo-row"><div class="typo-spec">H3 · 16 / 600</div><div class="typo-sample typo-h3">Sharpe Ratio</div></div>
+              <div class="typo-row"><div class="typo-spec">Body · 14 / 400 / line-height 1.5</div><div class="typo-sample typo-body">Le rendement par unité de volatilité totale. Inventé par William Sharpe en 1966.</div></div>
+              <div class="typo-row"><div class="typo-spec">Caption · 12 / 500</div><div class="typo-sample typo-caption">Métrique calculée sur 252 jours.</div></div>
+              <div class="typo-row"><div class="typo-spec">Label · 11 / 600 / UPPERCASE +0.06em</div><div class="typo-sample typo-label">VOLATILITÉ ANNUALISÉE</div></div>
+              <div class="typo-row"><div class="typo-spec">Mono · 13 / 500 / JetBrains</div><div class="typo-sample typo-mono">σ_ann = σ_quotidienne × √252</div></div>
+              <div class="typo-row"><div class="typo-spec">Mono Big · 26 / 700 / JetBrains</div><div class="typo-sample typo-mono-big">2.09</div></div>
+            </div>
+          </section>
+
+          <!-- ICONOGRAPHIE -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">04</span>
+              <h2>Iconographie</h2>
+              <p>Stroke 1.5px · linecap rond · pas de fill · pas de couleur dans l'icône (elle hérite du contexte).</p>
+            </div>
+            <div class="icon-grid">
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9v9h-6v-6h-6v6H3z"/></svg><span>Home</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18"/></svg><span>Portefeuille</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 5"/></svg><span>Analyse</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7 7l4 9M17 7l-4 9"/></svg><span>Nodal</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Rechercher</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Ajouter</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span>Croissance</span></div>
+              <div class="icon-cell"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c-2.5 4-6 6-9 6s-6.5-2-9-6c2.5-4 6-6 9-6s6.5 2 9 6z"/><circle cx="12" cy="12" r="3"/></svg><span>Vision</span></div>
+            </div>
+          </section>
+
+          <!-- LANGAGE -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">05</span>
+              <h2>Voix</h2>
+              <p>4 règles pour parler comme Vision.</p>
+            </div>
+            <div class="voice-rules">
+              <div class="voice-rule">
+                <h4>Précis</h4>
+                <p>On donne le chiffre exact, jamais arrondi pour faire joli. Si c'est 1.85, ce n'est pas "~2".</p>
+              </div>
+              <div class="voice-rule">
+                <h4>Pédagogique</h4>
+                <p>Chaque terme technique est expliqué quand il apparaît. Pas de jargon orphelin.</p>
+              </div>
+              <div class="voice-rule">
+                <h4>Calme</h4>
+                <p>Pas d'alarmisme, pas d'euphorie. Une perte est une perte, un bon Sharpe est un bon Sharpe.</p>
+              </div>
+              <div class="voice-rule">
+                <h4>Honnête</h4>
+                <p>On nomme les limites du modèle. Un verdict s'accompagne toujours d'un "voilà ce que ça ignore".</p>
+              </div>
+            </div>
+            <div class="voice-dodonts">
+              <div class="voice-do">
+                <p class="voice-label do">À FAIRE</p>
+                <p>"Sharpe 2.09 — excellent, au-dessus du marché (≈ 0.5–0.7)."</p>
+                <p>"Drawdown −28% : tu as déjà subi un krach modéré. Prévois-tu de tenir ?"</p>
+                <p>"Le verdict ignore le drawdown et la corrélation marché — à utiliser comme signal, pas comme décision."</p>
+              </div>
+              <div class="voice-dont">
+                <p class="voice-label dont">À ÉVITER</p>
+                <p>"🚀 ROCKET! Ton portfolio est CRAZY 🔥"</p>
+                <p>"Tu as perdu beaucoup d'argent."</p>
+                <p>"Le verdict est correct."</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- APPLICATIONS -->
+          <section class="brand-section">
+            <div class="brand-section-header">
+              <span class="brand-section-num">06</span>
+              <h2>Applications</h2>
+              <p>Comment le mark vit en contexte.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-cell">
+                <div class="app-favicon"><svg width="32" height="32"><use href="#vision-mark" /></svg></div>
+                <span>Favicon · 32px</span>
+              </div>
+              <div class="app-cell">
+                <div class="app-icon-ios">
+                  <svg width="80" height="80"><use href="#vision-mark" /></svg>
+                </div>
+                <span>App icon · iOS</span>
+              </div>
+              <div class="app-cell wide">
+                <div class="app-social">
+                  <svg width="48" height="48"><use href="#vision-mark-inverted" /></svg>
+                  <div>
+                    <p>L'analyse financière nodale</p>
+                    <p class="muted">Compose ton pipeline. Comprends ton portefeuille.</p>
+                  </div>
+                </div>
+                <span>Social card · 1200×630</span>
+              </div>
+            </div>
+          </section>
+
+          <p class="brand-footer">Vision · Identité v1 · Tous les actifs sont SVG inline, réutilisables via <code>&lt;use href="#vision-mark"&gt;</code>.</p>
+        </section>
+
+        <!-- Nodal canvas -->
+        <section id="nodal" class="screen nodal-screen">
+          <aside class="nodal-side">
+            <div class="side-section">
+              <h3>Paramètres</h3>
+              <label class="param">
+                <span>Niveau de risque</span>
+                <input type="range" id="param-risk" min="1" max="10" value="5" />
+                <output id="param-risk-out">5 / 10</output>
+              </label>
+              <label class="param">
+                <span>Type de focus</span>
+                <select id="param-focus">
+                  <option value="ia">IA</option>
+                  <option value="data">Data</option>
+                  <option value="media">Media</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </label>
+            </div>
+            <div class="side-section">
+              <h3>Liste de nodes</h3>
+              <div class="node-palette" id="node-palette"></div>
+            </div>
+            <div class="side-section">
+              <h3>Bibliothèque</h3>
+
+              <div class="lib-group">
+                <span class="lib-label">Démos</span>
+                <select id="demo-select" class="lib-select"></select>
+                <p class="lib-desc" id="demo-desc">—</p>
+                <button class="btn-ghost small full" id="demo-load">Charger la démo</button>
+              </div>
+
+              <div class="lib-divider"></div>
+
+              <div class="lib-group">
+                <span class="lib-label">Mes créations</span>
+                <select id="saved-select" class="lib-select">
+                  <option value="">— Aucune sauvegarde —</option>
+                </select>
+                <div class="lib-row">
+                  <button class="btn-ghost small" id="saved-load">Charger</button>
+                  <button class="btn-ghost small" id="saved-delete">Suppr</button>
+                </div>
+              </div>
+
+              <div class="lib-group">
+                <input type="text" id="save-name" class="lib-input" placeholder="Nom du graph…" maxlength="40" />
+                <button class="btn-primary small full" id="save-current">+ Sauvegarder</button>
+              </div>
+            </div>
+
+            <div class="side-section">
+              <h3>Groupes</h3>
+              <p class="lib-desc">Sélectionne 2+ nodes (<kbd>Shift</kbd>+clic) → "Grouper" pour créer un node composite réutilisable.</p>
+              <p class="lib-desc" id="group-selection-status">0 node(s) sélectionné(s).</p>
+              <input type="text" id="group-name" class="lib-input" placeholder="Nom du groupe…" maxlength="32" />
+              <button class="btn-primary small full" id="group-create" disabled>⊕ Grouper la sélection</button>
+
+              <div class="lib-divider"></div>
+
+              <span class="lib-label">Groupes existants</span>
+              <select id="group-select" class="lib-select">
+                <option value="">— Aucun groupe —</option>
+              </select>
+              <div class="lib-row">
+                <button class="btn-ghost small" id="group-ungroup">Dégrouper</button>
+                <button class="btn-ghost small" id="group-delete">Suppr.</button>
+              </div>
+            </div>
+
+            <div class="side-section">
+              <h3>Actions</h3>
+              <button class="btn-ghost small full" id="canvas-run">▶ Exécuter</button>
+              <button class="btn-ghost small full" id="canvas-clear">Vider le canvas</button>
+            </div>
+          </aside>
+          <div class="nodal-main">
+            <div class="canvas-wrap" id="canvas-wrap">
+              <div id="canvas-viewport" class="canvas-viewport">
+                <svg id="canvas-wires" class="canvas-wires"></svg>
+                <div id="canvas-nodes" class="canvas-nodes"></div>
+              </div>
+              <div class="canvas-zoom-controls">
+                <button id="zoom-out" title="Zoom -">−</button>
+                <button id="zoom-reset" title="Reset zoom" class="zoom-pct">100%</button>
+                <button id="zoom-in" title="Zoom +">+</button>
+                <button id="zoom-fit" title="Adapter à la fenêtre">⇲</button>
+              </div>
+              <div class="canvas-help">
+                <kbd>scroll</kbd> zoomer • <kbd>glisser le fond</kbd> panner •
+                <kbd>port→port</kbd> connecter • <kbd>Suppr</kbd> supprimer
+              </div>
+            </div>
+            <div class="nodal-results">
+              <div class="results-header">
+                <h3>Résultats</h3>
+                <span class="subtle" id="canvas-status">Prêt</span>
+              </div>
+              <div id="nodal-results-body" class="results-body"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="tabbar">
+        <button class="tab" data-tab="home">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 12 12 3l9 9v9h-6v-6h-6v6H3z" fill="currentColor"/></svg>
+          <span>Home</span>
+        </button>
+        <button class="tab" data-tab="portfolio">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18v12H3z M3 10h18" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          <span>Portefeuille</span>
+        </button>
+        <button class="tab" data-tab="auto-analysis">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 2v10l7 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          <span>Analyse</span>
+        </button>
+        <button class="tab" data-tab="nodal">
+          <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="5" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 7l4 9M17 7l-4 9" stroke="currentColor" stroke-width="2"/></svg>
+          <span>Nodal</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <!-- Command palette -->
+    <div id="cmdk" class="cmdk hidden">
+      <div class="cmdk-card">
+        <div class="cmdk-input-wrap">
+          <span class="cmdk-icon">⌘</span>
+          <input type="text" id="cmdk-input" placeholder="Rechercher : ticker, node, démo, action, métrique…" autocomplete="off" />
+          <kbd>esc</kbd>
+        </div>
+        <div id="cmdk-results" class="cmdk-results"></div>
+        <div class="cmdk-footer">
+          <span><kbd>↑↓</kbd> Naviguer</span>
+          <span><kbd>↵</kbd> Sélectionner</span>
+          <span><kbd>⌘K</kbd> Toggle</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add asset modal -->
+    <div id="modal-add-asset" class="modal hidden">
+      <div class="modal-card">
+        <h3>Renseigner un actif</h3>
+        <p class="subtle">Choisis un ticker et une quantité.</p>
+        <label>
+          <span>Ticker</span>
+          <select id="modal-ticker"></select>
+        </label>
+        <label>
+          <span>Quantité</span>
+          <input type="number" id="modal-quantity" value="10" min="1" />
+        </label>
+        <div class="row-buttons">
+          <button class="btn-ghost" id="modal-cancel">Annuler</button>
+          <button class="btn-primary" id="modal-confirm">Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="canvas.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
