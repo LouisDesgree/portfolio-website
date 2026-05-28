@@ -65,14 +65,13 @@
           </svg>
         </div>
         <h1 class="brand">Vision</h1>
-        <p class="brand-tagline">L'analyse financière nodale</p>
-        <p class="onboarding-text">
-          Une couche d'analyse au-dessus de ton broker. Compose tes propres
-          pipelines d'analyse — ou laisse Vision le faire pour toi.
+        <p class="brand-tagline" data-i18n-en="Nodal financial analysis" data-i18n-fr="L'analyse financière nodale">L'analyse financière nodale</p>
+        <p class="onboarding-text" data-i18n-en="An analysis layer on top of your broker. Compose your own pipelines, or let Vision do it for you." data-i18n-fr="Une couche d'analyse au-dessus de ton broker. Compose tes propres pipelines d'analyse, ou laisse Vision le faire pour toi.">
+          Une couche d'analyse au-dessus de ton broker. Compose tes propres pipelines d'analyse, ou laisse Vision le faire pour toi.
         </p>
-        <button class="btn-primary" data-go="signup">Commencer</button>
-        <button class="btn-ghost" data-go="shell">Continuer en mode démo</button>
-        <a class="back-to-portfolio" href="https://louisdesgree.com" target="_blank" rel="noopener">
+        <button class="btn-primary" data-go="signup" data-i18n-en="Get started" data-i18n-fr="Commencer">Commencer</button>
+        <button class="btn-ghost" data-go="shell" data-i18n-en="Continue in demo mode" data-i18n-fr="Continuer en mode démo">Continuer en mode démo</button>
+        <a class="back-to-portfolio" href="https://louisdesgree.com" target="_blank" rel="noopener" data-i18n-en="← Back to portfolio · louisdesgree.com" data-i18n-fr="← Retour au portfolio · louisdesgree.com">
           ← Retour au portfolio · louisdesgree.com
         </a>
       </div>
@@ -81,24 +80,24 @@
     <!-- Create account -->
     <section id="signup" class="screen onboarding">
       <div class="onboarding-card">
-        <button class="back" data-go="welcome">← Retour</button>
-        <h2>Créer un compte</h2>
-        <p class="subtle">Connecte-toi avec ton fournisseur préféré.</p>
+        <button class="back" data-go="welcome" data-i18n-en="← Back" data-i18n-fr="← Retour">← Retour</button>
+        <h2 data-i18n-en="Create an account" data-i18n-fr="Créer un compte">Créer un compte</h2>
+        <p class="subtle" data-i18n-en="Sign in with your preferred provider." data-i18n-fr="Connecte-toi avec ton fournisseur préféré.">Connecte-toi avec ton fournisseur préféré.</p>
         <div class="oauth-list">
-          <button class="oauth-btn" data-provider="apple" data-go="api-key">
+          <button class="oauth-btn" data-provider="apple" data-go="api-key" data-i18n-html-en='<span class="oauth-icon"></span>Continue with Apple' data-i18n-html-fr='<span class="oauth-icon"></span>Continuer avec Apple'>
             <span class="oauth-icon"></span>
             Continuer avec Apple
           </button>
-          <button class="oauth-btn" data-provider="google" data-go="api-key">
+          <button class="oauth-btn" data-provider="google" data-go="api-key" data-i18n-html-en='<span class="oauth-icon google"></span>Continue with Google' data-i18n-html-fr='<span class="oauth-icon google"></span>Continuer avec Google'>
             <span class="oauth-icon google"></span>
             Continuer avec Google
           </button>
-          <button class="oauth-btn" data-provider="facebook" data-go="api-key">
+          <button class="oauth-btn" data-provider="facebook" data-go="api-key" data-i18n-html-en='<span class="oauth-icon facebook"></span>Continue with Facebook' data-i18n-html-fr='<span class="oauth-icon facebook"></span>Continuer avec Facebook'>
             <span class="oauth-icon facebook"></span>
             Continuer avec Facebook
           </button>
         </div>
-        <p class="oauth-footer">
+        <p class="oauth-footer" data-i18n-en="By continuing you agree to the ToS and privacy policy." data-i18n-fr="En continuant tu acceptes les CGU et la politique de confidentialité.">
           En continuant tu acceptes les CGU et la politique de confidentialité.
         </p>
       </div>
@@ -107,15 +106,14 @@
     <!-- API key -->
     <section id="api-key" class="screen onboarding">
       <div class="onboarding-card">
-        <button class="back" data-go="signup">← Retour</button>
-        <h2>Clé API pour l'IA</h2>
-        <p class="subtle">
-          Renseigne une clé OpenAI ou Anthropic pour activer les analyses IA.
-          Tu peux skipper — les analyses statistiques restent disponibles.
+        <button class="back" data-go="signup" data-i18n-en="← Back" data-i18n-fr="← Retour">← Retour</button>
+        <h2 data-i18n-en="API key for AI" data-i18n-fr="Clé API pour l'IA">Clé API pour l'IA</h2>
+        <p class="subtle" data-i18n-en="Provide an OpenAI or Anthropic key to enable AI analyses. You can skip, statistical analyses remain available." data-i18n-fr="Renseigne une clé OpenAI ou Anthropic pour activer les analyses IA. Tu peux skipper, les analyses statistiques restent disponibles.">
+          Renseigne une clé OpenAI ou Anthropic pour activer les analyses IA. Tu peux skipper, les analyses statistiques restent disponibles.
         </p>
         <form id="api-form" class="form-stack">
           <label>
-            <span>Provider</span>
+            <span data-i18n-en="Provider" data-i18n-fr="Provider">Provider</span>
             <select id="api-provider">
               <option value="openai">OpenAI</option>
               <option value="anthropic">Anthropic</option>
@@ -123,16 +121,16 @@
             </select>
           </label>
           <label>
-            <span>Clé</span>
+            <span data-i18n-en="Key" data-i18n-fr="Clé">Clé</span>
             <input type="password" id="api-key-input" placeholder="sk-…" autocomplete="off" />
           </label>
           <label>
-            <span>Secret (optionnel)</span>
+            <span data-i18n-en="Secret (optional)" data-i18n-fr="Secret (optionnel)">Secret (optionnel)</span>
             <input type="password" id="api-secret-input" placeholder="•••" autocomplete="off" />
           </label>
           <div class="row-buttons">
-            <button type="button" class="btn-ghost" data-go="shell">Skip</button>
-            <button type="submit" class="btn-primary">Valider</button>
+            <button type="button" class="btn-ghost" data-go="shell" data-i18n-en="Skip" data-i18n-fr="Skip">Skip</button>
+            <button type="submit" class="btn-primary" data-i18n-en="Validate" data-i18n-fr="Valider">Valider</button>
           </div>
         </form>
       </div>
@@ -152,16 +150,20 @@
           <span class="brand-mini">Vision</span>
         </div>
         <div class="topbar-mid">
-          <button class="cmdk-trigger" id="cmdk-trigger" title="Command palette">
-            <span>Rechercher…</span>
+          <button class="cmdk-trigger" id="cmdk-trigger" data-i18n-title-en="Command palette" data-i18n-title-fr="Palette de commandes" title="Palette de commandes">
+            <span data-i18n-en="Search…" data-i18n-fr="Rechercher…">Rechercher…</span>
             <kbd>⌘K</kbd>
           </button>
           <span id="api-status" class="api-status">
             <span class="dot"></span>
-            <span class="api-status-label">Mode démo (pas de clé IA)</span>
+            <span class="api-status-label" data-i18n-en="Demo mode (no AI key)" data-i18n-fr="Mode démo (pas de clé IA)">Mode démo (pas de clé IA)</span>
           </span>
         </div>
         <div class="topbar-right">
+          <div class="lang-toggle" role="group" aria-label="Language">
+            <button type="button" data-lang-btn="fr">FR</button>
+            <button type="button" data-lang-btn="en">EN</button>
+          </div>
           <span class="user-avatar">L</span>
         </div>
       </header>
@@ -170,28 +172,28 @@
         <!-- Home -->
         <section id="home" class="screen active">
           <div class="page-header">
-            <h2>Vue d'ensemble</h2>
-            <p class="subtle">Tes analyses + tes actus du jour.</p>
+            <h2 data-i18n-en="Overview" data-i18n-fr="Vue d'ensemble">Vue d'ensemble</h2>
+            <p class="subtle" data-i18n-en="Your analyses + your news of the day." data-i18n-fr="Tes analyses + tes actus du jour.">Tes analyses + tes actus du jour.</p>
           </div>
           <div class="grid two">
             <div class="card">
               <div class="card-header">
-                <h3>Résultats des analyses</h3>
-                <button class="link" data-go-tab="auto-analysis">Tout voir →</button>
+                <h3 data-i18n-en="Analyses results" data-i18n-fr="Résultats des analyses">Résultats des analyses</h3>
+                <button class="link" data-go-tab="auto-analysis" data-i18n-en="See all →" data-i18n-fr="Tout voir →">Tout voir →</button>
               </div>
               <div id="home-analysis-summary"></div>
             </div>
             <div class="card">
               <div class="card-header">
-                <h3>Actualités importantes</h3>
-                <button class="link">Configurer</button>
+                <h3 data-i18n-en="Top headlines" data-i18n-fr="Actualités importantes">Actualités importantes</h3>
+                <button class="link" data-i18n-en="Configure" data-i18n-fr="Configurer">Configurer</button>
               </div>
               <ul id="home-news" class="news-list"></ul>
             </div>
           </div>
           <div class="card">
             <div class="card-header">
-              <h3>Valeur du portefeuille (90j)</h3>
+              <h3 data-i18n-en="Portfolio value (90d)" data-i18n-fr="Valeur du portefeuille (90j)">Valeur du portefeuille (90j)</h3>
               <div class="card-actions">
                 <span class="kpi-big" id="home-portfolio-value">—</span>
                 <span class="kpi-delta" id="home-portfolio-delta">—</span>
@@ -206,15 +208,15 @@
         <!-- Portfolio -->
         <section id="portfolio" class="screen">
           <div class="page-header">
-            <h2>Votre portefeuille</h2>
-            <button class="btn-primary small" id="add-asset-btn">
+            <h2 data-i18n-en="Your portfolio" data-i18n-fr="Votre portefeuille">Votre portefeuille</h2>
+            <button class="btn-primary small" id="add-asset-btn" data-i18n-en="+ Add asset" data-i18n-fr="+ Renseigner un actif">
               + Renseigner un actif
             </button>
           </div>
           <div class="grid three" id="portfolio-cards"></div>
           <div class="card">
             <div class="card-header">
-              <h3>Performance comparée</h3>
+              <h3 data-i18n-en="Performance compared" data-i18n-fr="Performance comparée">Performance comparée</h3>
             </div>
             <div class="chart-wrap" style="height: 280px;">
               <canvas id="portfolio-comparison-chart"></canvas>
@@ -225,9 +227,9 @@
         <!-- Auto analysis -->
         <section id="auto-analysis" class="screen">
           <div class="page-header">
-            <h2>Notre analyse</h2>
-            <p class="subtle">
-              Toutes les métriques calculées de la même façon pour tout le monde — chaque chiffre est expliqué.
+            <h2 data-i18n-en="Our analysis" data-i18n-fr="Notre analyse">Notre analyse</h2>
+            <p class="subtle" data-i18n-en="Every metric computed the same way for everyone. Each number is explained." data-i18n-fr="Toutes les métriques calculées de la même façon pour tout le monde, chaque chiffre est expliqué.">
+              Toutes les métriques calculées de la même façon pour tout le monde, chaque chiffre est expliqué.
             </p>
           </div>
 
@@ -244,7 +246,7 @@
           <!-- Performance vs marché -->
           <div class="card">
             <div class="card-header">
-              <h3>Performance vs S&P 500</h3>
+              <h3 data-i18n-en="Performance vs S&P 500" data-i18n-fr="Performance vs S&P 500">Performance vs S&P 500</h3>
               <span class="subtle" id="auto-vs-market">—</span>
             </div>
             <div class="chart-wrap" style="height: 220px;">
@@ -256,8 +258,8 @@
           <!-- Métriques rendement -->
           <div class="card">
             <div class="card-header">
-              <h3>Rendement ajusté du risque</h3>
-              <span class="subtle">Quel rendement par unité de risque pris ?</span>
+              <h3 data-i18n-en="Risk-adjusted return" data-i18n-fr="Rendement ajusté du risque">Rendement ajusté du risque</h3>
+              <span class="subtle" data-i18n-en="What return per unit of risk taken?" data-i18n-fr="Quel rendement par unité de risque pris ?">Quel rendement par unité de risque pris ?</span>
             </div>
             <div class="metric-grid" id="auto-return-metrics"></div>
           </div>
@@ -265,8 +267,8 @@
           <!-- Métriques risque -->
           <div class="card">
             <div class="card-header">
-              <h3>Risque</h3>
-              <span class="subtle">Qu'est-ce que tu peux perdre, et dans quelle queue ?</span>
+              <h3 data-i18n-en="Risk" data-i18n-fr="Risque">Risque</h3>
+              <span class="subtle" data-i18n-en="What can you lose, and in which tail?" data-i18n-fr="Qu'est-ce que tu peux perdre, et dans quelle queue ?">Qu'est-ce que tu peux perdre, et dans quelle queue ?</span>
             </div>
             <div class="metric-grid" id="auto-risk-metrics"></div>
           </div>
@@ -274,18 +276,18 @@
           <!-- Diversification -->
           <div class="card">
             <div class="card-header">
-              <h3>Diversification</h3>
-              <span class="subtle">Tes positions sont-elles réellement indépendantes ?</span>
+              <h3 data-i18n-en="Diversification" data-i18n-fr="Diversification">Diversification</h3>
+              <span class="subtle" data-i18n-en="Are your positions truly independent?" data-i18n-fr="Tes positions sont-elles réellement indépendantes ?">Tes positions sont-elles réellement indépendantes ?</span>
             </div>
             <div class="grid two">
               <div>
-                <p class="subtle alloc-subtitle">Allocation par valeur</p>
+                <p class="subtle alloc-subtitle" data-i18n-en="Allocation by value" data-i18n-fr="Allocation par valeur">Allocation par valeur</p>
                 <div class="chart-wrap" style="height: 200px;">
                   <canvas id="auto-allocation-chart"></canvas>
                 </div>
               </div>
               <div>
-                <p class="subtle alloc-subtitle">Contribution au risque</p>
+                <p class="subtle alloc-subtitle" data-i18n-en="Risk contribution" data-i18n-fr="Contribution au risque">Contribution au risque</p>
                 <div class="chart-wrap" style="height: 200px;">
                   <canvas id="auto-risk-attribution-chart"></canvas>
                 </div>
@@ -297,8 +299,8 @@
           <!-- Insights narrative -->
           <div class="card narrative-card">
             <div class="card-header">
-              <h3>💬 Insights</h3>
-              <span class="subtle">Analyse générée automatiquement</span>
+              <h3 data-i18n-en="💬 Insights" data-i18n-fr="💬 Insights">💬 Insights</h3>
+              <span class="subtle" data-i18n-en="Auto-generated analysis" data-i18n-fr="Analyse générée automatiquement">Analyse générée automatiquement</span>
             </div>
             <div id="auto-narrative" class="narrative-body"></div>
           </div>
@@ -306,8 +308,8 @@
           <!-- Diagnostic règles -->
           <div class="card">
             <div class="card-header">
-              <h3>Diagnostic règles métier</h3>
-              <span class="subtle">Hardcodé — auditable</span>
+              <h3 data-i18n-en="Business rule diagnostics" data-i18n-fr="Diagnostic règles métier">Diagnostic règles métier</h3>
+              <span class="subtle" data-i18n-en="Hardcoded, auditable" data-i18n-fr="Hardcodé, auditable">Hardcodé, auditable</span>
             </div>
             <div id="auto-rules" class="rules-list"></div>
           </div>
@@ -315,8 +317,8 @@
           <!-- Recommandations -->
           <div class="card">
             <div class="card-header">
-              <h3>Recommandations</h3>
-              <span class="subtle">Actions concrètes basées sur ton diagnostic</span>
+              <h3 data-i18n-en="Recommendations" data-i18n-fr="Recommandations">Recommandations</h3>
+              <span class="subtle" data-i18n-en="Concrete actions based on your diagnosis" data-i18n-fr="Actions concrètes basées sur ton diagnostic">Actions concrètes basées sur ton diagnostic</span>
             </div>
             <ul id="auto-recos" class="recos-list"></ul>
           </div>
@@ -324,8 +326,8 @@
           <!-- Le saviez-vous -->
           <div class="card glossary-card">
             <div class="card-header">
-              <h3>📚 Le saviez-vous ?</h3>
-              <button class="link" id="auto-tip-next">Métrique suivante →</button>
+              <h3 data-i18n-en="📚 Did you know?" data-i18n-fr="📚 Le saviez-vous ?">📚 Le saviez-vous ?</h3>
+              <button class="link" id="auto-tip-next" data-i18n-en="Next metric →" data-i18n-fr="Métrique suivante →">Métrique suivante →</button>
             </div>
             <div id="auto-tip" class="glossary-body"></div>
           </div>
@@ -531,78 +533,78 @@
         <section id="nodal" class="screen nodal-screen">
           <aside class="nodal-side">
             <div class="side-section">
-              <h3>Paramètres</h3>
+              <h3 data-i18n-en="Parameters" data-i18n-fr="Paramètres">Paramètres</h3>
               <label class="param">
-                <span>Niveau de risque</span>
+                <span data-i18n-en="Risk level" data-i18n-fr="Niveau de risque">Niveau de risque</span>
                 <input type="range" id="param-risk" min="1" max="10" value="5" />
                 <output id="param-risk-out">5 / 10</output>
               </label>
               <label class="param">
-                <span>Type de focus</span>
+                <span data-i18n-en="Focus" data-i18n-fr="Type de focus">Type de focus</span>
                 <select id="param-focus">
                   <option value="ia">IA</option>
                   <option value="data">Data</option>
                   <option value="media">Media</option>
-                  <option value="autre">Autre</option>
+                  <option value="autre" data-i18n-en="Other" data-i18n-fr="Autre">Autre</option>
                 </select>
               </label>
             </div>
             <div class="side-section">
-              <h3>Liste de nodes</h3>
+              <h3 data-i18n-en="Node palette" data-i18n-fr="Liste de nodes">Liste de nodes</h3>
               <div class="node-palette" id="node-palette"></div>
             </div>
             <div class="side-section">
-              <h3>Bibliothèque</h3>
+              <h3 data-i18n-en="Library" data-i18n-fr="Bibliothèque">Bibliothèque</h3>
 
               <div class="lib-group">
-                <span class="lib-label">Démos</span>
+                <span class="lib-label" data-i18n-en="Demos" data-i18n-fr="Démos">Démos</span>
                 <select id="demo-select" class="lib-select"></select>
                 <p class="lib-desc" id="demo-desc">—</p>
-                <button class="btn-ghost small full" id="demo-load">Charger la démo</button>
+                <button class="btn-ghost small full" id="demo-load" data-i18n-en="Load demo" data-i18n-fr="Charger la démo">Charger la démo</button>
               </div>
 
               <div class="lib-divider"></div>
 
               <div class="lib-group">
-                <span class="lib-label">Mes créations</span>
+                <span class="lib-label" data-i18n-en="My creations" data-i18n-fr="Mes créations">Mes créations</span>
                 <select id="saved-select" class="lib-select">
-                  <option value="">— Aucune sauvegarde —</option>
+                  <option value="" data-i18n-en="— No saves yet —" data-i18n-fr="— Aucune sauvegarde —">— Aucune sauvegarde —</option>
                 </select>
                 <div class="lib-row">
-                  <button class="btn-ghost small" id="saved-load">Charger</button>
-                  <button class="btn-ghost small" id="saved-delete">Suppr</button>
+                  <button class="btn-ghost small" id="saved-load" data-i18n-en="Load" data-i18n-fr="Charger">Charger</button>
+                  <button class="btn-ghost small" id="saved-delete" data-i18n-en="Delete" data-i18n-fr="Suppr">Suppr</button>
                 </div>
               </div>
 
               <div class="lib-group">
-                <input type="text" id="save-name" class="lib-input" placeholder="Nom du graph…" maxlength="40" />
-                <button class="btn-primary small full" id="save-current">+ Sauvegarder</button>
+                <input type="text" id="save-name" class="lib-input" placeholder="Nom du graph…" maxlength="40" data-i18n-placeholder-en="Graph name…" data-i18n-placeholder-fr="Nom du graph…" />
+                <button class="btn-primary small full" id="save-current" data-i18n-en="+ Save" data-i18n-fr="+ Sauvegarder">+ Sauvegarder</button>
               </div>
             </div>
 
             <div class="side-section">
-              <h3>Groupes</h3>
-              <p class="lib-desc">Sélectionne 2+ nodes (<kbd>Shift</kbd>+clic) → "Grouper" pour créer un node composite réutilisable.</p>
-              <p class="lib-desc" id="group-selection-status">0 node(s) sélectionné(s).</p>
-              <input type="text" id="group-name" class="lib-input" placeholder="Nom du groupe…" maxlength="32" />
-              <button class="btn-primary small full" id="group-create" disabled>⊕ Grouper la sélection</button>
+              <h3 data-i18n-en="Groups" data-i18n-fr="Groupes">Groupes</h3>
+              <p class="lib-desc" data-i18n-html-en='Select 2+ nodes (<kbd>Shift</kbd>+click) → "Group" to create a reusable composite node.' data-i18n-html-fr='Sélectionne 2+ nodes (<kbd>Shift</kbd>+clic) → "Grouper" pour créer un node composite réutilisable.'>Sélectionne 2+ nodes (<kbd>Shift</kbd>+clic) → "Grouper" pour créer un node composite réutilisable.</p>
+              <p class="lib-desc" id="group-selection-status" data-i18n-en="0 node(s) selected." data-i18n-fr="0 node(s) sélectionné(s).">0 node(s) sélectionné(s).</p>
+              <input type="text" id="group-name" class="lib-input" placeholder="Nom du groupe…" maxlength="32" data-i18n-placeholder-en="Group name…" data-i18n-placeholder-fr="Nom du groupe…" />
+              <button class="btn-primary small full" id="group-create" disabled data-i18n-en="⊕ Group selection" data-i18n-fr="⊕ Grouper la sélection">⊕ Grouper la sélection</button>
 
               <div class="lib-divider"></div>
 
-              <span class="lib-label">Groupes existants</span>
+              <span class="lib-label" data-i18n-en="Existing groups" data-i18n-fr="Groupes existants">Groupes existants</span>
               <select id="group-select" class="lib-select">
-                <option value="">— Aucun groupe —</option>
+                <option value="" data-i18n-en="— No group —" data-i18n-fr="— Aucun groupe —">— Aucun groupe —</option>
               </select>
               <div class="lib-row">
-                <button class="btn-ghost small" id="group-ungroup">Dégrouper</button>
-                <button class="btn-ghost small" id="group-delete">Suppr.</button>
+                <button class="btn-ghost small" id="group-ungroup" data-i18n-en="Ungroup" data-i18n-fr="Dégrouper">Dégrouper</button>
+                <button class="btn-ghost small" id="group-delete" data-i18n-en="Delete" data-i18n-fr="Suppr.">Suppr.</button>
               </div>
             </div>
 
             <div class="side-section">
-              <h3>Actions</h3>
-              <button class="btn-ghost small full" id="canvas-run">▶ Exécuter</button>
-              <button class="btn-ghost small full" id="canvas-clear">Vider le canvas</button>
+              <h3 data-i18n-en="Actions" data-i18n-fr="Actions">Actions</h3>
+              <button class="btn-ghost small full" id="canvas-run" data-i18n-en="▶ Run" data-i18n-fr="▶ Exécuter">▶ Exécuter</button>
+              <button class="btn-ghost small full" id="canvas-clear" data-i18n-en="Clear canvas" data-i18n-fr="Vider le canvas">Vider le canvas</button>
             </div>
           </aside>
           <div class="nodal-main">
@@ -612,20 +614,20 @@
                 <div id="canvas-nodes" class="canvas-nodes"></div>
               </div>
               <div class="canvas-zoom-controls">
-                <button id="zoom-out" title="Zoom -">−</button>
-                <button id="zoom-reset" title="Reset zoom" class="zoom-pct">100%</button>
-                <button id="zoom-in" title="Zoom +">+</button>
-                <button id="zoom-fit" title="Adapter à la fenêtre">⇲</button>
+                <button id="zoom-out" data-i18n-title-en="Zoom out" data-i18n-title-fr="Zoom −" title="Zoom −">−</button>
+                <button id="zoom-reset" data-i18n-title-en="Reset zoom" data-i18n-title-fr="Reset zoom" title="Reset zoom" class="zoom-pct">100%</button>
+                <button id="zoom-in" data-i18n-title-en="Zoom in" data-i18n-title-fr="Zoom +" title="Zoom +">+</button>
+                <button id="zoom-fit" data-i18n-title-en="Fit to view" data-i18n-title-fr="Adapter à la fenêtre" title="Adapter à la fenêtre">⇲</button>
               </div>
-              <div class="canvas-help">
+              <div class="canvas-help" data-i18n-html-en='<kbd>scroll</kbd> zoom • <kbd>drag background</kbd> pan • <kbd>port→port</kbd> connect • <kbd>Del</kbd> remove' data-i18n-html-fr='<kbd>scroll</kbd> zoomer • <kbd>glisser le fond</kbd> panner • <kbd>port→port</kbd> connecter • <kbd>Suppr</kbd> supprimer'>
                 <kbd>scroll</kbd> zoomer • <kbd>glisser le fond</kbd> panner •
                 <kbd>port→port</kbd> connecter • <kbd>Suppr</kbd> supprimer
               </div>
             </div>
             <div class="nodal-results">
               <div class="results-header">
-                <h3>Résultats</h3>
-                <span class="subtle" id="canvas-status">Prêt</span>
+                <h3 data-i18n-en="Results" data-i18n-fr="Résultats">Résultats</h3>
+                <span class="subtle" id="canvas-status" data-i18n-en="Ready" data-i18n-fr="Prêt">Prêt</span>
               </div>
               <div id="nodal-results-body" class="results-body"></div>
             </div>
@@ -636,19 +638,19 @@
       <nav class="tabbar">
         <button class="tab" data-tab="home">
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 12 12 3l9 9v9h-6v-6h-6v6H3z" fill="currentColor"/></svg>
-          <span>Home</span>
+          <span data-i18n-en="Home" data-i18n-fr="Accueil">Home</span>
         </button>
         <button class="tab" data-tab="portfolio">
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18v12H3z M3 10h18" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-          <span>Portefeuille</span>
+          <span data-i18n-en="Portfolio" data-i18n-fr="Portefeuille">Portefeuille</span>
         </button>
         <button class="tab" data-tab="auto-analysis">
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 2v10l7 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-          <span>Analyse</span>
+          <span data-i18n-en="Analysis" data-i18n-fr="Analyse">Analyse</span>
         </button>
         <button class="tab" data-tab="nodal">
           <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="5" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 7l4 9M17 7l-4 9" stroke="currentColor" stroke-width="2"/></svg>
-          <span>Nodal</span>
+          <span data-i18n-en="Nodal" data-i18n-fr="Nodal">Nodal</span>
         </button>
       </nav>
     </div>
@@ -661,14 +663,14 @@
       <div class="cmdk-card">
         <div class="cmdk-input-wrap">
           <span class="cmdk-icon">⌘</span>
-          <input type="text" id="cmdk-input" placeholder="Rechercher : ticker, node, démo, action, métrique…" autocomplete="off" />
+          <input type="text" id="cmdk-input" placeholder="Rechercher : ticker, node, démo, action, métrique…" autocomplete="off" data-i18n-placeholder-en="Search: ticker, node, demo, action, metric…" data-i18n-placeholder-fr="Rechercher : ticker, node, démo, action, métrique…" />
           <kbd>esc</kbd>
         </div>
         <div id="cmdk-results" class="cmdk-results"></div>
         <div class="cmdk-footer">
-          <span><kbd>↑↓</kbd> Naviguer</span>
-          <span><kbd>↵</kbd> Sélectionner</span>
-          <span><kbd>⌘K</kbd> Toggle</span>
+          <span data-i18n-html-en="<kbd>↑↓</kbd> Navigate" data-i18n-html-fr="<kbd>↑↓</kbd> Naviguer"><kbd>↑↓</kbd> Naviguer</span>
+          <span data-i18n-html-en="<kbd>↵</kbd> Select" data-i18n-html-fr="<kbd>↵</kbd> Sélectionner"><kbd>↵</kbd> Sélectionner</span>
+          <span data-i18n-html-en="<kbd>⌘K</kbd> Toggle" data-i18n-html-fr="<kbd>⌘K</kbd> Toggle"><kbd>⌘K</kbd> Toggle</span>
         </div>
       </div>
     </div>
@@ -676,24 +678,25 @@
     <!-- Add asset modal -->
     <div id="modal-add-asset" class="modal hidden">
       <div class="modal-card">
-        <h3>Renseigner un actif</h3>
-        <p class="subtle">Choisis un ticker et une quantité.</p>
+        <h3 data-i18n-en="Add an asset" data-i18n-fr="Renseigner un actif">Renseigner un actif</h3>
+        <p class="subtle" data-i18n-en="Pick a ticker and a quantity." data-i18n-fr="Choisis un ticker et une quantité.">Choisis un ticker et une quantité.</p>
         <label>
-          <span>Ticker</span>
+          <span data-i18n-en="Ticker" data-i18n-fr="Ticker">Ticker</span>
           <select id="modal-ticker"></select>
         </label>
         <label>
-          <span>Quantité</span>
+          <span data-i18n-en="Quantity" data-i18n-fr="Quantité">Quantité</span>
           <input type="number" id="modal-quantity" value="10" min="1" />
         </label>
         <div class="row-buttons">
-          <button class="btn-ghost" id="modal-cancel">Annuler</button>
-          <button class="btn-primary" id="modal-confirm">Ajouter</button>
+          <button class="btn-ghost" id="modal-cancel" data-i18n-en="Cancel" data-i18n-fr="Annuler">Annuler</button>
+          <button class="btn-primary" id="modal-confirm" data-i18n-en="Add" data-i18n-fr="Ajouter">Ajouter</button>
         </div>
       </div>
     </div>
   </div>
 
+  <script src="lang.js"></script>
   <script src="data.js"></script>
   <script src="canvas.js"></script>
   <script src="app.js"></script>

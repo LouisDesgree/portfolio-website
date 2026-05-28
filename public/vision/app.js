@@ -5,12 +5,27 @@
 (function () {
   "use strict";
 
+  // i18n shortcut
+  const tt = (en, fr) => VisionI18n.t(en, fr);
+
   const state = {
     apiKey: null,
     portfolio: VisionData.INITIAL_PORTFOLIO.slice(),
     currentScreen: "welcome",
     currentTab: "home",
   };
+
+  // Re-render everything on language change
+  document.addEventListener("vision:langchange", () => {
+    refreshAll();
+  });
+  function refreshAll() {
+    renderHome();
+    renderPortfolio();
+    renderAutoAnalysis();
+    // Re-render nodal palette + readouts + result tiles
+    if (window.VisionCanvas?.refresh) VisionCanvas.refresh();
+  }
 
   // ============================================================
   // Navigation
@@ -66,19 +81,19 @@
     sumEl.innerHTML = `
       <div class="stats-grid">
         <div class="stat">
-          <div class="stat-label">Valeur totale</div>
+          <div class="stat-label">${tt("Total value", "Valeur totale")}</div>
           <div class="stat-value">${money(totalVal)}</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Performance 1A</div>
+          <div class="stat-label">${tt("1Y performance", "Performance 1A")}</div>
           <div class="stat-value" style="color:${delta >= 0 ? 'var(--success)' : 'var(--danger)'}">${pct(delta)}</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Meilleur actif</div>
+          <div class="stat-label">${tt("Top performer", "Meilleur actif")}</div>
           <div class="stat-value">${best.ticker} <span style="font-size:13px;color:var(--success)">${pct(best.stats.change_pct)}</span></div>
         </div>
         <div class="stat">
-          <div class="stat-label">Plus faible</div>
+          <div class="stat-label">${tt("Worst", "Plus faible")}</div>
           <div class="stat-value">${worst.ticker} <span style="font-size:13px;color:var(--danger)">${pct(worst.stats.change_pct)}</span></div>
         </div>
       </div>
@@ -162,7 +177,7 @@
         <div class="ticker">${p.ticker}</div>
         <div class="name">${meta?.name || ""}</div>
         <div class="price">${money(stats.last)}</div>
-        <div class="delta ${change >= 0 ? "up" : "down"}">${pct(change)} 1A</div>
+        <div class="delta ${change >= 0 ? "up" : "down"}">${pct(change)} ${tt("1Y", "1A")}</div>
         <div class="spark-wrap"><canvas class="sparkline" id="spark-${p.ticker}"></canvas></div>
       `;
       cards.appendChild(card);
@@ -1046,7 +1061,7 @@
     if (!ticker || !qty) return;
     state.portfolio.push({ ticker, qty });
     closeModal();
-    toast(`${ticker} × ${qty} ajouté.`, "success");
+    toast(tt(`${ticker} × ${qty} added.`, `${ticker} × ${qty} ajouté.`), "success");
     renderPortfolio();
     renderHome();
   }
@@ -1061,7 +1076,11 @@
     return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
   }
   function sentimentLabel(s) {
-    return { pos: "positif", neg: "négatif", neu: "neutre" }[s] || s;
+    return {
+      pos: tt("positive", "positif"),
+      neg: tt("negative", "négatif"),
+      neu: tt("neutral", "neutre"),
+    }[s] || s;
   }
   function ctxGradient(ctx) {
     const g = ctx.createLinearGradient(0, 0, 0, 200);
@@ -1096,6 +1115,11 @@
     document.querySelectorAll("[data-go]").forEach(b => {
       b.addEventListener("click", () => show(b.dataset.go));
     });
+
+    // Language toggle
+    document.querySelectorAll("[data-lang-btn]").forEach(b => {
+      b.addEventListener("click", () => VisionI18n.setLang(b.dataset.langBtn));
+    });
     document.querySelectorAll(".tab").forEach(t => {
       t.addEventListener("click", () => showTab(t.dataset.tab));
     });
@@ -1111,7 +1135,7 @@
         state.apiKey = key;
         VisionCanvas.setApiKey(true);
         updateApiStatus(true);
-        toast("Clé IA enregistrée ✓", "success");
+        toast(tt("AI key saved ✓", "Clé IA enregistrée ✓"), "success");
       }
       show("shell");
     });
@@ -1123,11 +1147,11 @@
     // Canvas controls
     document.getElementById("canvas-run").addEventListener("click", () => {
       VisionCanvas.runGraph();
-      toast("Graph exécuté");
+      toast(tt("Graph executed", "Graph exécuté"));
     });
     document.getElementById("canvas-clear").addEventListener("click", () => {
       VisionCanvas.clear();
-      toast("Canvas vidé");
+      toast(tt("Canvas cleared", "Canvas vidé"));
     });
 
     // Bibliothèque : démos
@@ -1150,7 +1174,7 @@
       const d = VisionCanvas.DEMOS[i];
       if (!d) return;
       VisionCanvas.loadDemo(i);
-      toast(`Démo "${d.name}" chargée ✓`, "success");
+      toast(tt(`Demo "${d.name}" loaded ✓`, `Démo "${d.name}" chargée ✓`), "success");
     });
 
     // Bibliothèque : sauvegardes
@@ -1179,28 +1203,28 @@
 
     document.getElementById("saved-load").addEventListener("click", () => {
       const name = savedSelect.value;
-      if (!name) return toast("Aucune sauvegarde sélectionnée", "error");
-      if (VisionCanvas.loadSaved(name)) toast(`"${name}" chargé ✓`, "success");
-      else toast("Échec du chargement", "error");
+      if (!name) return toast(tt("No save selected", "Aucune sauvegarde sélectionnée"), "error");
+      if (VisionCanvas.loadSaved(name)) toast(tt(`"${name}" loaded ✓`, `"${name}" chargé ✓`), "success");
+      else toast(tt("Load failed", "Échec du chargement"), "error");
     });
     document.getElementById("saved-delete").addEventListener("click", () => {
       const name = savedSelect.value;
       if (!name) return;
-      if (!confirm(`Supprimer "${name}" ?`)) return;
+      if (!confirm(tt(`Delete "${name}"?`, `Supprimer "${name}" ?`))) return;
       VisionCanvas.deleteSaved(name);
       refreshSaved();
-      toast(`"${name}" supprimé`);
+      toast(tt(`"${name}" deleted`, `"${name}" supprimé`));
     });
     document.getElementById("save-current").addEventListener("click", () => {
       const name = saveNameInput.value.trim();
-      if (!name) return toast("Donne un nom au graph", "error");
+      if (!name) return toast(tt("Give the graph a name", "Donne un nom au graph"), "error");
       if (VisionCanvas.saveGraph(name)) {
         saveNameInput.value = "";
         refreshSaved();
         savedSelect.value = name;
-        toast(`"${name}" sauvegardé ✓`, "success");
+        toast(tt(`"${name}" saved ✓`, `"${name}" sauvegardé ✓`), "success");
       } else {
-        toast("Échec de la sauvegarde", "error");
+        toast(tt("Save failed", "Échec de la sauvegarde"), "error");
       }
     });
     saveNameInput.addEventListener("keydown", e => {
@@ -1254,7 +1278,10 @@
 
     VisionCanvas.onSelectionChange = sel => {
       const n = sel.size;
-      groupStatusEl.textContent = `${n} node${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}.`;
+      groupStatusEl.textContent = tt(
+        `${n} node${n !== 1 ? "s" : ""} selected.`,
+        `${n} node${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}.`
+      );
       groupCreateBtn.disabled = n < 2 || !groupNameInput.value.trim();
     };
     groupNameInput.addEventListener("input", () => {
@@ -1280,15 +1307,15 @@
       if (!confirm(`Supprimer le groupe "${name}" ?\n\nLes graphs qui l'utilisent ne fonctionneront plus.`)) return;
       VisionCanvas.deleteGroup(name);
       refreshGroupList();
-      toast(`"${name}" supprimé`);
+      toast(tt(`"${name}" deleted`, `"${name}" supprimé`));
     });
     document.getElementById("group-ungroup").addEventListener("click", () => {
       const ids = VisionCanvas.selectedIds;
-      if (!ids.length) return toast("Sélectionne un node groupe", "error");
+      if (!ids.length) return toast(tt("Select a group node", "Sélectionne un node groupe"), "error");
       let ok = 0;
       ids.forEach(id => { if (VisionCanvas.ungroupNode(id)) ok++; });
-      if (ok > 0) toast(`${ok} groupe(s) dégroupé(s)`, "success");
-      else toast("Pas de groupe dans la sélection", "error");
+      if (ok > 0) toast(tt(`${ok} group(s) ungrouped`, `${ok} groupe(s) dégroupé(s)`), "success");
+      else toast(tt("No group in selection", "Pas de groupe dans la sélection"), "error");
     });
   }
 
@@ -1551,8 +1578,8 @@
     const el = document.getElementById("api-status");
     el.classList.toggle("live", active);
     el.querySelector(".api-status-label").textContent = active
-      ? "IA activée"
-      : "Mode démo (pas de clé IA)";
+      ? tt("AI enabled", "IA activée")
+      : tt("Demo mode (no AI key)", "Mode démo (pas de clé IA)");
   }
 
   // ============================================================

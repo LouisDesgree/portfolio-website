@@ -5,6 +5,9 @@
 (function () {
   "use strict";
 
+  // i18n shortcut, fallback to FR if VisionI18n not loaded yet
+  const tt = (en, fr) => (window.VisionI18n ? VisionI18n.t(en, fr) : fr);
+
   // ============================================================
   // Node type registry
   // ============================================================
@@ -1708,7 +1711,7 @@
     const inSpec = NODE_TYPES[toNode.type].inputs.find(i => i.name === toPort);
     if (!outSpec || !inSpec) return false;
     if (outSpec.type !== inSpec.type) {
-      showToast(`Incompatible: ${outSpec.type} → ${inSpec.type}`, "error");
+      showToast(tt(`Incompatible: ${outSpec.type} → ${inSpec.type}`, `Incompatible : ${outSpec.type} → ${inSpec.type}`), "error");
       return false;
     }
     // Pas d'auto-connexion
@@ -2447,7 +2450,7 @@
     const outputs = canvas.nodes.filter(n => NODE_TYPES[n.type].category === "output");
     if (!outputs.length) {
       canvas.resultsEl.innerHTML = `<div class="subtle" style="grid-column: 1/-1; padding: 8px;">Ajoute un node <strong>Chart</strong>, <strong>KPI</strong> ou <strong>Verdict</strong> pour voir les résultats ici, avec leur interprétation.</div>`;
-      canvas.statusEl.textContent = "Prêt";
+      canvas.statusEl.textContent = tt("Ready", "Prêt");
       return;
     }
     outputs.forEach(n => {
@@ -2471,7 +2474,9 @@
       }
     });
     const ok = outputs.every(n => !n.error);
-    canvas.statusEl.textContent = ok ? `✓ ${outputs.length} output(s) calculé(s)` : "⚠ Erreur graph";
+    canvas.statusEl.textContent = ok
+      ? tt(`✓ ${outputs.length} output(s) computed`, `✓ ${outputs.length} output(s) calculé(s)`)
+      : tt("⚠ Graph error", "⚠ Erreur graph");
   }
 
   // ============================================================
@@ -2890,10 +2895,10 @@
 
   function createGroupFromSelection(selectedIds, name) {
     if (!name) return false;
-    if (NODE_TYPES[name]) { showToast(`Le nom "${name}" est déjà pris`, "error"); return false; }
+    if (NODE_TYPES[name]) { showToast(tt(`Name "${name}" already taken`, `Le nom "${name}" est déjà pris`), "error"); return false; }
     const idSet = new Set(selectedIds);
     const selected = canvas.nodes.filter(n => idSet.has(n.id));
-    if (selected.length < 2) { showToast("Sélectionne au moins 2 nodes", "error"); return false; }
+    if (selected.length < 2) { showToast(tt("Select at least 2 nodes", "Sélectionne au moins 2 nodes"), "error"); return false; }
 
     const minX = Math.min(...selected.map(n => n.x));
     const minY = Math.min(...selected.map(n => n.y));
@@ -2994,7 +2999,7 @@
 
     // Add a single group node at minX, minY
     const groupNode = addNode(name, minX, minY, undefined, { skipRun: true });
-    if (!groupNode) { showToast("Impossible de créer le node groupe", "error"); return false; }
+    if (!groupNode) { showToast(tt("Could not create group node", "Impossible de créer le node groupe"), "error"); return false; }
 
     // Re-wire external edges to group ports
     for (const inp of inputs) {
@@ -3012,7 +3017,7 @@
     selectNode(groupNode.id, false);
     renderPalette();
     runGraph();
-    showToast(`Groupe "${name}" créé (${innerNodes.length} nodes)`, "success");
+    showToast(tt(`Group "${name}" created (${innerNodes.length} nodes)`, `Groupe "${name}" créé (${innerNodes.length} nodes)`), "success");
     return true;
   }
 
@@ -3020,7 +3025,7 @@
     const node = canvas.nodes.find(n => n.id === nodeId);
     if (!node) return false;
     const spec = NODE_TYPES[node.type];
-    if (!spec?.isGroup) { showToast("Pas un groupe", "error"); return false; }
+    if (!spec?.isGroup) { showToast(tt("Not a group", "Pas un groupe"), "error"); return false; }
     const def = spec._def;
 
     // Map: oldInnerId → newId
@@ -3103,6 +3108,7 @@
     setApiKey,
     resetView,
     fitView,
+    refresh: () => { redrawAll(); },
     nodeTypes: NODE_TYPES,
     DEMOS,
     saveGraph,

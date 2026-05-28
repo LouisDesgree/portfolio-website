@@ -338,6 +338,32 @@ kbd {
 }
 .api-status.live .dot { background: var(--success); box-shadow: 0 0 8px var(--success); }
 
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+.lang-toggle button {
+  background: transparent;
+  color: var(--text-dim);
+  padding: 5px 11px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 0;
+}
+.lang-toggle button:hover { color: var(--text-2); }
+.lang-toggle button.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
 .user-avatar {
   width: 32px; height: 32px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
