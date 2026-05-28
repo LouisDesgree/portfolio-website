@@ -1,6 +1,6 @@
 /* ============================================================
-   Vision — Mock financial data
-   Reproductible random walk per ticker — pas de réseau, demo-ready.
+   Vision, Mock financial data
+   Reproductible random walk per ticker, pas de réseau, demo-ready.
    ============================================================ */
 
 (function () {
@@ -45,16 +45,16 @@
   const DATES = makeDateRange(DAYS);
 
   const TICKERS = [
-    { ticker: "AAPL", name: "Apple Inc.",       sector: "Tech",     seed: 11, start: 178, vol: 0.018, drift: 0.0006 },
-    { ticker: "MSFT", name: "Microsoft Corp.",  sector: "Tech",     seed: 22, start: 410, vol: 0.015, drift: 0.0008 },
-    { ticker: "GOOG", name: "Alphabet Inc.",    sector: "Tech",     seed: 33, start: 140, vol: 0.019, drift: 0.0005 },
-    { ticker: "TSLA", name: "Tesla, Inc.",      sector: "Auto",     seed: 44, start: 240, vol: 0.038, drift: 0.0001 },
-    { ticker: "NVDA", name: "NVIDIA Corp.",     sector: "Tech",     seed: 55, start: 480, vol: 0.030, drift: 0.0014 },
-    { ticker: "META", name: "Meta Platforms",   sector: "Tech",     seed: 66, start: 480, vol: 0.022, drift: 0.0007 },
-    { ticker: "JPM",  name: "JPMorgan Chase",   sector: "Finance",  seed: 77, start: 195, vol: 0.014, drift: 0.0003 },
-    { ticker: "XOM",  name: "Exxon Mobil",      sector: "Énergie",  seed: 88, start: 115, vol: 0.016, drift: 0.0002 },
-    { ticker: "JNJ",  name: "Johnson & Johnson",sector: "Santé",    seed: 99, start: 152, vol: 0.011, drift: 0.0002 },
-    { ticker: "SPY",  name: "S&P 500 ETF",      sector: "Indice",   seed: 100, start: 510, vol: 0.010, drift: 0.0004 },
+    { ticker: "AAPL", name: "Apple Inc.", sector: "Tech", seed: 11, start: 178, vol: 0.018, drift: 0.0006 },
+    { ticker: "MSFT", name: "Microsoft Corp.", sector: "Tech", seed: 22, start: 410, vol: 0.015, drift: 0.0008 },
+    { ticker: "GOOG", name: "Alphabet Inc.", sector: "Tech", seed: 33, start: 140, vol: 0.019, drift: 0.0005 },
+    { ticker: "TSLA", name: "Tesla, Inc.", sector: "Auto", seed: 44, start: 240, vol: 0.038, drift: 0.0001 },
+    { ticker: "NVDA", name: "NVIDIA Corp.", sector: "Tech", seed: 55, start: 480, vol: 0.030, drift: 0.0014 },
+    { ticker: "META", name: "Meta Platforms", sector: "Tech", seed: 66, start: 480, vol: 0.022, drift: 0.0007 },
+    { ticker: "JPM", name: "JPMorgan Chase", sector: "Finance", seed: 77, start: 195, vol: 0.014, drift: 0.0003 },
+    { ticker: "XOM", name: "Exxon Mobil", sector: "Énergie", seed: 88, start: 115, vol: 0.016, drift: 0.0002 },
+    { ticker: "JNJ", name: "Johnson & Johnson",sector: "Santé", seed: 99, start: 152, vol: 0.011, drift: 0.0002 },
+    { ticker: "SPY", name: "S&P 500 ETF", sector: "Indice", seed: 100, start: 510, vol: 0.010, drift: 0.0004 },
   ];
 
   const PRICES = {};
@@ -62,15 +62,15 @@
     PRICES[t.ticker] = generatePrices(t.seed, t.start, DAYS, t.vol, t.drift);
   });
 
-  // Headlines pour les actus (mock — version Home/Portfolio)
+  // Headlines pour les actus (mock, version Home/Portfolio)
   const NEWS = [
     { ticker: "AAPL", title: "Apple dépasse les attentes au T1, services en forte croissance.", sentiment: "pos", date: "2026-05-12" },
-    { ticker: "NVDA", title: "NVIDIA annonce une nouvelle puce IA — actions en hausse pré-marché.", sentiment: "pos", date: "2026-05-12" },
+    { ticker: "NVDA", title: "NVIDIA annonce une nouvelle puce IA, actions en hausse pré-marché.", sentiment: "pos", date: "2026-05-12" },
     { ticker: "TSLA", title: "Tesla rappelle 50k véhicules pour défaut logiciel.", sentiment: "neg", date: "2026-05-11" },
     { ticker: "MSFT", title: "Microsoft intègre Claude à Copilot pour entreprise.", sentiment: "pos", date: "2026-05-11" },
     { ticker: "META", title: "Meta lance ses lunettes AR en Europe au T3.", sentiment: "pos", date: "2026-05-10" },
-    { ticker: "JPM",  title: "JPMorgan révise ses prévisions de hausse de taux à la baisse.", sentiment: "neu", date: "2026-05-10" },
-    { ticker: "XOM",  title: "Pétrole : OPEP+ maintient les quotas, brut à 78$.", sentiment: "neu", date: "2026-05-09" },
+    { ticker: "JPM", title: "JPMorgan révise ses prévisions de hausse de taux à la baisse.", sentiment: "neu", date: "2026-05-10" },
+    { ticker: "XOM", title: "Pétrole : OPEP+ maintient les quotas, brut à 78$.", sentiment: "neu", date: "2026-05-09" },
     { ticker: "GOOG", title: "Antitrust : Alphabet conteste l'amende européenne.", sentiment: "neg", date: "2026-05-09" },
   ];
 
@@ -79,7 +79,7 @@
   const NEWS_DB = [
     // Central banks
     { date: "2026-05-12", title: "Powell évoque une baisse de taux possible en juin", source: "Reuters", category: "central-banks", sentiment: 0.6, relevance: 0.92, tickers: [], sectors: ["Finance", "Tech"] },
-    { date: "2026-05-08", title: "BCE maintient ses taux à 3.5% — Lagarde rassurante sur l'inflation", source: "Bloomberg", category: "central-banks", sentiment: 0.2, relevance: 0.7, tickers: [], sectors: ["Finance"] },
+    { date: "2026-05-08", title: "BCE maintient ses taux à 3.5%, Lagarde rassurante sur l'inflation", source: "Bloomberg", category: "central-banks", sentiment: 0.2, relevance: 0.7, tickers: [], sectors: ["Finance"] },
     { date: "2026-04-28", title: "Fed minutes : la baisse de taux pourrait être plus progressive que prévu", source: "WSJ", category: "central-banks", sentiment: -0.15, relevance: 0.75, tickers: [], sectors: [] },
     // Géopolitique
     { date: "2026-05-13", title: "Tarifs USA-Chine : nouvelle escalade sur les semi-conducteurs", source: "FT", category: "geopolitics", sentiment: -0.65, relevance: 0.95, tickers: ["NVDA"], sectors: ["Tech"] },
@@ -91,7 +91,7 @@
     { date: "2026-05-06", title: "France : motion de censure rejetée, gouvernement maintenu", source: "AFP", category: "politics-eu", sentiment: 0.10, relevance: 0.5, tickers: [], sectors: [] },
     { date: "2026-04-22", title: "Royaume-Uni : Premier ministre annonce un plan d'investissement de 50Md£", source: "Reuters", category: "politics-eu", sentiment: 0.35, relevance: 0.55, tickers: [], sectors: [] },
     // Tech / IA
-    { date: "2026-05-12", title: "NVIDIA annonce une nouvelle puce IA — actions en hausse pré-marché", source: "Bloomberg", category: "tech", sentiment: 0.85, relevance: 0.9, tickers: ["NVDA"], sectors: ["Tech"] },
+    { date: "2026-05-12", title: "NVIDIA annonce une nouvelle puce IA, actions en hausse pré-marché", source: "Bloomberg", category: "tech", sentiment: 0.85, relevance: 0.9, tickers: ["NVDA"], sectors: ["Tech"] },
     { date: "2026-05-11", title: "Microsoft intègre Claude à Copilot pour l'entreprise", source: "TechCrunch", category: "tech", sentiment: 0.6, relevance: 0.75, tickers: ["MSFT"], sectors: ["Tech"] },
     { date: "2026-05-10", title: "Meta lance ses lunettes AR en Europe au T3", source: "The Verge", category: "tech", sentiment: 0.5, relevance: 0.7, tickers: ["META"], sectors: ["Tech"] },
     { date: "2026-05-12", title: "Apple dépasse les attentes au T1, services en forte croissance", source: "Reuters", category: "earnings", sentiment: 0.70, relevance: 0.8, tickers: ["AAPL"], sectors: ["Tech"] },
@@ -116,7 +116,7 @@
     { date: "2026-05-02", title: "Emploi US : 175k créations en avril, taux à 4.2%", source: "BLS", category: "macro", sentiment: 0.40, relevance: 0.85, tickers: [], sectors: [] },
   ];
 
-  // Sentiment moyens (mock — ce que renverrait l'IA en prod)
+  // Sentiment moyens (mock, ce que renverrait l'IA en prod)
   const SENTIMENT = {
     AAPL: 0.62, MSFT: 0.70, GOOG: 0.40, TSLA: -0.30, NVDA: 0.85,
     META: 0.55, JPM: 0.10, XOM: 0.05, JNJ: 0.30, SPY: 0.45,
@@ -127,7 +127,7 @@
     { ticker: "AAPL", qty: 12 },
     { ticker: "NVDA", qty: 5 },
     { ticker: "MSFT", qty: 8 },
-    { ticker: "JPM",  qty: 10 },
+    { ticker: "JPM", qty: 10 },
   ];
 
   // === API publique ===

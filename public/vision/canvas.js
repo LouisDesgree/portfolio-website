@@ -1,5 +1,5 @@
 /* ============================================================
-   Vision — Nodal canvas
+   Vision, Nodal canvas
    ============================================================ */
 
 (function () {
@@ -12,11 +12,11 @@
   // Node type registry
   // ============================================================
   // Chaque node a:
-  //   - title, category
-  //   - inputs:  [{ name, type }]  où type ∈ { series, returns, stats, scalar, sentiment }
-  //   - outputs: [{ name, type }]
-  //   - params:  [{ name, label, type, default, options? }]
-  //   - compute(inputs, params, ctx): renvoie un dict { outputName: value }
+  // - title, category
+  // - inputs: [{ name, type }] où type ∈ { series, returns, stats, scalar, sentiment }
+  // - outputs: [{ name, type }]
+  // - params: [{ name, label, type, default, options? }]
+  // - compute(inputs, params, ctx): renvoie un dict { outputName: value }
   //
   // Output null = node ne peut pas calculer (input manquant).
 
@@ -44,7 +44,7 @@
       },
       readout(out) {
         const s = out.prices;
-        if (!s) return "—";
+        if (!s) return "";
         return `${s.ticker}\n${s.values.length} pts\nLast: ${s.values[s.values.length - 1].toFixed(2)}`;
       },
     },
@@ -72,7 +72,7 @@
       },
       readout(out) {
         const s = out.out;
-        if (!s) return "—";
+        if (!s) return "";
         return `${s.values.length} valid\n${s.cleaned} dropped`;
       },
     },
@@ -96,7 +96,7 @@
       },
       readout(out) {
         const s = out.out;
-        if (!s) return "—";
+        if (!s) return "";
         const mean = s.values.reduce((a, b) => a + b, 0) / s.values.length;
         return `n=${s.values.length}\nμ=${(mean * 100).toFixed(3)}%/j`;
       },
@@ -124,7 +124,7 @@
       },
       readout(out) {
         const s = out.out;
-        if (!s) return "—";
+        if (!s) return "";
         return `${s.ticker}\nlast: ${s.values[s.values.length - 1].toFixed(2)}`;
       },
     },
@@ -183,10 +183,10 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         return [
           `Return: ${s.ann_return_pct.toFixed(1)}%/an`,
-          `Vol:    ${s.ann_vol_pct.toFixed(1)}%`,
+          `Vol: ${s.ann_vol_pct.toFixed(1)}%`,
           `Sharpe: ${s.sharpe.toFixed(2)}`,
           `Max DD: ${s.max_drawdown_pct.toFixed(1)}%`,
         ].join("\n");
@@ -234,7 +234,7 @@
       },
       readout(out) {
         const c = out.corr;
-        if (!c) return "—";
+        if (!c) return "";
         return `${c.pair}\nρ = ${c.value.toFixed(3)}`;
       },
     },
@@ -306,7 +306,7 @@
       },
       readout(out) {
         const f = out.forecast;
-        if (!f) return "—";
+        if (!f) return "";
         return `${f.method}\n+${f.values.length}j\nend: ${f.values[f.values.length - 1].toFixed(2)}`;
       },
     },
@@ -365,7 +365,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         return `R²: ${s.r_squared.toFixed(3)}\nslope: ${s.slope.toFixed(3)}\nn=${s.n}`;
       },
     },
@@ -413,7 +413,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         return `${s.anomalies} anomalies\n${s.anomaly_rate_pct.toFixed(1)}%\nseuil z=${s.threshold}`;
       },
     },
@@ -468,7 +468,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         const edge = s.accuracy_pct - s.baseline_pct;
         const arrow = edge > 0 ? "↑" : edge < 0 ? "↓" : "→";
         return `Acc: ${s.accuracy_pct.toFixed(1)}%\nBase: ${s.baseline_pct.toFixed(1)}%\nEdge: ${arrow} ${edge.toFixed(1)}pt`;
@@ -552,7 +552,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         const vs = s.vs_buyhold_pct;
         return `${s.strategy}\nret: ${s.ann_return_pct.toFixed(1)}%/an\nvs B&H: ${vs >= 0 ? "+" : ""}${vs.toFixed(1)}%\n${s.trades} trades`;
       },
@@ -585,9 +585,9 @@
         // Rates 2022 : -25% sur 250j → drift -0.00115/j
         // Dot-com : Nasdaq -78% sur ~500j → drift -0.0030/j
         const SCENARIOS = {
-          "gfc-2008":   { name: "Crise 2008 (GFC)",   drift: -0.0052, vol: 0.016, days: 130 },
-          "covid-2020": { name: "Krach COVID 2020",   drift: -0.0125, vol: 0.028, days: 33  },
-          "rates-2022": { name: "Hausse taux 2022",   drift: -0.00115, vol: 0.012, days: 250 },
+          "gfc-2008": { name: "Crise 2008 (GFC)", drift: -0.0052, vol: 0.016, days: 130 },
+          "covid-2020": { name: "Krach COVID 2020", drift: -0.0125, vol: 0.028, days: 33 },
+          "rates-2022": { name: "Hausse taux 2022", drift: -0.00115, vol: 0.012, days: 250 },
           "dotcom-2000":{ name: "Bulle Dot-com 2000", drift: -0.0030, vol: 0.020, days: 500 },
         };
         const sc = SCENARIOS[params.scenario] || SCENARIOS["gfc-2008"];
@@ -655,7 +655,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         const recovStr = s.stress_recovered ? `récupéré en ${s.stress_recovery_days}j` : "non récupéré";
         return `${s.scenario}\nDD: ${s.stress_dd_pct.toFixed(0)}%\nFin: ${s.stress_end_pct >= 0 ? "+" : ""}${s.stress_end_pct.toFixed(0)}%\n${recovStr}`;
       },
@@ -688,7 +688,7 @@
       },
       readout(out) {
         const s = out.score;
-        if (!s) return "—";
+        if (!s) return "";
         const label = s.value > 0.3 ? "positif" : s.value < -0.3 ? "négatif" : "neutre";
         return `${s.ticker}\n${s.value.toFixed(2)} (${label})\n${s.source}`;
       },
@@ -741,7 +741,7 @@
       },
       readout(out) {
         const n = out.news;
-        if (!n) return "—";
+        if (!n) return "";
         const s = out.stats;
         return `${n.count} actu(s)\nsent: ${s.news_sentiment.toFixed(2)}\n${n.topic}`;
       },
@@ -790,7 +790,7 @@
       },
       readout(out) {
         const n = out.out;
-        if (!n) return "—";
+        if (!n) return "";
         return `${n.count} après filtrage`;
       },
     },
@@ -843,7 +843,7 @@
       },
       readout(out) {
         const s = out.score;
-        if (!s) return "—";
+        if (!s) return "";
         const lbl = s.value > 0.3 ? "positif" : s.value < -0.3 ? "négatif" : "neutre";
         return `${s.value.toFixed(2)} (${lbl})\nn=${out.stats.n}`;
       },
@@ -909,7 +909,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         return `news=${s.news_sentiment.toFixed(2)}\ndrift=${s.projected_drift_pct.toFixed(3)}%/j\nfin: ${s.projected_return_pct >= 0 ? "+" : ""}${s.projected_return_pct.toFixed(1)}%`;
       },
     },
@@ -978,7 +978,7 @@
       },
       readout(out) {
         const s = out.stats;
-        if (!s) return "—";
+        if (!s) return "";
         return `${s.scenario}\nDD: ${s.stress_dd_pct.toFixed(0)}%\nFin: ${s.stress_end_pct >= 0 ? "+" : ""}${s.stress_end_pct.toFixed(0)}%`;
       },
     },
@@ -1036,7 +1036,7 @@
       },
       readout(out) {
         const d = out.decision;
-        if (!d) return "—";
+        if (!d) return "";
         return `${d.action}\nscore: ${d.score.toFixed(2)}`;
       },
     },
@@ -1081,7 +1081,7 @@
         return { _value: s[params.metric], _label: params.metric };
       },
       readout(out) {
-        if (out._value == null) return "—";
+        if (out._value == null) return "";
         return `${out._label}\n${out._value.toFixed(2)}`;
       },
       displayType: "kpi",
@@ -1139,99 +1139,99 @@
       name: "Analyse simple",
       description: "Stats + verdict sur un actif unique (NVDA). Le pipeline complet à connaître.",
       nodes: [
-        { type: "Asset",     x: 40,  y: 40,  params: { ticker: "NVDA" } },
-        { type: "Clean",     x: 240, y: 40 },
-        { type: "Returns",   x: 440, y: 40 },
-        { type: "Stats",     x: 640, y: 40 },
-        { type: "Sentiment", x: 40,  y: 260, params: { ticker: "NVDA" } },
-        { type: "Verdict",   x: 860, y: 130 },
-        { type: "Chart",     x: 440, y: 260 },
-        { type: "KPI",       x: 860, y: 40,  params: { metric: "sharpe" } },
+        { type: "Asset", x: 40, y: 40, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 40 },
+        { type: "Returns", x: 440, y: 40 },
+        { type: "Stats", x: 640, y: 40 },
+        { type: "Sentiment", x: 40, y: 260, params: { ticker: "NVDA" } },
+        { type: "Verdict", x: 860, y: 130 },
+        { type: "Chart", x: 440, y: 260 },
+        { type: "KPI", x: 860, y: 40, params: { metric: "sharpe" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 6, toPort: "series" },
-        { fromIdx: 2, fromPort: "out",    toIdx: 3, toPort: "in" },
-        { fromIdx: 3, fromPort: "stats",  toIdx: 5, toPort: "stats" },
-        { fromIdx: 4, fromPort: "score",  toIdx: 5, toPort: "sentiment" },
-        { fromIdx: 3, fromPort: "stats",  toIdx: 7, toPort: "stats" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 6, toPort: "series" },
+        { fromIdx: 2, fromPort: "out", toIdx: 3, toPort: "in" },
+        { fromIdx: 3, fromPort: "stats", toIdx: 5, toPort: "stats" },
+        { fromIdx: 4, fromPort: "score", toIdx: 5, toPort: "sentiment" },
+        { fromIdx: 3, fromPort: "stats", toIdx: 7, toPort: "stats" },
       ],
     },
     {
       name: "Corrélation 2 actifs",
       description: "Quelle corrélation entre NVDA et MSFT ? Les deux actifs sont nettoyés, transformés en returns puis croisés.",
       nodes: [
-        { type: "Asset",       x: 40,  y: 40,  params: { ticker: "NVDA" } },
-        { type: "Clean",       x: 240, y: 40 },
-        { type: "Returns",     x: 440, y: 40 },
-        { type: "Asset",       x: 40,  y: 220, params: { ticker: "MSFT" } },
-        { type: "Clean",       x: 240, y: 220 },
-        { type: "Returns",     x: 440, y: 220 },
+        { type: "Asset", x: 40, y: 40, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 40 },
+        { type: "Returns", x: 440, y: 40 },
+        { type: "Asset", x: 40, y: 220, params: { ticker: "MSFT" } },
+        { type: "Clean", x: 240, y: 220 },
+        { type: "Returns", x: 440, y: 220 },
         { type: "Correlation", x: 640, y: 130 },
-        { type: "KPI",         x: 840, y: 130, params: { metric: "sharpe" } },
+        { type: "KPI", x: 840, y: 130, params: { metric: "sharpe" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
         { fromIdx: 3, fromPort: "prices", toIdx: 4, toPort: "in" },
-        { fromIdx: 4, fromPort: "out",    toIdx: 5, toPort: "in" },
-        { fromIdx: 2, fromPort: "out",    toIdx: 6, toPort: "a" },
-        { fromIdx: 5, fromPort: "out",    toIdx: 6, toPort: "b" },
+        { fromIdx: 4, fromPort: "out", toIdx: 5, toPort: "in" },
+        { fromIdx: 2, fromPort: "out", toIdx: 6, toPort: "a" },
+        { fromIdx: 5, fromPort: "out", toIdx: 6, toPort: "b" },
       ],
     },
     {
       name: "Backtest momentum",
       description: "Stratégie momentum vs buy & hold sur NVDA. Sortie : courbe d'equity + écart vs B&H.",
       nodes: [
-        { type: "Asset",   x: 40,  y: 100, params: { ticker: "NVDA" } },
-        { type: "Clean",   x: 240, y: 100 },
+        { type: "Asset", x: 40, y: 100, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 100 },
         { type: "RLAgent", x: 440, y: 100, params: { strategy: "momentum" } },
-        { type: "Chart",   x: 660, y: 100 },
-        { type: "KPI",     x: 860, y: 40,  params: { metric: "vs_buyhold_pct" } },
-        { type: "KPI",     x: 860, y: 200, params: { metric: "trades" } },
+        { type: "Chart", x: 660, y: 100 },
+        { type: "KPI", x: 860, y: 40, params: { metric: "vs_buyhold_pct" } },
+        { type: "KPI", x: 860, y: 200, params: { metric: "trades" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
         { fromIdx: 2, fromPort: "equity", toIdx: 3, toPort: "series" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 4, toPort: "stats" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 5, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 4, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 5, toPort: "stats" },
       ],
     },
     {
       name: "Détection anomalies",
       description: "Z-score > 2.5 sur TSLA pour repérer les jours statistiquement extrêmes.",
       nodes: [
-        { type: "Asset",     x: 40,  y: 100, params: { ticker: "TSLA" } },
-        { type: "Clean",     x: 240, y: 100 },
+        { type: "Asset", x: 40, y: 100, params: { ticker: "TSLA" } },
+        { type: "Clean", x: 240, y: 100 },
         { type: "Anomalies", x: 440, y: 100, params: { threshold: 2.5 } },
-        { type: "Chart",     x: 240, y: 260 },
-        { type: "KPI",       x: 660, y: 40,  params: { metric: "anomalies" } },
-        { type: "KPI",       x: 660, y: 200, params: { metric: "anomaly_rate_pct" } },
+        { type: "Chart", x: 240, y: 260 },
+        { type: "KPI", x: 660, y: 40, params: { metric: "anomalies" } },
+        { type: "KPI", x: 660, y: 200, params: { metric: "anomaly_rate_pct" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 3, toPort: "series" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 4, toPort: "stats" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 5, toPort: "stats" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 3, toPort: "series" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 4, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 5, toPort: "stats" },
       ],
     },
     {
       name: "Forecast 60j",
       description: "Prévision SPY sur 60 jours via tendance log (drift). Sortie : chart prolongé.",
       nodes: [
-        { type: "Asset",    x: 40,  y: 100, params: { ticker: "SPY" } },
-        { type: "Clean",    x: 240, y: 100 },
+        { type: "Asset", x: 40, y: 100, params: { ticker: "SPY" } },
+        { type: "Clean", x: 240, y: 100 },
         { type: "Forecast", x: 440, y: 100, params: { horizon: 60, method: "drift" } },
-        { type: "Chart",    x: 240, y: 260 },
-        { type: "Chart",    x: 660, y: 100 },
+        { type: "Chart", x: 240, y: 260 },
+        { type: "Chart", x: 660, y: 100 },
       ],
       edges: [
-        { fromIdx: 0, fromPort: "prices",   toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",      toIdx: 2, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",      toIdx: 3, toPort: "series" },
+        { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 3, toPort: "series" },
         { fromIdx: 2, fromPort: "forecast", toIdx: 4, toPort: "series" },
       ],
     },
@@ -1239,42 +1239,42 @@
       name: "Stress Test 2008",
       description: "Si la crise de 2008 se reproduisait avec NVDA aujourd'hui ? Drawdown projeté + jours de récupération.",
       nodes: [
-        { type: "Asset",      x: 40,  y: 80,  params: { ticker: "NVDA" } },
-        { type: "Clean",      x: 240, y: 80 },
-        { type: "StressTest", x: 440, y: 80,  params: { scenario: "gfc-2008" } },
-        { type: "Chart",      x: 660, y: 80 },
-        { type: "KPI",        x: 880, y: 20,  params: { metric: "stress_dd_pct" } },
-        { type: "KPI",        x: 880, y: 140, params: { metric: "stress_recovery_days" } },
+        { type: "Asset", x: 40, y: 80, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 80 },
+        { type: "StressTest", x: 440, y: 80, params: { scenario: "gfc-2008" } },
+        { type: "Chart", x: 660, y: 80 },
+        { type: "KPI", x: 880, y: 20, params: { metric: "stress_dd_pct" } },
+        { type: "KPI", x: 880, y: 140, params: { metric: "stress_recovery_days" } },
       ],
       edges: [
-        { fromIdx: 0, fromPort: "prices",   toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",      toIdx: 2, toPort: "in" },
+        { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
         { fromIdx: 2, fromPort: "stressed", toIdx: 3, toPort: "series" },
-        { fromIdx: 2, fromPort: "stats",    toIdx: 4, toPort: "stats" },
-        { fromIdx: 2, fromPort: "stats",    toIdx: 5, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 4, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 5, toPort: "stats" },
       ],
     },
     {
       name: "Comparaison stratégies",
       description: "3 RL agents en parallèle (momentum, mean-revert, trend) sur NVDA. Quelle stratégie bat B&H ?",
       nodes: [
-        { type: "Asset",   x: 40,  y: 130, params: { ticker: "NVDA" } },
-        { type: "Clean",   x: 240, y: 130 },
-        { type: "RLAgent", x: 440, y: 20,  params: { strategy: "momentum" } },
+        { type: "Asset", x: 40, y: 130, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 130 },
+        { type: "RLAgent", x: 440, y: 20, params: { strategy: "momentum" } },
         { type: "RLAgent", x: 440, y: 140, params: { strategy: "mean-revert" } },
         { type: "RLAgent", x: 440, y: 260, params: { strategy: "trend" } },
-        { type: "KPI",     x: 660, y: 20,  params: { metric: "vs_buyhold_pct" } },
-        { type: "KPI",     x: 660, y: 140, params: { metric: "vs_buyhold_pct" } },
-        { type: "KPI",     x: 660, y: 260, params: { metric: "vs_buyhold_pct" } },
+        { type: "KPI", x: 660, y: 20, params: { metric: "vs_buyhold_pct" } },
+        { type: "KPI", x: 660, y: 140, params: { metric: "vs_buyhold_pct" } },
+        { type: "KPI", x: 660, y: 260, params: { metric: "vs_buyhold_pct" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 3, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 4, toPort: "in" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 5, toPort: "stats" },
-        { fromIdx: 3, fromPort: "stats",  toIdx: 6, toPort: "stats" },
-        { fromIdx: 4, fromPort: "stats",  toIdx: 7, toPort: "stats" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 3, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 4, toPort: "in" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 5, toPort: "stats" },
+        { fromIdx: 3, fromPort: "stats", toIdx: 6, toPort: "stats" },
+        { fromIdx: 4, fromPort: "stats", toIdx: 7, toPort: "stats" },
       ],
     },
 
@@ -1285,24 +1285,24 @@
       name: "📰 News → Sentiment → Verdict",
       description: "Flux d'actu Tech sur 30j → filtre NVDA → sentiment pondéré → injection dans le Verdict. Le sentiment marché vient de la vraie actu.",
       nodes: [
-        { type: "NewsFeed",      x: 40,  y: 60,  params: { topic: "tech", period: 30, min_relevance: 0.5 } },
-        { type: "NewsFilter",    x: 260, y: 60,  params: { ticker: "NVDA", sector: "all" } },
-        { type: "Headlines",     x: 480, y: 60,  params: { max: 6 } },
+        { type: "NewsFeed", x: 40, y: 60, params: { topic: "tech", period: 30, min_relevance: 0.5 } },
+        { type: "NewsFilter", x: 260, y: 60, params: { ticker: "NVDA", sector: "all" } },
+        { type: "Headlines", x: 480, y: 60, params: { max: 6 } },
         { type: "NewsSentiment", x: 480, y: 280, params: { weight: "relevance" } },
-        { type: "Asset",         x: 40,  y: 460, params: { ticker: "NVDA" } },
-        { type: "Clean",         x: 260, y: 460 },
-        { type: "Returns",       x: 480, y: 460 },
-        { type: "Stats",         x: 700, y: 460 },
-        { type: "Verdict",       x: 920, y: 280, params: { risk: "medium" } },
-        { type: "KPI",           x: 1140, y: 280, params: { metric: "news_sentiment" } },
+        { type: "Asset", x: 40, y: 460, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 260, y: 460 },
+        { type: "Returns", x: 480, y: 460 },
+        { type: "Stats", x: 700, y: 460 },
+        { type: "Verdict", x: 920, y: 280, params: { risk: "medium" } },
+        { type: "KPI", x: 1140, y: 280, params: { metric: "news_sentiment" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "news", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",  toIdx: 2, toPort: "news" },
-        { fromIdx: 1, fromPort: "out",  toIdx: 3, toPort: "news" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "news" },
+        { fromIdx: 1, fromPort: "out", toIdx: 3, toPort: "news" },
         { fromIdx: 4, fromPort: "prices", toIdx: 5, toPort: "in" },
-        { fromIdx: 5, fromPort: "out",   toIdx: 6, toPort: "in" },
-        { fromIdx: 6, fromPort: "out",   toIdx: 7, toPort: "in" },
+        { fromIdx: 5, fromPort: "out", toIdx: 6, toPort: "in" },
+        { fromIdx: 6, fromPort: "out", toIdx: 7, toPort: "in" },
         { fromIdx: 7, fromPort: "stats", toIdx: 8, toPort: "stats" },
         { fromIdx: 3, fromPort: "score", toIdx: 8, toPort: "sentiment" },
         { fromIdx: 3, fromPort: "stats", toIdx: 9, toPort: "stats" },
@@ -1312,27 +1312,27 @@
       name: "🏛️ Vision politique 2026",
       description: "5 scénarios politiques projetés sur NVDA : tarifs Chine, régulation IA, choc électoral, crise bancaire, pivot Fed. 4 trajectoires comparées + headlines.",
       nodes: [
-        { type: "NewsFeed",          x: 40,  y: 40,  params: { topic: "geopolitics", period: 30, min_relevance: 0.5 } },
-        { type: "Headlines",         x: 260, y: 40,  params: { max: 6 } },
-        { type: "Asset",             x: 40,  y: 300, params: { ticker: "NVDA" } },
-        { type: "Clean",             x: 260, y: 300 },
+        { type: "NewsFeed", x: 40, y: 40, params: { topic: "geopolitics", period: 30, min_relevance: 0.5 } },
+        { type: "Headlines", x: 260, y: 40, params: { max: 6 } },
+        { type: "Asset", x: 40, y: 300, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 260, y: 300 },
         // 4 scénarios politiques en parallèle
-        { type: "PoliticalScenario", x: 480, y: 60,  params: { scenario: "tariffs-us-china" } },
-        { type: "Chart",             x: 700, y: 60 },
+        { type: "PoliticalScenario", x: 480, y: 60, params: { scenario: "tariffs-us-china" } },
+        { type: "Chart", x: 700, y: 60 },
         { type: "PoliticalScenario", x: 480, y: 220, params: { scenario: "ai-regulation-strict" } },
-        { type: "Chart",             x: 700, y: 220 },
+        { type: "Chart", x: 700, y: 220 },
         { type: "PoliticalScenario", x: 480, y: 380, params: { scenario: "election-pro-business" } },
-        { type: "Chart",             x: 700, y: 380 },
+        { type: "Chart", x: 700, y: 380 },
         { type: "PoliticalScenario", x: 480, y: 540, params: { scenario: "banking-crisis" } },
-        { type: "Chart",             x: 700, y: 540 },
+        { type: "Chart", x: 700, y: 540 },
         // KPI synthèse
-        { type: "KPI",               x: 920, y: 60,  params: { metric: "stress_end_pct" } },
-        { type: "KPI",               x: 920, y: 220, params: { metric: "stress_end_pct" } },
-        { type: "KPI",               x: 920, y: 380, params: { metric: "stress_end_pct" } },
-        { type: "KPI",               x: 920, y: 540, params: { metric: "stress_end_pct" } },
+        { type: "KPI", x: 920, y: 60, params: { metric: "stress_end_pct" } },
+        { type: "KPI", x: 920, y: 220, params: { metric: "stress_end_pct" } },
+        { type: "KPI", x: 920, y: 380, params: { metric: "stress_end_pct" } },
+        { type: "KPI", x: 920, y: 540, params: { metric: "stress_end_pct" } },
       ],
       edges: [
-        { fromIdx: 0, fromPort: "news",   toIdx: 1, toPort: "news" },
+        { fromIdx: 0, fromPort: "news", toIdx: 1, toPort: "news" },
         { fromIdx: 2, fromPort: "prices", toIdx: 3, toPort: "in" },
         // 4 scénarios
         { fromIdx: 3, fromPort: "out", toIdx: 4, toPort: "in" },
@@ -1353,25 +1353,25 @@
       name: "📡 Event Impact (news × prix)",
       description: "Sentiment des news Tech projeté en drift sur NVDA pour les 30 prochains jours. Combine narrative et prix pour estimer la trajectoire.",
       nodes: [
-        { type: "NewsFeed",      x: 40,  y: 40,  params: { topic: "tech", period: 30, min_relevance: 0.4 } },
-        { type: "NewsFilter",    x: 260, y: 40,  params: { ticker: "NVDA", sector: "all" } },
-        { type: "Headlines",     x: 480, y: 40,  params: { max: 5 } },
-        { type: "Asset",         x: 40,  y: 260, params: { ticker: "NVDA" } },
-        { type: "Clean",         x: 260, y: 260 },
-        { type: "EventImpact",   x: 480, y: 260, params: { horizon: 30, magnitude: 1 } },
-        { type: "Chart",         x: 700, y: 260 },
-        { type: "KPI",           x: 920, y: 200, params: { metric: "projected_return_pct" } },
-        { type: "KPI",           x: 920, y: 320, params: { metric: "news_sentiment" } },
+        { type: "NewsFeed", x: 40, y: 40, params: { topic: "tech", period: 30, min_relevance: 0.4 } },
+        { type: "NewsFilter", x: 260, y: 40, params: { ticker: "NVDA", sector: "all" } },
+        { type: "Headlines", x: 480, y: 40, params: { max: 5 } },
+        { type: "Asset", x: 40, y: 260, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 260, y: 260 },
+        { type: "EventImpact", x: 480, y: 260, params: { horizon: 30, magnitude: 1 } },
+        { type: "Chart", x: 700, y: 260 },
+        { type: "KPI", x: 920, y: 200, params: { metric: "projected_return_pct" } },
+        { type: "KPI", x: 920, y: 320, params: { metric: "news_sentiment" } },
       ],
       edges: [
-        { fromIdx: 0, fromPort: "news",    toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",     toIdx: 2, toPort: "news" },
-        { fromIdx: 3, fromPort: "prices",  toIdx: 4, toPort: "in" },
-        { fromIdx: 4, fromPort: "out",     toIdx: 5, toPort: "series" },
-        { fromIdx: 1, fromPort: "out",     toIdx: 5, toPort: "news" },
+        { fromIdx: 0, fromPort: "news", toIdx: 1, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "news" },
+        { fromIdx: 3, fromPort: "prices", toIdx: 4, toPort: "in" },
+        { fromIdx: 4, fromPort: "out", toIdx: 5, toPort: "series" },
+        { fromIdx: 1, fromPort: "out", toIdx: 5, toPort: "news" },
         { fromIdx: 5, fromPort: "adjusted",toIdx: 6, toPort: "series" },
-        { fromIdx: 5, fromPort: "stats",   toIdx: 7, toPort: "stats" },
-        { fromIdx: 5, fromPort: "stats",   toIdx: 8, toPort: "stats" },
+        { fromIdx: 5, fromPort: "stats", toIdx: 7, toPort: "stats" },
+        { fromIdx: 5, fromPort: "stats", toIdx: 8, toPort: "stats" },
       ],
     },
 
@@ -1382,51 +1382,51 @@
       name: "🧪 Lab quant complet (NVDA)",
       description: "Pipeline d'analyse exhaustif sur 1 actif : stats + verdict + MA50 + forecast 60j + détection anomalies + stress 2008. 17 nodes, 5 branches parallèles depuis Clean.",
       nodes: [
-        { type: "Sentiment",   x: 40,  y: 40,  params: { ticker: "NVDA" } },
-        { type: "Asset",       x: 40,  y: 220, params: { ticker: "NVDA" } },
-        { type: "Clean",       x: 260, y: 220 },
+        { type: "Sentiment", x: 40, y: 40, params: { ticker: "NVDA" } },
+        { type: "Asset", x: 40, y: 220, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 260, y: 220 },
         // Branche 1 : Stats → Verdict + 3 KPI
-        { type: "Returns",     x: 480, y: 40 },
-        { type: "Stats",       x: 700, y: 40 },
-        { type: "Verdict",     x: 920, y: 40,  params: { risk: "medium" } },
-        { type: "KPI",         x: 1140, y: 0,  params: { metric: "sharpe" } },
-        { type: "KPI",         x: 1140, y: 95, params: { metric: "ann_vol_pct" } },
-        { type: "KPI",         x: 1140, y: 190,params: { metric: "max_drawdown_pct" } },
+        { type: "Returns", x: 480, y: 40 },
+        { type: "Stats", x: 700, y: 40 },
+        { type: "Verdict", x: 920, y: 40, params: { risk: "medium" } },
+        { type: "KPI", x: 1140, y: 0, params: { metric: "sharpe" } },
+        { type: "KPI", x: 1140, y: 95, params: { metric: "ann_vol_pct" } },
+        { type: "KPI", x: 1140, y: 190,params: { metric: "max_drawdown_pct" } },
         // Branche 2 : Rolling Mean → Chart
         { type: "RollingMean", x: 480, y: 220, params: { window: 50 } },
-        { type: "Chart",       x: 700, y: 220 },
+        { type: "Chart", x: 700, y: 220 },
         // Branche 3 : Forecast → Chart
-        { type: "Forecast",    x: 480, y: 360, params: { horizon: 60, method: "drift" } },
-        { type: "Chart",       x: 700, y: 360 },
+        { type: "Forecast", x: 480, y: 360, params: { horizon: 60, method: "drift" } },
+        { type: "Chart", x: 700, y: 360 },
         // Branche 4 : Anomalies → KPI
-        { type: "Anomalies",   x: 480, y: 500, params: { threshold: 2.5 } },
-        { type: "KPI",         x: 700, y: 500, params: { metric: "anomaly_rate_pct" } },
+        { type: "Anomalies", x: 480, y: 500, params: { threshold: 2.5 } },
+        { type: "KPI", x: 700, y: 500, params: { metric: "anomaly_rate_pct" } },
         // Branche 5 : Stress 2008 → KPI + Chart
-        { type: "StressTest",  x: 480, y: 640, params: { scenario: "gfc-2008" } },
-        { type: "KPI",         x: 700, y: 640, params: { metric: "stress_dd_pct" } },
+        { type: "StressTest", x: 480, y: 640, params: { scenario: "gfc-2008" } },
+        { type: "KPI", x: 700, y: 640, params: { metric: "stress_dd_pct" } },
       ],
       edges: [
         // Asset → Clean
         { fromIdx: 1, fromPort: "prices", toIdx: 2, toPort: "in" },
         // Branche 1
-        { fromIdx: 2, fromPort: "out",    toIdx: 3, toPort: "in" },
-        { fromIdx: 3, fromPort: "out",    toIdx: 4, toPort: "in" },
-        { fromIdx: 4, fromPort: "stats",  toIdx: 5, toPort: "stats" },
-        { fromIdx: 0, fromPort: "score",  toIdx: 5, toPort: "sentiment" },
-        { fromIdx: 4, fromPort: "stats",  toIdx: 6, toPort: "stats" },
-        { fromIdx: 4, fromPort: "stats",  toIdx: 7, toPort: "stats" },
-        { fromIdx: 4, fromPort: "stats",  toIdx: 8, toPort: "stats" },
+        { fromIdx: 2, fromPort: "out", toIdx: 3, toPort: "in" },
+        { fromIdx: 3, fromPort: "out", toIdx: 4, toPort: "in" },
+        { fromIdx: 4, fromPort: "stats", toIdx: 5, toPort: "stats" },
+        { fromIdx: 0, fromPort: "score", toIdx: 5, toPort: "sentiment" },
+        { fromIdx: 4, fromPort: "stats", toIdx: 6, toPort: "stats" },
+        { fromIdx: 4, fromPort: "stats", toIdx: 7, toPort: "stats" },
+        { fromIdx: 4, fromPort: "stats", toIdx: 8, toPort: "stats" },
         // Branche 2
-        { fromIdx: 2, fromPort: "out",    toIdx: 9, toPort: "in" },
-        { fromIdx: 9, fromPort: "out",    toIdx: 10, toPort: "series" },
+        { fromIdx: 2, fromPort: "out", toIdx: 9, toPort: "in" },
+        { fromIdx: 9, fromPort: "out", toIdx: 10, toPort: "series" },
         // Branche 3
-        { fromIdx: 2, fromPort: "out",    toIdx: 11, toPort: "in" },
+        { fromIdx: 2, fromPort: "out", toIdx: 11, toPort: "in" },
         { fromIdx: 11, fromPort: "forecast", toIdx: 12, toPort: "series" },
         // Branche 4
-        { fromIdx: 2, fromPort: "out",    toIdx: 13, toPort: "in" },
+        { fromIdx: 2, fromPort: "out", toIdx: 13, toPort: "in" },
         { fromIdx: 13, fromPort: "stats", toIdx: 14, toPort: "stats" },
         // Branche 5
-        { fromIdx: 2, fromPort: "out",    toIdx: 15, toPort: "in" },
+        { fromIdx: 2, fromPort: "out", toIdx: 15, toPort: "in" },
         { fromIdx: 15, fromPort: "stats", toIdx: 16, toPort: "stats" },
       ],
     },
@@ -1436,43 +1436,43 @@
       description: "Analyse d'une paire d'actifs : 2 pipelines parallèles + corrélation + régression linéaire + Sharpe comparé. 12 nodes pour détecter des opportunités d'arbitrage.",
       nodes: [
         // Pipeline A (NVDA)
-        { type: "Asset",       x: 40,  y: 60,  params: { ticker: "NVDA" } },
-        { type: "Clean",       x: 240, y: 60 },
-        { type: "Returns",     x: 440, y: 60 },
-        { type: "Stats",       x: 640, y: 60 },
-        { type: "KPI",         x: 840, y: 60, params: { metric: "sharpe" } },
+        { type: "Asset", x: 40, y: 60, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 60 },
+        { type: "Returns", x: 440, y: 60 },
+        { type: "Stats", x: 640, y: 60 },
+        { type: "KPI", x: 840, y: 60, params: { metric: "sharpe" } },
         // Pipeline B (MSFT)
-        { type: "Asset",       x: 40,  y: 400, params: { ticker: "MSFT" } },
-        { type: "Clean",       x: 240, y: 400 },
-        { type: "Returns",     x: 440, y: 400 },
-        { type: "Stats",       x: 640, y: 400 },
-        { type: "KPI",         x: 840, y: 400, params: { metric: "sharpe" } },
+        { type: "Asset", x: 40, y: 400, params: { ticker: "MSFT" } },
+        { type: "Clean", x: 240, y: 400 },
+        { type: "Returns", x: 440, y: 400 },
+        { type: "Stats", x: 640, y: 400 },
+        { type: "KPI", x: 840, y: 400, params: { metric: "sharpe" } },
         // Cross-analysis : correlation entre returns
         { type: "Correlation", x: 640, y: 230 },
-        { type: "KPI",         x: 840, y: 230, params: { metric: "correlation" } },
+        { type: "KPI", x: 840, y: 230, params: { metric: "correlation" } },
         // Régression A → B
         { type: "LinearRegression", x: 1060, y: 230 },
-        { type: "KPI",         x: 1260, y: 200, params: { metric: "r_squared" } },
-        { type: "KPI",         x: 1260, y: 290, params: { metric: "slope" } },
+        { type: "KPI", x: 1260, y: 200, params: { metric: "r_squared" } },
+        { type: "KPI", x: 1260, y: 290, params: { metric: "slope" } },
       ],
       edges: [
         // Pipeline A
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
-        { fromIdx: 2, fromPort: "out",    toIdx: 3, toPort: "in" },
-        { fromIdx: 3, fromPort: "stats",  toIdx: 4, toPort: "stats" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
+        { fromIdx: 2, fromPort: "out", toIdx: 3, toPort: "in" },
+        { fromIdx: 3, fromPort: "stats", toIdx: 4, toPort: "stats" },
         // Pipeline B
         { fromIdx: 5, fromPort: "prices", toIdx: 6, toPort: "in" },
-        { fromIdx: 6, fromPort: "out",    toIdx: 7, toPort: "in" },
-        { fromIdx: 7, fromPort: "out",    toIdx: 8, toPort: "in" },
-        { fromIdx: 8, fromPort: "stats",  toIdx: 9, toPort: "stats" },
+        { fromIdx: 6, fromPort: "out", toIdx: 7, toPort: "in" },
+        { fromIdx: 7, fromPort: "out", toIdx: 8, toPort: "in" },
+        { fromIdx: 8, fromPort: "stats", toIdx: 9, toPort: "stats" },
         // Correlation between returns
-        { fromIdx: 2, fromPort: "out",    toIdx: 10, toPort: "a" },
-        { fromIdx: 7, fromPort: "out",    toIdx: 10, toPort: "b" },
+        { fromIdx: 2, fromPort: "out", toIdx: 10, toPort: "a" },
+        { fromIdx: 7, fromPort: "out", toIdx: 10, toPort: "b" },
         { fromIdx: 10, fromPort: "stats", toIdx: 11, toPort: "stats" },
         // Linear regression A on B
-        { fromIdx: 2, fromPort: "out",    toIdx: 12, toPort: "X" },
-        { fromIdx: 7, fromPort: "out",    toIdx: 12, toPort: "y" },
+        { fromIdx: 2, fromPort: "out", toIdx: 12, toPort: "X" },
+        { fromIdx: 7, fromPort: "out", toIdx: 12, toPort: "y" },
         { fromIdx: 12, fromPort: "stats", toIdx: 13, toPort: "stats" },
         { fromIdx: 12, fromPort: "stats", toIdx: 14, toPort: "stats" },
       ],
@@ -1482,40 +1482,40 @@
       name: "🛡️ Stress 4 scénarios (NVDA)",
       description: "Le même actif soumis aux 4 grandes crises historiques simultanément : GFC 2008, COVID 2020, hausse taux 2022, dot-com 2000. 14 nodes pour évaluer la résilience.",
       nodes: [
-        { type: "Asset",      x: 40,  y: 280, params: { ticker: "NVDA" } },
-        { type: "Clean",      x: 240, y: 280 },
+        { type: "Asset", x: 40, y: 280, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 280 },
         // 4 scénarios en parallèle
-        { type: "StressTest", x: 440, y: 40,  params: { scenario: "gfc-2008" } },
-        { type: "Chart",      x: 640, y: 40 },
-        { type: "KPI",        x: 840, y: 40,  params: { metric: "stress_dd_pct" } },
+        { type: "StressTest", x: 440, y: 40, params: { scenario: "gfc-2008" } },
+        { type: "Chart", x: 640, y: 40 },
+        { type: "KPI", x: 840, y: 40, params: { metric: "stress_dd_pct" } },
         { type: "StressTest", x: 440, y: 200, params: { scenario: "covid-2020" } },
-        { type: "Chart",      x: 640, y: 200 },
-        { type: "KPI",        x: 840, y: 200, params: { metric: "stress_dd_pct" } },
+        { type: "Chart", x: 640, y: 200 },
+        { type: "KPI", x: 840, y: 200, params: { metric: "stress_dd_pct" } },
         { type: "StressTest", x: 440, y: 360, params: { scenario: "rates-2022" } },
-        { type: "Chart",      x: 640, y: 360 },
-        { type: "KPI",        x: 840, y: 360, params: { metric: "stress_dd_pct" } },
+        { type: "Chart", x: 640, y: 360 },
+        { type: "KPI", x: 840, y: 360, params: { metric: "stress_dd_pct" } },
         { type: "StressTest", x: 440, y: 520, params: { scenario: "dotcom-2000" } },
-        { type: "Chart",      x: 640, y: 520 },
-        { type: "KPI",        x: 840, y: 520, params: { metric: "stress_dd_pct" } },
+        { type: "Chart", x: 640, y: 520 },
+        { type: "KPI", x: 840, y: 520, params: { metric: "stress_dd_pct" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
         // GFC
-        { fromIdx: 1, fromPort: "out",      toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
         { fromIdx: 2, fromPort: "stressed", toIdx: 3, toPort: "series" },
-        { fromIdx: 2, fromPort: "stats",    toIdx: 4, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 4, toPort: "stats" },
         // COVID
-        { fromIdx: 1, fromPort: "out",      toIdx: 5, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 5, toPort: "in" },
         { fromIdx: 5, fromPort: "stressed", toIdx: 6, toPort: "series" },
-        { fromIdx: 5, fromPort: "stats",    toIdx: 7, toPort: "stats" },
+        { fromIdx: 5, fromPort: "stats", toIdx: 7, toPort: "stats" },
         // 2022
-        { fromIdx: 1, fromPort: "out",      toIdx: 8, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 8, toPort: "in" },
         { fromIdx: 8, fromPort: "stressed", toIdx: 9, toPort: "series" },
-        { fromIdx: 8, fromPort: "stats",    toIdx: 10, toPort: "stats" },
+        { fromIdx: 8, fromPort: "stats", toIdx: 10, toPort: "stats" },
         // Dot-com
-        { fromIdx: 1, fromPort: "out",      toIdx: 11, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 11, toPort: "in" },
         { fromIdx: 11, fromPort: "stressed",toIdx: 12, toPort: "series" },
-        { fromIdx: 11, fromPort: "stats",   toIdx: 13, toPort: "stats" },
+        { fromIdx: 11, fromPort: "stats", toIdx: 13, toPort: "stats" },
       ],
     },
 
@@ -1523,48 +1523,48 @@
       name: "🏛️ Hedge Fund Lab (4 stratégies)",
       description: "Backtest complet : 3 stratégies RL + Forecast 60j + référence buy & hold. Equity curves + écart vs B&H + Sharpe pour chacune. 16 nodes.",
       nodes: [
-        { type: "Asset",       x: 40,  y: 380, params: { ticker: "NVDA" } },
-        { type: "Clean",       x: 240, y: 380 },
+        { type: "Asset", x: 40, y: 380, params: { ticker: "NVDA" } },
+        { type: "Clean", x: 240, y: 380 },
         // Stratégie 1 : Momentum
-        { type: "RLAgent",     x: 440, y: 40,  params: { strategy: "momentum" } },
-        { type: "Chart",       x: 640, y: 40 },
-        { type: "KPI",         x: 840, y: 40,  params: { metric: "vs_buyhold_pct" } },
+        { type: "RLAgent", x: 440, y: 40, params: { strategy: "momentum" } },
+        { type: "Chart", x: 640, y: 40 },
+        { type: "KPI", x: 840, y: 40, params: { metric: "vs_buyhold_pct" } },
         // Stratégie 2 : Mean-revert
-        { type: "RLAgent",     x: 440, y: 200, params: { strategy: "mean-revert" } },
-        { type: "Chart",       x: 640, y: 200 },
-        { type: "KPI",         x: 840, y: 200, params: { metric: "vs_buyhold_pct" } },
+        { type: "RLAgent", x: 440, y: 200, params: { strategy: "mean-revert" } },
+        { type: "Chart", x: 640, y: 200 },
+        { type: "KPI", x: 840, y: 200, params: { metric: "vs_buyhold_pct" } },
         // Stratégie 3 : Trend
-        { type: "RLAgent",     x: 440, y: 360, params: { strategy: "trend" } },
-        { type: "Chart",       x: 640, y: 360 },
-        { type: "KPI",         x: 840, y: 360, params: { metric: "vs_buyhold_pct" } },
+        { type: "RLAgent", x: 440, y: 360, params: { strategy: "trend" } },
+        { type: "Chart", x: 640, y: 360 },
+        { type: "KPI", x: 840, y: 360, params: { metric: "vs_buyhold_pct" } },
         // Stratégie 4 : Forecast AR(1)
-        { type: "Forecast",    x: 440, y: 520, params: { horizon: 60, method: "ar(1)" } },
-        { type: "Chart",       x: 640, y: 520 },
+        { type: "Forecast", x: 440, y: 520, params: { horizon: 60, method: "ar(1)" } },
+        { type: "Chart", x: 640, y: 520 },
         // Référence buy & hold (Stats baseline)
-        { type: "Returns",     x: 440, y: 680 },
-        { type: "Stats",       x: 640, y: 680 },
-        { type: "KPI",         x: 840, y: 680, params: { metric: "sharpe" } },
+        { type: "Returns", x: 440, y: 680 },
+        { type: "Stats", x: 640, y: 680 },
+        { type: "KPI", x: 840, y: 680, params: { metric: "sharpe" } },
       ],
       edges: [
         { fromIdx: 0, fromPort: "prices", toIdx: 1, toPort: "in" },
         // Momentum
-        { fromIdx: 1, fromPort: "out",    toIdx: 2, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 2, toPort: "in" },
         { fromIdx: 2, fromPort: "equity", toIdx: 3, toPort: "series" },
-        { fromIdx: 2, fromPort: "stats",  toIdx: 4, toPort: "stats" },
+        { fromIdx: 2, fromPort: "stats", toIdx: 4, toPort: "stats" },
         // Mean-revert
-        { fromIdx: 1, fromPort: "out",    toIdx: 5, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 5, toPort: "in" },
         { fromIdx: 5, fromPort: "equity", toIdx: 6, toPort: "series" },
-        { fromIdx: 5, fromPort: "stats",  toIdx: 7, toPort: "stats" },
+        { fromIdx: 5, fromPort: "stats", toIdx: 7, toPort: "stats" },
         // Trend
-        { fromIdx: 1, fromPort: "out",    toIdx: 8, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 8, toPort: "in" },
         { fromIdx: 8, fromPort: "equity", toIdx: 9, toPort: "series" },
-        { fromIdx: 8, fromPort: "stats",  toIdx: 10, toPort: "stats" },
+        { fromIdx: 8, fromPort: "stats", toIdx: 10, toPort: "stats" },
         // Forecast
-        { fromIdx: 1, fromPort: "out",    toIdx: 11, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 11, toPort: "in" },
         { fromIdx: 11, fromPort: "forecast", toIdx: 12, toPort: "series" },
         // Baseline B&H
-        { fromIdx: 1, fromPort: "out",    toIdx: 13, toPort: "in" },
-        { fromIdx: 13, fromPort: "out",   toIdx: 14, toPort: "in" },
+        { fromIdx: 1, fromPort: "out", toIdx: 13, toPort: "in" },
+        { fromIdx: 13, fromPort: "out", toIdx: 14, toPort: "in" },
         { fromIdx: 14, fromPort: "stats", toIdx: 15, toPort: "stats" },
       ],
     },
@@ -1574,15 +1574,15 @@
   // Canvas state
   // ============================================================
   const canvas = {
-    nodes: [],            // { id, type, x, y, params, outputs, error }
-    edges: [],            // { id, from: {nodeId, port}, to: {nodeId, port} }
+    nodes: [], // { id, type, x, y, params, outputs, error }
+    edges: [], // { id, from: {nodeId, port}, to: {nodeId, port} }
     selectedNodeId: null, // dernier node cliqué (pour Suppr)
     selectedNodeIds: new Set(), // multi-selection
     nodeIdSeq: 1,
     edgeIdSeq: 1,
 
     // Drag state
-    dragging: null,       // { type: 'node'|'wire'|'pan', ... }
+    dragging: null, // { type: 'node'|'wire'|'pan', ... }
 
     // Pan/zoom
     zoom: 1,
@@ -1601,7 +1601,7 @@
     zoomLabelEl: null,
     ctx: { hasApiKey: false },
 
-    onChange: null,       // callback when graph changes
+    onChange: null, // callback when graph changes
   };
 
   function applyTransform() {
@@ -1891,7 +1891,7 @@
       el.appendChild(label);
     });
 
-    // Drag node — offset en world coords pour rester correct sous zoom
+    // Drag node, offset en world coords pour rester correct sous zoom
     header.addEventListener("mousedown", e => {
       e.preventDefault();
       e.stopPropagation();
@@ -1988,7 +1988,7 @@
   }
 
   function portPos(nodeId, kind, portName) {
-    // World coordinates — la SVG vit dans le viewport transformé, donc on
+    // World coordinates, la SVG vit dans le viewport transformé, donc on
     // n'a pas besoin d'appliquer pan/zoom ici.
     const node = canvas.nodes.find(n => n.id === nodeId);
     if (!node) return null;
@@ -2038,7 +2038,7 @@
   }
 
   // ============================================================
-  // Registre KPI — pour chaque métrique : label, bench, status, explain, formule
+  // Registre KPI, pour chaque métrique : label, bench, status, explain, formule
   // ============================================================
   const KPI_INFO = {
     sharpe: {
@@ -2046,11 +2046,11 @@
       fmt: v => v.toFixed(2),
       bench: "Marché ≈ 0.5–0.7 · Bon > 1 · Excellent > 1.5",
       status: v => v >= 1 ? "ok" : v >= 0.5 ? "warn" : "bad",
-      explain: v => v >= 1.5 ? "Excellent — risque/rendement très favorable."
-        : v >= 1 ? "Bon — au-dessus du marché."
+      explain: v => v >= 1.5 ? "Excellent, risque/rendement très favorable."
+        : v >= 1 ? "Bon, au-dessus du marché."
         : v >= 0.5 ? "Acceptable, dans la moyenne marché."
-        : v >= 0 ? "Faible — le risque n'est pas récompensé."
-        : "Sharpe négatif — perte ajustée du risque.",
+        : v >= 0 ? "Faible, le risque n'est pas récompensé."
+        : "Sharpe négatif, perte ajustée du risque.",
       formula: "Sharpe = R_annualisé / σ_annualisée",
       formulaDesc: "Rendement par unité de volatilité totale (William Sharpe, 1966).",
     },
@@ -2061,7 +2061,7 @@
       status: v => v >= 8 ? "ok" : v >= 0 ? "warn" : "bad",
       explain: v => v > 0
         ? `À ce rythme, ton capital double tous les ~${Math.max(1, Math.round(72 / v))} ans (règle de 72).`
-        : "Rendement annualisé négatif — pertes composées.",
+        : "Rendement annualisé négatif, pertes composées.",
       formula: "CAGR = (1 + moyenne)^252 − 1",
       formulaDesc: "Le rendement annuel composé, plus pertinent que la moyenne simple.",
     },
@@ -2079,9 +2079,9 @@
       fmt: v => `${v.toFixed(1)}%`,
       bench: "Calme > −10% · Modéré −10/−25% · Sévère < −25%",
       status: v => v > -10 ? "ok" : v > -25 ? "warn" : "bad",
-      explain: v => v > -10 ? "Drawdown contenu — résilience confortable."
-        : v > -25 ? "Drawdown modéré — typique."
-        : "Drawdown sévère — proche d'un krach historique.",
+      explain: v => v > -10 ? "Drawdown contenu, résilience confortable."
+        : v > -25 ? "Drawdown modéré, typique."
+        : "Drawdown sévère, proche d'un krach historique.",
       formula: "MDD = min((cum − peak) / peak)",
       formulaDesc: "Pire chute depuis un sommet vers un creux. Indicateur de douleur maximale.",
     },
@@ -2100,10 +2100,10 @@
       bench: "−1 (opposé) · 0 (indép.) · +1 (identique)",
       status: v => Math.abs(v) > 0.7 ? "bad" : Math.abs(v) > 0.4 ? "warn" : "ok",
       explain: v => Math.abs(v) > 0.7
-        ? "Très forte corrélation — les deux actifs bougent ensemble, diversification illusoire."
+        ? "Très forte corrélation, les deux actifs bougent ensemble, diversification illusoire."
         : Math.abs(v) > 0.4
-        ? "Corrélation modérée — diversification partielle."
-        : "Faible corrélation — vraie diversification possible.",
+        ? "Corrélation modérée, diversification partielle."
+        : "Faible corrélation, vraie diversification possible.",
       formula: "ρ = Cov(A, B) / (σ_A × σ_B)",
       formulaDesc: "Coefficient de Pearson. Mesure la cohérence linéaire entre deux séries.",
     },
@@ -2114,7 +2114,7 @@
       status: () => null,
       explain: v => `Pour chaque +1 unité de X, y bouge de ${v.toFixed(2)} en moyenne.`,
       formula: "β = Cov(X, y) / Var(X)",
-      formulaDesc: "Coefficient de régression — équivalent au Beta financier si X = marché.",
+      formulaDesc: "Coefficient de régression, équivalent au Beta financier si X = marché.",
     },
     anomalies: {
       label: "Anomalies détectées",
@@ -2131,7 +2131,7 @@
       bench: "Sous loi normale (z=2.5) ≈ 1%",
       status: v => v < 2 ? "ok" : v < 5 ? "warn" : "bad",
       explain: v => v > 1.5
-        ? "Au-dessus de l'attendu sous loi normale — fat tails."
+        ? "Au-dessus de l'attendu sous loi normale, fat tails."
         : "Cohérent avec une loi normale.",
       formula: "count(|z| > seuil) / n",
       formulaDesc: "Proportion de jours dépassant le seuil. Sur-représenté = distribution non-gaussienne.",
@@ -2142,8 +2142,8 @@
       bench: "Hasard ≈ 50% · Edge à partir de 53–55%",
       status: v => v > 58 ? "ok" : v > 52 ? "warn" : "bad",
       explain: v => v > 55
-        ? `${(v - 50).toFixed(1)}pt au-dessus du hasard — signal exploitable.`
-        : "Proche du hasard — pas de signal robuste.",
+        ? `${(v - 50).toFixed(1)}pt au-dessus du hasard, signal exploitable.`
+        : "Proche du hasard, pas de signal robuste.",
       formula: "Acc = (TP + TN) / N",
       formulaDesc: "Proportion de prédictions correctes. À comparer à la baseline (toujours prédire la classe majoritaire).",
     },
@@ -2153,8 +2153,8 @@
       bench: "> 0 = vraie information · > 3pt = signal solide",
       status: v => v > 2 ? "ok" : v > 0 ? "warn" : "bad",
       explain: v => v > 0
-        ? `${v.toFixed(1)} pt d'edge — ton modèle apporte de l'information.`
-        : "Pas d'edge — équivalent à toujours prédire la classe majoritaire.",
+        ? `${v.toFixed(1)} pt d'edge, ton modèle apporte de l'information.`
+        : "Pas d'edge, équivalent à toujours prédire la classe majoritaire.",
       formula: "edge = accuracy − baseline",
       formulaDesc: "Pour évaluer un classifier binaire honnêtement, comparer toujours à la baseline (% de classe majoritaire).",
     },
@@ -2174,7 +2174,7 @@
       status: v => v > 0 ? "ok" : v > -5 ? "warn" : "bad",
       explain: v => v > 0
         ? `La stratégie bat un simple buy & hold de ${v.toFixed(1)} points.`
-        : `La stratégie sous-performe buy & hold de ${Math.abs(v).toFixed(1)} pt — la simplicité paye souvent.`,
+        : `La stratégie sous-performe buy & hold de ${Math.abs(v).toFixed(1)} pt, la simplicité paye souvent.`,
       formula: "Δ = R_stratégie − R_buy&hold",
       formulaDesc: "Si Δ < 0, l'effort de timing ne vaut pas le coup (avant même les frais).",
     },
@@ -2185,7 +2185,7 @@
       status: v => v > 0 ? "ok" : "bad",
       explain: v => v > 0
         ? `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}.`
-        : `Capital final = capital initial × ${(1 + v / 100).toFixed(2)} — perte.`,
+        : `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}, perte.`,
     },
     stress_dd_pct: {
       label: "DD sous stress",
@@ -2200,7 +2200,7 @@
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
       bench: "Récupération complète = 0% · Pas récupéré = < 0%",
       status: v => v >= -5 ? "ok" : v >= -20 ? "warn" : "bad",
-      explain: v => v >= -5 ? "Récupération quasi-complète à la fin du scénario." : `Valeur finale ${v.toFixed(0)}% en dessous du départ — choc persistant.`,
+      explain: v => v >= -5 ? "Récupération quasi-complète à la fin du scénario." : `Valeur finale ${v.toFixed(0)}% en dessous du départ, choc persistant.`,
       formula: "end = (val_finale − val_initiale) / val_initiale",
     },
     news_sentiment: {
@@ -2209,10 +2209,10 @@
       bench: "−1 (très négatif) · 0 (neutre) · +1 (très positif)",
       status: v => v > 0.3 ? "ok" : v < -0.3 ? "bad" : "warn",
       explain: v => v > 0.3
-        ? "Sentiment de l'actu positif — narrative favorable."
+        ? "Sentiment de l'actu positif, narrative favorable."
         : v < -0.3
-        ? "Sentiment de l'actu négatif — narrative défavorable."
-        : "Sentiment neutre — pas de narrative dominante.",
+        ? "Sentiment de l'actu négatif, narrative défavorable."
+        : "Sentiment neutre, pas de narrative dominante.",
       formula: "Σ(sentiment × relevance) / Σ(relevance)",
       formulaDesc: "Moyenne pondérée par pertinence éditoriale. Permet de filtrer les actus secondaires.",
     },
@@ -2240,7 +2240,7 @@
     },
     stress_recovery_days: {
       label: "Jours de récupération",
-      fmt: v => Math.round(v) || "—",
+      fmt: v => Math.round(v) || "",
       bench: "Plus c'est court, plus la résilience est forte",
       status: v => v > 0 && v < 100 ? "ok" : v > 0 ? "warn" : "bad",
       explain: v => v > 0 ? `Il faut ~${Math.round(v)} jours après le creux pour revenir à 95% du départ.` : "Pas de récupération observée dans la durée du scénario.",
@@ -2261,7 +2261,7 @@
     if (v == null || !info) {
       return `
         <div class="result-tile-label">${(n.outputs._label || "KPI").toUpperCase()}</div>
-        <div class="result-kpi-value">—</div>
+        <div class="result-kpi-value"></div>
         <div class="result-kpi-empty">Connecte un node Stats / Linear Reg / Anomalies / Classifier / RL Agent.</div>
       `;
     }
@@ -2287,7 +2287,7 @@
     if (!d) {
       return `
         <div class="result-tile-label">VERDICT</div>
-        <div class="result-kpi-value">—</div>
+        <div class="result-kpi-value"></div>
         <div class="result-kpi-empty">Connecte Stats (obligatoire) + Sentiment (optionnel).</div>
       `;
     }
@@ -2804,7 +2804,7 @@
         const lines = [];
         for (const o of def.outputs) {
           const v = out[o.name];
-          if (v == null) { lines.push(`${o.name}: —`); continue; }
+          if (v == null) { lines.push(`${o.name}: `); continue; }
           if (v.values) lines.push(`${o.name}: ${v.values.length} pts`);
           else if (v.action) lines.push(`${o.name}: ${v.action}`);
           else if (typeof v === "object") lines.push(`${o.name}: obj`);

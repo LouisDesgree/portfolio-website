@@ -1,8 +1,8 @@
 /* ============================================================
-   Vision — Design tokens & base
+   Vision, Design tokens & base
    ============================================================ */
 :root {
-  /* Warm minimal — light theme, muted palette */
+  /* Warm minimal, light theme, muted palette */
   --bg-0: #f5f1e9;
   --bg-1: #ffffff;
   --bg-2: #fbf7ef;
@@ -12,15 +12,15 @@
   --border: rgba(45, 42, 38, 0.08);
   --border-strong: rgba(45, 42, 38, 0.16);
 
-  --primary: #4a7c7e;       /* sage teal */
+  --primary: #4a7c7e; /* sage teal */
   --primary-2: #6b9a9c;
   --primary-glow: rgba(74, 124, 126, 0.18);
-  --accent: #b87b58;        /* warm clay */
-  --accent-2: #8a6b97;      /* dusty plum */
+  --accent: #b87b58; /* warm clay */
+  --accent-2: #8a6b97; /* dusty plum */
 
-  --success: #5b8a5d;       /* sage green */
-  --warning: #c9a168;       /* muted sand */
-  --danger: #b86056;        /* muted brick */
+  --success: #5b8a5d; /* sage green */
+  --warning: #c9a168; /* muted sand */
+  --danger: #b86056; /* muted brick */
 
   --node-source: #5b8a5d;
   --node-transform: #4a7c7e;
@@ -45,7 +45,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Charts wrap — empêche Chart.js de grandir à l'infini quand le parent n'a pas de hauteur fixe */
+/* Charts wrap, empêche Chart.js de grandir à l'infini quand le parent n'a pas de hauteur fixe */
 .chart-wrap { position: relative; width: 100%; }
 .chart-wrap > canvas { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; }
 .spark-wrap { position: relative; height: 40px; margin-top: 12px; }

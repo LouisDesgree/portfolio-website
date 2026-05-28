@@ -1,11 +1,11 @@
 /* ============================================================
-   Vision — i18n EN / FR
+   Vision, i18n EN / FR
    ============================================================
    API :
-     VisionI18n.t(en, fr)     pick the right one
-     VisionI18n.getLang()     "en" | "fr"
-     VisionI18n.setLang(l)    switch + persist + refresh DOM
-     VisionI18n.applyTranslations()   reapply data-i18n-* attrs
+     VisionI18n.t(en, fr) pick the right one
+     VisionI18n.getLang() "en" | "fr"
+     VisionI18n.setLang(l) switch + persist + refresh DOM
+     VisionI18n.applyTranslations() reapply data-i18n-* attrs
 
    Static HTML : use data-i18n-en + data-i18n-fr (textContent),
                  or data-i18n-html-en/fr (innerHTML),

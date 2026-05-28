@@ -1,5 +1,5 @@
 /* ============================================================
-   Vision — App shell, routing, screens
+   Vision, App shell, routing, screens
    ============================================================ */
 
 (function () {
@@ -56,7 +56,7 @@
     if (tab === "auto-analysis") renderAutoAnalysis();
     if (tab === "brand") renderBrandPage();
     if (tab === "nodal") {
-      // Le canvas est déjà init au boot — juste refresh des dimensions
+      // Le canvas est déjà init au boot, juste refresh des dimensions
       window.dispatchEvent(new Event("resize"));
     }
   }
@@ -243,7 +243,7 @@
   }
 
   // ============================================================
-  // Auto analysis — métriques financières détaillées + pédagogie
+  // Auto analysis, métriques financières détaillées + pédagogie
   // ============================================================
   let allocChart = null;
   let vsMarketChart = null;
@@ -356,9 +356,9 @@
     if (m.sharpe >= 1.5) sentences.push(`Ton portefeuille délivre un <strong>Sharpe de ${m.sharpe.toFixed(2)}</strong>, bien au-dessus de la moyenne marché (≈ 0.5–0.7). Le risque pris est généreusement récompensé.`);
     else if (m.sharpe >= 1) sentences.push(`<strong>Sharpe de ${m.sharpe.toFixed(2)}</strong>, au-dessus du marché long terme.`);
     else if (m.sharpe >= 0.5) sentences.push(`Sharpe à <strong>${m.sharpe.toFixed(2)}</strong>, dans la moyenne marché.`);
-    else sentences.push(`Sharpe faible (<strong>${m.sharpe.toFixed(2)}</strong>) — le risque n'est pas suffisamment récompensé.`);
+    else sentences.push(`Sharpe faible (<strong>${m.sharpe.toFixed(2)}</strong>), le risque n'est pas suffisamment récompensé.`);
 
-    if (m.sortino > m.sharpe * 1.3) sentences.push(`Le Sortino (${m.sortino.toFixed(2)}) est nettement supérieur au Sharpe — signe que ta volatilité est plutôt asymétrique vers le haut (bon signe).`);
+    if (m.sortino > m.sharpe * 1.3) sentences.push(`Le Sortino (${m.sortino.toFixed(2)}) est nettement supérieur au Sharpe, signe que ta volatilité est plutôt asymétrique vers le haut (bon signe).`);
 
     if (d.hhi > 0.40) {
       sentences.push(`En revanche : <strong>${d.maxWeightTicker} pèse ${(d.maxWeight * 100).toFixed(0)}%</strong> de ton exposition (HHI ${d.hhi.toFixed(2)}). Un seul actif en difficulté peut faire basculer l'ensemble.`);
@@ -369,26 +369,26 @@
     if (d.sectorCount < 3) sentences.push(`Diversification sectorielle limitée (<strong>${d.sectorCount} secteurs</strong> : ${d.sectors.join(", ")}). Un choc sectoriel toucherait tout ton portefeuille.`);
     else sentences.push(`Diversification sectorielle correcte (${d.sectorCount} secteurs présents).`);
 
-    if (m.maxDD < -0.30) sentences.push(`Tu as déjà subi un drawdown de <strong>${(m.maxDD * 100).toFixed(0)}%</strong> — proche d'un krach historique. Mentalement et financièrement, prévois-tu de tenir si ça se reproduit ?`);
-    else if (m.maxDD < -0.15) sentences.push(`Le pire drawdown sur la période est de ${(m.maxDD * 100).toFixed(0)}% — typique d'un PF actions équilibré.`);
-    else sentences.push(`Drawdown contenu (${(m.maxDD * 100).toFixed(0)}%) — résilience confortable jusqu'ici.`);
+    if (m.maxDD < -0.30) sentences.push(`Tu as déjà subi un drawdown de <strong>${(m.maxDD * 100).toFixed(0)}%</strong>, proche d'un krach historique. Mentalement et financièrement, prévois-tu de tenir si ça se reproduit ?`);
+    else if (m.maxDD < -0.15) sentences.push(`Le pire drawdown sur la période est de ${(m.maxDD * 100).toFixed(0)}%, typique d'un PF actions équilibré.`);
+    else sentences.push(`Drawdown contenu (${(m.maxDD * 100).toFixed(0)}%), résilience confortable jusqu'ici.`);
 
-    if (m.kurtExcess > 5) sentences.push(`Attention : la distribution de tes returns montre des <strong>fat tails marquées (kurtosis ${m.kurtExcess.toFixed(1)})</strong>. Les krachs sont plus fréquents que ce qu'un modèle gaussien prédirait — ne te fie pas qu'à la VaR.`);
-    if (m.skewness < -0.5) sentences.push(`Skewness négative (${m.skewness.toFixed(2)}) — distribution penchée vers les pertes extrêmes.`);
-    else if (m.skewness > 0.5) sentences.push(`Skewness positive (${m.skewness.toFixed(2)}) — gains extrêmes plus fréquents que pertes, configuration favorable.`);
+    if (m.kurtExcess > 5) sentences.push(`Attention : la distribution de tes returns montre des <strong>fat tails marquées (kurtosis ${m.kurtExcess.toFixed(1)})</strong>. Les krachs sont plus fréquents que ce qu'un modèle gaussien prédirait, ne te fie pas qu'à la VaR.`);
+    if (m.skewness < -0.5) sentences.push(`Skewness négative (${m.skewness.toFixed(2)}), distribution penchée vers les pertes extrêmes.`);
+    else if (m.skewness > 0.5) sentences.push(`Skewness positive (${m.skewness.toFixed(2)}), gains extrêmes plus fréquents que pertes, configuration favorable.`);
 
     if (m.beta > 1.4) sentences.push(`Beta élevé (${m.beta.toFixed(2)}) : ton PF amplifie les mouvements du marché. Génial en bull, douloureux en bear.`);
-    else if (m.beta < 0.5) sentences.push(`Beta défensif (${m.beta.toFixed(2)}) — peu sensible au marché, bonne protection contre le risque systémique.`);
+    else if (m.beta < 0.5) sentences.push(`Beta défensif (${m.beta.toFixed(2)}), peu sensible au marché, bonne protection contre le risque systémique.`);
 
-    if (m.alpha > 0.05) sentences.push(`Tu génères un <strong>alpha de ${(m.alpha * 100).toFixed(1)}%/an</strong> ajusté du marché — ton stock-picking ajoute réellement de la valeur vs un ETF passif.`);
-    else if (m.alpha < -0.03) sentences.push(`Alpha négatif (${(m.alpha * 100).toFixed(1)}%/an) — à risque égal, un ETF S&P aurait fait mieux.`);
+    if (m.alpha > 0.05) sentences.push(`Tu génères un <strong>alpha de ${(m.alpha * 100).toFixed(1)}%/an</strong> ajusté du marché, ton stock-picking ajoute réellement de la valeur vs un ETF passif.`);
+    else if (m.alpha < -0.03) sentences.push(`Alpha négatif (${(m.alpha * 100).toFixed(1)}%/an), à risque égal, un ETF S&P aurait fait mieux.`);
 
     // Action-oriented closing
     const closing = score.overall >= 70
       ? `<em>En l'état, ton portefeuille est tenable. Continue de monitorer la diversification à mesure que tu ajoutes des positions.</em>`
       : score.overall >= 50
-      ? `<em>Marge de progression notable — vois les recommandations ci-dessous.</em>`
-      : `<em>Plusieurs signaux faibles s'accumulent — prends le temps de réviser ta stratégie avant la prochaine baisse.</em>`;
+      ? `<em>Marge de progression notable, vois les recommandations ci-dessous.</em>`
+      : `<em>Plusieurs signaux faibles s'accumulent, prends le temps de réviser ta stratégie avant la prochaine baisse.</em>`;
     sentences.push(closing);
 
     document.getElementById("auto-narrative").innerHTML = sentences.map(s => `<p>${s}</p>`).join("");
@@ -546,8 +546,8 @@
     // Performance: basé sur Sharpe + Sortino
     const perf = clamp(50 + m.sharpe * 20 + m.sortino * 5, 0, 100);
     // Risque: drawdown + CVaR + skewness
-    const ddPenalty = Math.abs(m.maxDD) * 100;        // % perte
-    const tailPenalty = Math.abs(m.cvar95) * 1000;    // queue gauche
+    const ddPenalty = Math.abs(m.maxDD) * 100; // % perte
+    const tailPenalty = Math.abs(m.cvar95) * 1000; // queue gauche
     const skewBonus = Math.max(0, m.skewness) * 10;
     const risk = clamp(100 - ddPenalty - tailPenalty + skewBonus, 0, 100);
     // Diversification: HHI + corrélation + secteurs
@@ -575,7 +575,7 @@
       : score.overall >= 50 ? "Correct"
       : score.overall >= 35 ? "Fragile"
       : "Préoccupant";
-    document.getElementById("auto-score-title").textContent = `Score global : ${score.overall}/100 — ${grade}`;
+    document.getElementById("auto-score-title").textContent = `Score global : ${score.overall}/100, ${grade}`;
     document.getElementById("auto-score-summary").textContent =
       `Composite de Performance (Sharpe + Sortino), Risque (drawdown + tail) et Diversification (HHI + corr.).`;
 
@@ -653,7 +653,7 @@
         label: "R² au marché", value: m.r2, format: v => v.toFixed(2),
         status: r2Status,
         bench: "Indépendant < 0.4 · Mixte 0.4–0.7 · Suiveur > 0.7",
-        explain: r2 => `${(m.r2 * 100).toFixed(0)}% de ta variance est expliquée par le marché. ${m.r2 > 0.7 ? "Très corrélé au marché — peu de valeur ajoutée." : "Pas trop suiveur, bon signe."}`,
+        explain: r2 => `${(m.r2 * 100).toFixed(0)}% de ta variance est expliquée par le marché. ${m.r2 > 0.7 ? "Très corrélé au marché, peu de valeur ajoutée." : "Pas trop suiveur, bon signe."}`,
         formula: "R² = Corr(R_pf, R_marché)²",
         formulaDesc: "Part de la variance du PF expliquée par les mouvements du marché.",
       }),
@@ -672,7 +672,7 @@
         label: "CAGR (rendement annualisé)", value: m.ann_return * 100, format: pct,
         status: cagrStatus,
         bench: "S&P long terme ≈ 8%/an · Bon > 10% · Médiocre < 4%",
-        explain: m.ann_return > 0 ? `À ce rythme, ton PF double tous les ${(Math.log(2) / Math.log(1 + m.ann_return)).toFixed(0)} ans.` : "Rendement annualisé négatif — perte composée.",
+        explain: m.ann_return > 0 ? `À ce rythme, ton PF double tous les ${(Math.log(2) / Math.log(1 + m.ann_return)).toFixed(0)} ans.` : "Rendement annualisé négatif, perte composée.",
         formula: "CAGR = (1 + moyenne)^252 − 1",
         formulaDesc: "Le rendement annuel composé. Plus stable que la moyenne simple pour comparer des actifs.",
       }),
@@ -696,7 +696,7 @@
         label: "Calmar Ratio", value: m.calmar, format: v => v.toFixed(2),
         status: calmarStatus,
         bench: "Bon > 1 · Excellent > 3 · Fragile < 0.3",
-        explain: m.calmar > 1 ? `Tu gagnes ${m.calmar.toFixed(1)}× ton pire drawdown par an — récupération rapide.` : "Drawdown élevé par rapport au rendement — risque de stagnation post-crash.",
+        explain: m.calmar > 1 ? `Tu gagnes ${m.calmar.toFixed(1)}× ton pire drawdown par an récupération rapide.` : "Drawdown élevé par rapport au rendement risque de stagnation post-crash.",
         formula: "Calmar = CAGR / |Max Drawdown|",
         formulaDesc: "Mesure la 'douleur' subie pour obtenir le rendement. Privilégié par les gérants de hedge funds.",
       }),
@@ -741,7 +741,7 @@
         label: "CVaR 95%", value: m.cvar95 * 100, format: pct,
         status: cvarStatus,
         bench: "Modéré > −2.5% · Risqué < −5%",
-        explain: `Dans les 5% pires journées, tu perds en moyenne ${pct(m.cvar95 * 100)}. ${m.cvar95 < m.var95 * 1.5 ? "Pas de queue très épaisse." : "Queue épaisse — pertes extrêmes plus marquées."}`,
+        explain: `Dans les 5% pires journées, tu perds en moyenne ${pct(m.cvar95 * 100)}. ${m.cvar95 < m.var95 * 1.5 ? "Pas de queue très épaisse." : "Queue épaisse, pertes extrêmes plus marquées."}`,
         formula: "CVaR_95 = E[r | r ≤ VaR_95]",
         formulaDesc: "Perte moyenne quand on dépasse le VaR. Bien plus informatif sur le risque de queue. Aussi appelé 'Expected Shortfall'.",
       }),
@@ -793,10 +793,10 @@
         status: corrStatus,
         bench: "Vraie diversif. < 0.4 · Modérée 0.4–0.7 · Illusoire > 0.7",
         explain: d.avgCorr > 0.7
-          ? "Tes actifs bougent ensemble — la diversification est largement cosmétique."
+          ? "Tes actifs bougent ensemble, la diversification est largement cosmétique."
           : d.avgCorr > 0.4
-          ? "Corrélation modérée — diversification partielle."
-          : "Faible corrélation moyenne — vraie diversification.",
+          ? "Corrélation modérée, diversification partielle."
+          : "Faible corrélation moyenne, vraie diversification.",
         formula: "ρ̄ = moyenne des ρ(i, j)",
         formulaDesc: "Moyenne arithmétique des corrélations entre toutes les paires. Plus c'est bas, plus tes lignes sont indépendantes.",
       }),
@@ -918,7 +918,7 @@
       recos.push({ icon: "🌐", text: `Tu n'as que ${d.sectorCount} secteur(s) (${d.sectors.join(", ")}). Ajoute des actifs dans Santé, Énergie ou un indice large (SPY) pour amortir les chocs sectoriels.` });
     }
     if (d.avgCorr > 0.7) {
-      recos.push({ icon: "🔗", text: `Corrélation moyenne ${d.avgCorr.toFixed(2)} — tes lignes bougent ensemble. Considère des classes d'actifs vraiment décorrélées (or, bonds, défensifs).` });
+      recos.push({ icon: "🔗", text: `Corrélation moyenne ${d.avgCorr.toFixed(2)}, tes lignes bougent ensemble. Considère des classes d'actifs vraiment décorrélées (or, bonds, défensifs).` });
     }
     if (m.sharpe < 0.5 && m.ann_return > 0) {
       recos.push({ icon: "📉", text: `Sharpe ${m.sharpe.toFixed(2)} faible : le rendement (${pct(m.ann_return * 100)}/an) ne compense pas la vol (${pct(m.ann_vol * 100)}). Réduire les positions très volatiles ou hedger.` });
@@ -930,13 +930,13 @@
       recos.push({ icon: "📊", text: `Beta ${m.beta.toFixed(2)} : ton PF amplifie le marché de ${((m.beta - 1) * 100).toFixed(0)}%. Génial en bull, douloureux en bear. À calibrer selon ton horizon.` });
     }
     if (m.skewness < -0.5) {
-      recos.push({ icon: "⚠️", text: `Skewness ${m.skewness.toFixed(2)} — distribution penche vers les pertes extrêmes. Garde des liquidités ou envisage des options put pour protéger les queues.` });
+      recos.push({ icon: "⚠️", text: `Skewness ${m.skewness.toFixed(2)}, distribution penche vers les pertes extrêmes. Garde des liquidités ou envisage des options put pour protéger les queues.` });
     }
     if (m.kurtExcess > 5) {
-      recos.push({ icon: "💥", text: `Kurtosis ${m.kurtExcess.toFixed(1)} : risque de 'black swan' plus élevé que ne le suggère une loi normale. Le VaR seul ne suffit pas — surveille le CVaR.` });
+      recos.push({ icon: "💥", text: `Kurtosis ${m.kurtExcess.toFixed(1)} : risque de 'black swan' plus élevé que ne le suggère une loi normale. Le VaR seul ne suffit pas, surveille le CVaR.` });
     }
     if (m.alpha > 0.05) {
-      recos.push({ icon: "🎯", text: `Alpha ${pct(m.alpha * 100)}/an positif — ton stock-picking ajoute de la valeur vs le marché. Continue ce que tu fais.` });
+      recos.push({ icon: "🎯", text: `Alpha ${pct(m.alpha * 100)}/an positif, ton stock-picking ajoute de la valeur vs le marché. Continue ce que tu fais.` });
     }
     if (recos.length === 0) {
       recos.push({ icon: "✅", text: "Ton portefeuille est équilibré sur les axes mesurés. Continue de monitorer le drawdown et la corrélation à mesure que tu ajoutes des lignes." });
@@ -955,7 +955,7 @@
     { title: "VaR 95% (Value at Risk)", text: "Quel montant tu peux perdre dans 95% des cas, sur une journée. Si VaR = -2%, alors 1 jour sur 20 tu peux perdre plus que ça. Critique : VaR ne dit RIEN sur l'ampleur des pertes dans le 5% restant (cf. CVaR)." },
     { title: "CVaR (Conditional VaR / Expected Shortfall)", text: "Perte MOYENNE quand on dépasse le VaR. Si CVaR_95 = -3%, alors dans le pire 5% des jours, tu perds en moyenne 3%. Plus informatif que le VaR pour les queues de distribution. Mandatory dans Bâle III." },
     { title: "Skewness (asymétrie)", text: "Mesure si la distribution penche à gauche ou à droite. Skew négative = plus de pertes extrêmes que de gains extrêmes (mauvais signe). Les actions ont historiquement une skew légèrement négative." },
-    { title: "Kurtosis (queues)", text: "Mesure l'épaisseur des queues. Kurtosis 'normale' = 0 (excès). Élevée = 'fat tails' = krachs et spikes plus fréquents que ne le prédit une loi normale. Les marchés financiers ont presque toujours une kurtosis positive — c'est pourquoi les modèles gaussiens sous-estiment le risque." },
+    { title: "Kurtosis (queues)", text: "Mesure l'épaisseur des queues. Kurtosis 'normale' = 0 (excès). Élevée = 'fat tails' = krachs et spikes plus fréquents que ne le prédit une loi normale. Les marchés financiers ont presque toujours une kurtosis positive, c'est pourquoi les modèles gaussiens sous-estiment le risque." },
     { title: "Beta (β)", text: "Sensibilité au marché. β = 1.5 → si SPY +1%, ton PF en moyenne +1.5%. Beta = 0.5 = défensif (utilities, bons). Beta > 1.5 = très agressif (small caps tech). C'est aussi la base du CAPM." },
     { title: "Alpha (Jensen, 1968)", text: "Rendement EXCÉDENTAIRE par rapport à ce que ton beta seul aurait dû produire. Alpha positif = tu bats le marché AJUSTÉ DU RISQUE. C'est la mesure 'pure' du stock-picking, indépendante de l'exposition marché." },
     { title: "Herfindahl-Hirschman Index (HHI)", text: "Indice de concentration. Somme des carrés des poids du PF. HHI = 1 → tout dans un actif. HHI = 1/N → équipondéré. Au-dessus de 0.25 = concentré. Utilisé aussi en antitrust (concentration de marché)." },
@@ -970,46 +970,46 @@
 
   // === Helpers d'interprétation ===
   function sharpeInterpretation(s) {
-    if (s < 0) return "Sharpe négatif — rendement insuffisant au regard du risque (tu perdrais moins en cash).";
-    if (s < 0.5) return "Sharpe faible — le risque pris ne se traduit pas en rendement.";
+    if (s < 0) return "Sharpe négatif, rendement insuffisant au regard du risque (tu perdrais moins en cash).";
+    if (s < 0.5) return "Sharpe faible, le risque pris ne se traduit pas en rendement.";
     if (s < 1) return "Sharpe acceptable, dans la moyenne marché long terme.";
-    if (s < 1.5) return "Bon Sharpe — au-dessus du marché.";
-    if (s < 2.5) return "Excellent Sharpe — risque/rendement très favorable.";
-    return "Sharpe exceptionnel — suspect de surajustement ou de période chanceuse.";
+    if (s < 1.5) return "Bon Sharpe, au-dessus du marché.";
+    if (s < 2.5) return "Excellent Sharpe, risque/rendement très favorable.";
+    return "Sharpe exceptionnel, suspect de surajustement ou de période chanceuse.";
   }
   function ddInterpretation(dd) {
     const d = dd * 100;
-    if (d > -10) return "Drawdown contenu — résilience confortable.";
-    if (d > -20) return "Drawdown modéré — typique d'un PF actions équilibré.";
-    if (d > -35) return "Drawdown significatif — équivalent à un marché bear.";
-    return "Drawdown sévère — proche d'un krach historique. À surveiller.";
+    if (d > -10) return "Drawdown contenu, résilience confortable.";
+    if (d > -20) return "Drawdown modéré, typique d'un PF actions équilibré.";
+    if (d > -35) return "Drawdown significatif, équivalent à un marché bear.";
+    return "Drawdown sévère, proche d'un krach historique. À surveiller.";
   }
   function skewInterpretation(s) {
-    if (s > 0.5) return "Skewness positive — distribution penche vers les gains extrêmes (rare et favorable).";
-    if (s > -0.3) return "Skewness quasi-symétrique — distribution équilibrée.";
-    if (s > -0.7) return "Skewness négative — légèrement plus de pertes extrêmes que de gains. Vigilance.";
-    return "Skewness très négative — queue gauche prononcée, risque de krach asymétrique.";
+    if (s > 0.5) return "Skewness positive, distribution penche vers les gains extrêmes (rare et favorable).";
+    if (s > -0.3) return "Skewness quasi-symétrique, distribution équilibrée.";
+    if (s > -0.7) return "Skewness négative, légèrement plus de pertes extrêmes que de gains. Vigilance.";
+    return "Skewness très négative, queue gauche prononcée, risque de krach asymétrique.";
   }
   function kurtInterpretation(k) {
-    if (k < 0) return "Distribution plate — moins de surprises qu'une loi normale (rare).";
-    if (k < 1) return "Kurtosis proche d'une normale — pas de fat tails anormales.";
-    if (k < 5) return "Fat tails modérées — événements extrêmes plus fréquents que prévu.";
-    return "Fat tails marquées — risque de black swan élevé. Ne te fie pas qu'à la vol.";
+    if (k < 0) return "Distribution plate, moins de surprises qu'une loi normale (rare).";
+    if (k < 1) return "Kurtosis proche d'une normale, pas de fat tails anormales.";
+    if (k < 5) return "Fat tails modérées, événements extrêmes plus fréquents que prévu.";
+    return "Fat tails marquées, risque de black swan élevé. Ne te fie pas qu'à la vol.";
   }
   function betaInterpretation(b) {
-    if (b < 0) return "Beta négatif — PF inversement corrélé au marché (très rare, hedge actif).";
-    if (b < 0.5) return "PF défensif — peu sensible aux mouvements de marché.";
+    if (b < 0) return "Beta négatif, PF inversement corrélé au marché (très rare, hedge actif).";
+    if (b < 0.5) return "PF défensif, peu sensible aux mouvements de marché.";
     if (b < 0.8) return "PF légèrement défensif.";
     if (b < 1.2) return "PF aligné sur le marché.";
-    if (b < 1.5) return "PF agressif — amplifie les mouvements du marché.";
-    return "PF très agressif — forte amplification, gains et pertes décuplés.";
+    if (b < 1.5) return "PF agressif, amplifie les mouvements du marché.";
+    return "PF très agressif, forte amplification, gains et pertes décuplés.";
   }
   function alphaInterpretation(a) {
     const aPct = a * 100;
-    if (aPct > 5) return `Alpha positif fort (+${aPct.toFixed(1)}%/an) — tu bats nettement le marché ajusté du risque.`;
-    if (aPct > 0) return `Alpha positif modéré (+${aPct.toFixed(1)}%/an) — légère valeur ajoutée vs marché.`;
-    if (aPct > -3) return `Alpha légèrement négatif (${aPct.toFixed(1)}%/an) — un ETF S&P aurait mieux fait, à risque égal.`;
-    return `Alpha négatif marqué (${aPct.toFixed(1)}%/an) — sous-performance significative vs marché ajusté.`;
+    if (aPct > 5) return `Alpha positif fort (+${aPct.toFixed(1)}%/an), tu bats nettement le marché ajusté du risque.`;
+    if (aPct > 0) return `Alpha positif modéré (+${aPct.toFixed(1)}%/an), légère valeur ajoutée vs marché.`;
+    if (aPct > -3) return `Alpha légèrement négatif (${aPct.toFixed(1)}%/an), un ETF S&P aurait mieux fait, à risque égal.`;
+    return `Alpha négatif marqué (${aPct.toFixed(1)}%/an), sous-performance significative vs marché ajusté.`;
   }
 
   // === metricCard helper ===
@@ -1048,7 +1048,7 @@
     const sel = document.getElementById("modal-ticker");
     sel.innerHTML = VisionData.TICKERS
       .filter(t => !state.portfolio.find(p => p.ticker === t.ticker))
-      .map(t => `<option value="${t.ticker}">${t.ticker} — ${t.name}</option>`)
+      .map(t => `<option value="${t.ticker}">${t.ticker}, ${t.name}</option>`)
       .join("");
     document.getElementById("modal-add-asset").classList.remove("hidden");
   }
@@ -1165,7 +1165,7 @@
     });
     function refreshDemoDesc() {
       const d = VisionCanvas.DEMOS[+demoSelect.value];
-      demoDesc.textContent = d ? d.description : "—";
+      demoDesc.textContent = d ? d.description : "";
     }
     demoSelect.addEventListener("change", refreshDemoDesc);
     refreshDemoDesc();
@@ -1186,7 +1186,7 @@
       if (!all.length) {
         const opt = document.createElement("option");
         opt.value = "";
-        opt.textContent = "— Aucune sauvegarde —";
+        opt.textContent = "Aucune sauvegarde";
         opt.disabled = true;
         savedSelect.appendChild(opt);
       } else {
@@ -1259,7 +1259,7 @@
       if (!groups.length) {
         const opt = document.createElement("option");
         opt.value = "";
-        opt.textContent = "— Aucun groupe —";
+        opt.textContent = "Aucun groupe";
         opt.disabled = true;
         groupSelectEl.appendChild(opt);
       } else {
@@ -1324,7 +1324,7 @@
   // ============================================================
   const BRAND_PALETTE = {
     aperture: [
-      { step: "50",  hex: "#e8f1f1", light: true },
+      { step: "50", hex: "#e8f1f1", light: true },
       { step: "100", hex: "#c6dadb", light: true },
       { step: "300", hex: "#7faaac", light: false },
       { step: "500", hex: "#4a7c7e", light: false, label: "Base" },
@@ -1332,7 +1332,7 @@
       { step: "900", hex: "#1f3838", light: false },
     ],
     paper: [
-      { step: "50",  hex: "#fdf5ee", light: true },
+      { step: "50", hex: "#fdf5ee", light: true },
       { step: "300", hex: "#d7a587", light: true },
       { step: "500", hex: "#b87b58", light: false, label: "Base" },
       { step: "700", hex: "#8a5a3e", light: false },
@@ -1342,15 +1342,15 @@
       { step: "500", hex: "#8a6b97", light: false, label: "Base" },
     ],
     semantic: [
-      { step: "Pulse",  hex: "#5b8a5d", light: false, label: "Gain" },
-      { step: "Warm",   hex: "#c9a168", light: false, label: "Vigilance" },
-      { step: "Brick",  hex: "#b86056", light: false, label: "Perte" },
+      { step: "Pulse", hex: "#5b8a5d", light: false, label: "Gain" },
+      { step: "Warm", hex: "#c9a168", light: false, label: "Vigilance" },
+      { step: "Brick", hex: "#b86056", light: false, label: "Perte" },
     ],
     bg: [
       { step: "Vellum", hex: "#f5f1e9", light: true, label: "Page" },
-      { step: "Plain",  hex: "#ffffff", light: true, label: "Cards" },
-      { step: "Soft",   hex: "#fbf7ef", light: true, label: "Subtle" },
-      { step: "Beige",  hex: "#ede7da", light: true, label: "Sep" },
+      { step: "Plain", hex: "#ffffff", light: true, label: "Cards" },
+      { step: "Soft", hex: "#fbf7ef", light: true, label: "Subtle" },
+      { step: "Beige", hex: "#ede7da", light: true, label: "Sep" },
     ],
   };
 
