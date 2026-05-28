@@ -194,6 +194,22 @@ kbd {
 .btn-ghost:hover { background: var(--bg-2); color: var(--text); }
 .btn-ghost.small { width: auto; padding: 6px 12px; font-size: 12px; margin: 0 0 6px; display: block; }
 
+/* Lien de retour vers le portfolio sur la welcome screen */
+.back-to-portfolio {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+  padding: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.02em;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+.back-to-portfolio:hover { color: var(--primary); background: var(--bg-2); }
+
 .oauth-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 .oauth-btn {
   display: flex;
