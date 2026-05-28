@@ -5,8 +5,15 @@
 (function () {
   "use strict";
 
-  // i18n shortcut, fallback to FR if VisionI18n not loaded yet
-  const tt = (en, fr) => (window.VisionI18n ? VisionI18n.t(en, fr) : fr);
+  // i18n shortcut, fallback to EN if VisionI18n not loaded yet
+  const tt = (en, fr) => (window.VisionI18n ? VisionI18n.t(en, fr) : en);
+  // Resolve an {en, fr} object based on current lang. If passed a primitive, return as-is.
+  function L(v) {
+    if (v && typeof v === "object" && "en" in v && "fr" in v) {
+      return window.VisionI18n ? v[VisionI18n.getLang()] : v.en;
+    }
+    return v;
+  }
 
   // ============================================================
   // Node type registry
@@ -107,7 +114,7 @@
       category: "transform",
       inputs: [{ name: "in", type: "series" }],
       outputs: [{ name: "out", type: "series" }],
-      params: [{ name: "window", label: "Fenêtre (jours)", type: "number", default: 20 }],
+      params: [{ name: "window", label: { en: "Window (days)", fr: "Fenêtre (jours)" }, type: "number", default: 20 }],
       compute(inputs, params) {
         const s = inputs.in;
         if (!s) return { out: null };
@@ -245,8 +252,8 @@
       inputs: [{ name: "in", type: "series" }],
       outputs: [{ name: "forecast", type: "series" }],
       params: [
-        { name: "horizon", label: "Horizon (jours)", type: "number", default: 30 },
-        { name: "method", label: "Méthode", type: "select", default: "drift",
+        { name: "horizon", label: { en: "Horizon (days)", fr: "Horizon (jours)" }, type: "number", default: 30 },
+        { name: "method", label: { en: "Method", fr: "Méthode" }, type: "select", default: "drift",
           options: () => ["drift", "ar(1)", "naive"] },
       ],
       compute(inputs, params) {
@@ -379,7 +386,7 @@
         { name: "stats", type: "stats" },
       ],
       params: [
-        { name: "threshold", label: "Z seuil", type: "number", default: 2.5 },
+        { name: "threshold", label: { en: "Z threshold", fr: "Z seuil" }, type: "number", default: 2.5 },
       ],
       compute(inputs, params) {
         const s = inputs.in;
@@ -424,8 +431,8 @@
       inputs: [{ name: "in", type: "series" }],
       outputs: [{ name: "stats", type: "stats" }],
       params: [
-        { name: "horizon", label: "Horizon (j)", type: "number", default: 1 },
-        { name: "signal", label: "Signal", type: "select", default: "momentum",
+        { name: "horizon", label: { en: "Horizon (d)", fr: "Horizon (j)" }, type: "number", default: 1 },
+        { name: "signal", label: { en: "Signal", fr: "Signal" }, type: "select", default: "momentum",
           options: () => ["momentum", "mean-revert"] },
       ],
       compute(inputs, params) {
@@ -484,7 +491,7 @@
         { name: "stats", type: "stats" },
       ],
       params: [
-        { name: "strategy", label: "Stratégie", type: "select", default: "momentum",
+        { name: "strategy", label: { en: "Strategy", fr: "Stratégie" }, type: "select", default: "momentum",
           options: () => ["momentum", "mean-revert", "trend"] },
       ],
       compute(inputs, params) {
@@ -569,7 +576,7 @@
       params: [
         {
           name: "scenario",
-          label: "Scénario historique",
+          label: { en: "Historical scenario", fr: "Scénario historique" },
           type: "select",
           default: "gfc-2008",
           options: () => ["gfc-2008", "covid-2020", "rates-2022", "dotcom-2000"],
@@ -585,10 +592,10 @@
         // Rates 2022 : -25% sur 250j → drift -0.00115/j
         // Dot-com : Nasdaq -78% sur ~500j → drift -0.0030/j
         const SCENARIOS = {
-          "gfc-2008": { name: "Crise 2008 (GFC)", drift: -0.0052, vol: 0.016, days: 130 },
-          "covid-2020": { name: "Krach COVID 2020", drift: -0.0125, vol: 0.028, days: 33 },
-          "rates-2022": { name: "Hausse taux 2022", drift: -0.00115, vol: 0.012, days: 250 },
-          "dotcom-2000":{ name: "Bulle Dot-com 2000", drift: -0.0030, vol: 0.020, days: 500 },
+          "gfc-2008": { name: { en: "2008 Crisis (GFC)", fr: "Crise 2008 (GFC)" }, drift: -0.0052, vol: 0.016, days: 130 },
+          "covid-2020": { name: { en: "COVID 2020 Crash", fr: "Krach COVID 2020" }, drift: -0.0125, vol: 0.028, days: 33 },
+          "rates-2022": { name: { en: "Rates 2022", fr: "Hausse taux 2022" }, drift: -0.00115, vol: 0.012, days: 250 },
+          "dotcom-2000":{ name: { en: "Dot-com Bubble 2000", fr: "Bulle Dot-com 2000" }, drift: -0.0030, vol: 0.020, days: 500 },
         };
         const sc = SCENARIOS[params.scenario] || SCENARIOS["gfc-2008"];
         // RNG déterministe pour reproductibilité
@@ -636,13 +643,13 @@
         }
         return {
           stressed: {
-            ticker: `${s.ticker} [${sc.name}]`,
+            ticker: `${s.ticker} [${L(sc.name)}]`,
             values: allValues,
             dates: allDates,
           },
           stats: {
             ticker: s.ticker,
-            scenario: sc.name,
+            scenario: L(sc.name),
             max_drawdown_pct: stressDD * 100,
             total_return_pct: endChange * 100,
             ann_return_pct: 0, ann_vol_pct: 0, sharpe: 0,
@@ -689,7 +696,7 @@
       readout(out) {
         const s = out.score;
         if (!s) return "";
-        const label = s.value > 0.3 ? "positif" : s.value < -0.3 ? "négatif" : "neutre";
+        const label = s.value > 0.3 ? tt("positive", "positif") : s.value < -0.3 ? tt("negative", "négatif") : tt("neutral", "neutre");
         return `${s.ticker}\n${s.value.toFixed(2)} (${label})\n${s.source}`;
       },
     },
@@ -705,8 +712,8 @@
       params: [
         { name: "topic", label: "Topic", type: "select", default: "all",
           options: () => ["all", "central-banks", "geopolitics", "politics-us", "politics-eu", "tech", "regulation", "energy", "climate", "finance", "corporate", "scandal", "healthcare", "macro", "earnings"] },
-        { name: "period", label: "Période (jours)", type: "number", default: 30 },
-        { name: "min_relevance", label: "Pertinence min (0–1)", type: "number", default: 0.3 },
+        { name: "period", label: { en: "Period (days)", fr: "Période (jours)" }, type: "number", default: 30 },
+        { name: "min_relevance", label: { en: "Min relevance (0-1)", fr: "Pertinence min (0-1)" }, type: "number", default: 0.3 },
       ],
       compute(_inputs, params) {
         const db = VisionData.NEWS_DB || [];
@@ -758,7 +765,7 @@
       params: [
         { name: "ticker", label: "Ticker", type: "select", default: "all",
           options: () => ["all", ...VisionData.TICKERS.map(t => t.ticker)] },
-        { name: "sector", label: "Secteur", type: "select", default: "all",
+        { name: "sector", label: { en: "Sector", fr: "Secteur" }, type: "select", default: "all",
           options: () => ["all", "Tech", "Finance", "Auto", "Énergie", "Santé"] },
       ],
       compute(inputs, params) {
@@ -804,7 +811,7 @@
         { name: "stats", type: "stats" },
       ],
       params: [
-        { name: "weight", label: "Pondération", type: "select", default: "relevance",
+        { name: "weight", label: { en: "Weighting", fr: "Pondération" }, type: "select", default: "relevance",
           options: () => ["relevance", "uniform", "recency"] },
       ],
       compute(inputs, params) {
@@ -861,7 +868,7 @@
         { name: "stats", type: "stats" },
       ],
       params: [
-        { name: "horizon", label: "Horizon (j)", type: "number", default: 30 },
+        { name: "horizon", label: { en: "Horizon (d)", fr: "Horizon (j)" }, type: "number", default: 30 },
         { name: "magnitude", label: "Magnitude (×)", type: "number", default: 1 },
       ],
       compute(inputs, params) {
@@ -923,7 +930,7 @@
         { name: "stats", type: "stats" },
       ],
       params: [
-        { name: "scenario", label: "Scénario", type: "select", default: "tariffs-us-china",
+        { name: "scenario", label: { en: "Scenario", fr: "Scénario" }, type: "select", default: "tariffs-us-china",
           options: () => Object.keys(POLITICAL_SCENARIOS) },
       ],
       compute(inputs, params) {
@@ -960,12 +967,12 @@
         const dd = (trough - start) / start;
         return {
           scenario: {
-            ticker: `${s.ticker} · ${sc.name}`,
+            ticker: `${s.ticker} · ${L(sc.name)}`,
             values: out, dates,
           },
           stats: {
             ticker: s.ticker,
-            scenario: sc.name,
+            scenario: L(sc.name),
             stress_dd_pct: dd * 100,
             stress_end_pct: endChange * 100,
             max_drawdown_pct: dd * 100,
@@ -995,7 +1002,7 @@
         return { _news: n.items.slice(0, +params.max || 6), _meta: { topic: n.topic, period: n.period } };
       },
       readout(out) {
-        if (!out._news) return "(non connecté)";
+        if (!out._news) return tt("(not connected)", "(non connecté)");
         return `📰 ${out._news.length} headlines`;
       },
       displayType: "headlines",
@@ -1010,7 +1017,7 @@
       ],
       outputs: [{ name: "decision", type: "verdict" }],
       params: [
-        { name: "risk", label: "Tolérance risque", type: "select", default: "medium",
+        { name: "risk", label: { en: "Risk tolerance", fr: "Tolérance risque" }, type: "select", default: "medium",
           options: () => ["low", "medium", "high"] },
       ],
       compute(inputs, params) {
@@ -1024,13 +1031,22 @@
         let action, why;
         if (score > 0.6) {
           action = "BUY";
-          why = `Sharpe ${st.sharpe.toFixed(2)} + sentiment ${sentVal.toFixed(2)} → upside attendu.`;
+          why = tt(
+            `Sharpe ${st.sharpe.toFixed(2)} + sentiment ${sentVal.toFixed(2)} → expected upside.`,
+            `Sharpe ${st.sharpe.toFixed(2)} + sentiment ${sentVal.toFixed(2)} → upside attendu.`
+          );
         } else if (score < -0.2) {
           action = "SELL";
-          why = `Risque/sentiment dégradés (score ${score.toFixed(2)}).`;
+          why = tt(
+            `Risk/sentiment degraded (score ${score.toFixed(2)}).`,
+            `Risque/sentiment dégradés (score ${score.toFixed(2)}).`
+          );
         } else {
           action = "HOLD";
-          why = `Signaux mitigés (score ${score.toFixed(2)}).`;
+          why = tt(
+            `Mixed signals (score ${score.toFixed(2)}).`,
+            `Signaux mitigés (score ${score.toFixed(2)}).`
+          );
         }
         return { decision: { action, score, why } };
       },
@@ -1052,7 +1068,7 @@
       },
       readout(out) {
         const s = out._series;
-        if (!s) return "(non connecté)";
+        if (!s) return tt("(not connected)", "(non connecté)");
         return `📈 ${s.ticker}\n${s.values.length} pts`;
       },
       displayType: "chart",
@@ -1064,7 +1080,7 @@
       inputs: [{ name: "stats", type: "stats" }],
       outputs: [],
       params: [
-        { name: "metric", label: "Métrique", type: "select", default: "sharpe",
+        { name: "metric", label: { en: "Metric", fr: "Métrique" }, type: "select", default: "sharpe",
           options: () => [
             "sharpe", "ann_return_pct", "ann_vol_pct", "max_drawdown_pct",
             "correlation", "r_squared", "slope",
@@ -1093,38 +1109,38 @@
   // ============================================================
   const POLITICAL_SCENARIOS = {
     "tariffs-us-china": {
-      name: "Tarifs USA-Chine 25%",
-      description: "Escalade commerciale, taxe additionnelle sur tech/semi-conducteurs",
+      name: { en: "USA-China Tariffs 25%", fr: "Tarifs USA-Chine 25%" },
+      description: { en: "Trade escalation, additional tax on tech / semiconductors", fr: "Escalade commerciale, taxe additionnelle sur tech/semi-conducteurs" },
       drift: -0.0030, vol: 0.018, duration: 60,
     },
     "banking-crisis": {
-      name: "Crise bancaire majeure",
-      description: "Effondrement d'une banque systémique régionale",
+      name: { en: "Major banking crisis", fr: "Crise bancaire majeure" },
+      description: { en: "Collapse of a systemic regional bank", fr: "Effondrement d'une banque systémique régionale" },
       drift: -0.0045, vol: 0.025, duration: 90,
     },
     "ai-regulation-strict": {
-      name: "Régulation IA stricte UE",
-      description: "Cadre limitant l'entraînement de modèles + obligations transparence",
+      name: { en: "Strict EU AI regulation", fr: "Régulation IA stricte UE" },
+      description: { en: "Framework limiting model training + transparency obligations", fr: "Cadre limitant l'entraînement de modèles + obligations transparence" },
       drift: -0.0020, vol: 0.014, duration: 180,
     },
     "energy-shock": {
-      name: "Choc énergétique",
-      description: "Coupure approvisionnement gaz/pétrole, prix bondit +50%",
+      name: { en: "Energy shock", fr: "Choc énergétique" },
+      description: { en: "Gas / oil supply cut, prices spike +50%", fr: "Coupure approvisionnement gaz/pétrole, prix bondit +50%" },
       drift: -0.0028, vol: 0.020, duration: 90,
     },
     "election-pro-business": {
-      name: "Choc électoral pro-business",
-      description: "Résultat électoral surprise favorable aux marchés (déréglementation, baisse impôts)",
+      name: { en: "Pro-business election shock", fr: "Choc électoral pro-business" },
+      description: { en: "Surprise election result favorable to markets (deregulation, tax cuts)", fr: "Résultat électoral surprise favorable aux marchés (déréglementation, baisse impôts)" },
       drift: 0.0028, vol: 0.012, duration: 45,
     },
     "geopolitical-conflict": {
-      name: "Conflit géopolitique majeur",
-      description: "Tension militaire entre grandes puissances, fuite vers les actifs sûrs",
+      name: { en: "Major geopolitical conflict", fr: "Conflit géopolitique majeur" },
+      description: { en: "Military tension between major powers, flight to safe assets", fr: "Tension militaire entre grandes puissances, fuite vers les actifs sûrs" },
       drift: -0.0055, vol: 0.030, duration: 60,
     },
     "fed-pivot-dovish": {
-      name: "Pivot Fed dovish",
-      description: "Fed annonce des baisses de taux plus rapides que prévu",
+      name: { en: "Dovish Fed pivot", fr: "Pivot Fed dovish" },
+      description: { en: "Fed announces faster rate cuts than expected", fr: "Fed annonce des baisses de taux plus rapides que prévu" },
       drift: 0.0020, vol: 0.014, duration: 90,
     },
   };
@@ -1136,8 +1152,8 @@
 
   const DEMOS = [
     {
-      name: "Analyse simple",
-      description: "Stats + verdict sur un actif unique (NVDA). Le pipeline complet à connaître.",
+      name: { en: "Simple analysis", fr: "Analyse simple" },
+      description: { en: "Stats + verdict on a single asset (NVDA). The full pipeline to know.", fr: "Stats + verdict sur un actif unique (NVDA). Le pipeline complet à connaître." },
       nodes: [
         { type: "Asset", x: 40, y: 40, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 40 },
@@ -1159,8 +1175,8 @@
       ],
     },
     {
-      name: "Corrélation 2 actifs",
-      description: "Quelle corrélation entre NVDA et MSFT ? Les deux actifs sont nettoyés, transformés en returns puis croisés.",
+      name: { en: "Correlation 2 assets", fr: "Corrélation 2 actifs" },
+      description: { en: "What correlation between NVDA and MSFT? Both assets are cleaned, turned into returns, then crossed.", fr: "Quelle corrélation entre NVDA et MSFT ? Les deux actifs sont nettoyés, transformés en returns puis croisés." },
       nodes: [
         { type: "Asset", x: 40, y: 40, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 40 },
@@ -1181,8 +1197,8 @@
       ],
     },
     {
-      name: "Backtest momentum",
-      description: "Stratégie momentum vs buy & hold sur NVDA. Sortie : courbe d'equity + écart vs B&H.",
+      name: { en: "Momentum backtest", fr: "Backtest momentum" },
+      description: { en: "Momentum strategy vs buy & hold on NVDA. Outputs: equity curve + B&H gap.", fr: "Stratégie momentum vs buy & hold sur NVDA. Sortie : courbe d'equity + écart vs B&H." },
       nodes: [
         { type: "Asset", x: 40, y: 100, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 100 },
@@ -1200,8 +1216,8 @@
       ],
     },
     {
-      name: "Détection anomalies",
-      description: "Z-score > 2.5 sur TSLA pour repérer les jours statistiquement extrêmes.",
+      name: { en: "Anomaly detection", fr: "Détection anomalies" },
+      description: { en: "Z-score > 2.5 on TSLA to spot statistically extreme days.", fr: "Z-score > 2.5 sur TSLA pour repérer les jours statistiquement extrêmes." },
       nodes: [
         { type: "Asset", x: 40, y: 100, params: { ticker: "TSLA" } },
         { type: "Clean", x: 240, y: 100 },
@@ -1219,8 +1235,8 @@
       ],
     },
     {
-      name: "Forecast 60j",
-      description: "Prévision SPY sur 60 jours via tendance log (drift). Sortie : chart prolongé.",
+      name: { en: "Forecast 60d", fr: "Forecast 60j" },
+      description: { en: "SPY forecast over 60 days via log trend (drift). Output: extended chart.", fr: "Prévision SPY sur 60 jours via tendance log (drift). Sortie : chart prolongé." },
       nodes: [
         { type: "Asset", x: 40, y: 100, params: { ticker: "SPY" } },
         { type: "Clean", x: 240, y: 100 },
@@ -1236,8 +1252,8 @@
       ],
     },
     {
-      name: "Stress Test 2008",
-      description: "Si la crise de 2008 se reproduisait avec NVDA aujourd'hui ? Drawdown projeté + jours de récupération.",
+      name: { en: "Stress Test 2008", fr: "Stress Test 2008" },
+      description: { en: "What if the 2008 crisis happened with NVDA today? Projected drawdown + recovery days.", fr: "Si la crise de 2008 se reproduisait avec NVDA aujourd'hui ? Drawdown projeté + jours de récupération." },
       nodes: [
         { type: "Asset", x: 40, y: 80, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 80 },
@@ -1255,8 +1271,8 @@
       ],
     },
     {
-      name: "Comparaison stratégies",
-      description: "3 RL agents en parallèle (momentum, mean-revert, trend) sur NVDA. Quelle stratégie bat B&H ?",
+      name: { en: "Strategy comparison", fr: "Comparaison stratégies" },
+      description: { en: "3 RL agents in parallel (momentum, mean-revert, trend) on NVDA. Which strategy beats B&H?", fr: "3 RL agents en parallèle (momentum, mean-revert, trend) sur NVDA. Quelle stratégie bat B&H ?" },
       nodes: [
         { type: "Asset", x: 40, y: 130, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 130 },
@@ -1282,8 +1298,8 @@
     // DÉMOS NEWS / POLITIQUE
     // ============================================================
     {
-      name: "📰 News → Sentiment → Verdict",
-      description: "Flux d'actu Tech sur 30j → filtre NVDA → sentiment pondéré → injection dans le Verdict. Le sentiment marché vient de la vraie actu.",
+      name: { en: "📰 News → Sentiment → Verdict", fr: "📰 News → Sentiment → Verdict" },
+      description: { en: "Tech news feed over 30d → NVDA filter → weighted sentiment → injection into the Verdict. Market sentiment comes from real news.", fr: "Flux d'actu Tech sur 30j → filtre NVDA → sentiment pondéré → injection dans le Verdict. Le sentiment marché vient de la vraie actu." },
       nodes: [
         { type: "NewsFeed", x: 40, y: 60, params: { topic: "tech", period: 30, min_relevance: 0.5 } },
         { type: "NewsFilter", x: 260, y: 60, params: { ticker: "NVDA", sector: "all" } },
@@ -1309,8 +1325,8 @@
       ],
     },
     {
-      name: "🏛️ Vision politique 2026",
-      description: "5 scénarios politiques projetés sur NVDA : tarifs Chine, régulation IA, choc électoral, crise bancaire, pivot Fed. 4 trajectoires comparées + headlines.",
+      name: { en: "🏛️ Political Vision 2026", fr: "🏛️ Vision politique 2026" },
+      description: { en: "5 political scenarios projected on NVDA: China tariffs, AI regulation, election shock, banking crisis, Fed pivot. 4 trajectories compared + headlines.", fr: "5 scénarios politiques projetés sur NVDA : tarifs Chine, régulation IA, choc électoral, crise bancaire, pivot Fed. 4 trajectoires comparées + headlines." },
       nodes: [
         { type: "NewsFeed", x: 40, y: 40, params: { topic: "geopolitics", period: 30, min_relevance: 0.5 } },
         { type: "Headlines", x: 260, y: 40, params: { max: 6 } },
@@ -1350,8 +1366,8 @@
       ],
     },
     {
-      name: "📡 Event Impact (news × prix)",
-      description: "Sentiment des news Tech projeté en drift sur NVDA pour les 30 prochains jours. Combine narrative et prix pour estimer la trajectoire.",
+      name: { en: "📡 Event Impact (news × price)", fr: "📡 Event Impact (news × prix)" },
+      description: { en: "Tech news sentiment projected as drift on NVDA for the next 30 days. Combines narrative and price to estimate the trajectory.", fr: "Sentiment des news Tech projeté en drift sur NVDA pour les 30 prochains jours. Combine narrative et prix pour estimer la trajectoire." },
       nodes: [
         { type: "NewsFeed", x: 40, y: 40, params: { topic: "tech", period: 30, min_relevance: 0.4 } },
         { type: "NewsFilter", x: 260, y: 40, params: { ticker: "NVDA", sector: "all" } },
@@ -1379,8 +1395,8 @@
     // DÉMOS ULTRA-COMPLEXES
     // ============================================================
     {
-      name: "🧪 Lab quant complet (NVDA)",
-      description: "Pipeline d'analyse exhaustif sur 1 actif : stats + verdict + MA50 + forecast 60j + détection anomalies + stress 2008. 17 nodes, 5 branches parallèles depuis Clean.",
+      name: { en: "🧪 Full quant lab (NVDA)", fr: "🧪 Lab quant complet (NVDA)" },
+      description: { en: "Exhaustive analysis pipeline on 1 asset: stats + verdict + MA50 + forecast 60d + anomaly detection + 2008 stress. 17 nodes, 5 parallel branches from Clean.", fr: "Pipeline d'analyse exhaustif sur 1 actif : stats + verdict + MA50 + forecast 60j + détection anomalies + stress 2008. 17 nodes, 5 branches parallèles depuis Clean." },
       nodes: [
         { type: "Sentiment", x: 40, y: 40, params: { ticker: "NVDA" } },
         { type: "Asset", x: 40, y: 220, params: { ticker: "NVDA" } },
@@ -1432,8 +1448,8 @@
     },
 
     {
-      name: "🔗 Pairs Trading NVDA/MSFT",
-      description: "Analyse d'une paire d'actifs : 2 pipelines parallèles + corrélation + régression linéaire + Sharpe comparé. 12 nodes pour détecter des opportunités d'arbitrage.",
+      name: { en: "🔗 Pairs Trading NVDA/MSFT", fr: "🔗 Pairs Trading NVDA/MSFT" },
+      description: { en: "Pair analysis: 2 parallel pipelines + correlation + linear regression + Sharpe compared. 12 nodes to detect arbitrage opportunities.", fr: "Analyse d'une paire d'actifs : 2 pipelines parallèles + corrélation + régression linéaire + Sharpe comparé. 12 nodes pour détecter des opportunités d'arbitrage." },
       nodes: [
         // Pipeline A (NVDA)
         { type: "Asset", x: 40, y: 60, params: { ticker: "NVDA" } },
@@ -1479,8 +1495,8 @@
     },
 
     {
-      name: "🛡️ Stress 4 scénarios (NVDA)",
-      description: "Le même actif soumis aux 4 grandes crises historiques simultanément : GFC 2008, COVID 2020, hausse taux 2022, dot-com 2000. 14 nodes pour évaluer la résilience.",
+      name: { en: "🛡️ Stress 4 scenarios (NVDA)", fr: "🛡️ Stress 4 scénarios (NVDA)" },
+      description: { en: "The same asset under the 4 major historical crises simultaneously: GFC 2008, COVID 2020, Rates 2022, Dot-com 2000. 14 nodes to gauge resilience.", fr: "Le même actif soumis aux 4 grandes crises historiques simultanément : GFC 2008, COVID 2020, hausse taux 2022, dot-com 2000. 14 nodes pour évaluer la résilience." },
       nodes: [
         { type: "Asset", x: 40, y: 280, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 280 },
@@ -1520,8 +1536,8 @@
     },
 
     {
-      name: "🏛️ Hedge Fund Lab (4 stratégies)",
-      description: "Backtest complet : 3 stratégies RL + Forecast 60j + référence buy & hold. Equity curves + écart vs B&H + Sharpe pour chacune. 16 nodes.",
+      name: { en: "🏛️ Hedge Fund Lab (4 strategies)", fr: "🏛️ Hedge Fund Lab (4 stratégies)" },
+      description: { en: "Full backtest: 3 RL strategies + Forecast 60d + buy & hold reference. Equity curves + B&H gap + Sharpe for each. 16 nodes.", fr: "Backtest complet : 3 stratégies RL + Forecast 60j + référence buy & hold. Equity curves + écart vs B&H + Sharpe pour chacune. 16 nodes." },
       nodes: [
         { type: "Asset", x: 40, y: 380, params: { ticker: "NVDA" } },
         { type: "Clean", x: 240, y: 380 },
@@ -1826,7 +1842,7 @@
       const pwrap = document.createElement("div");
       pwrap.className = "node-param";
       const label = document.createElement("label");
-      label.textContent = p.label || p.name;
+      label.textContent = L(p.label) || p.name;
       pwrap.appendChild(label);
       let input;
       if (p.type === "select") {
@@ -2042,208 +2058,267 @@
   // ============================================================
   const KPI_INFO = {
     sharpe: {
-      label: "Sharpe Ratio",
+      label: { en: "Sharpe Ratio", fr: "Sharpe Ratio" },
       fmt: v => v.toFixed(2),
-      bench: "Marché ≈ 0.5–0.7 · Bon > 1 · Excellent > 1.5",
+      bench: { en: "Market ≈ 0.5-0.7 · Good > 1 · Excellent > 1.5", fr: "Marché ≈ 0.5-0.7 · Bon > 1 · Excellent > 1.5" },
       status: v => v >= 1 ? "ok" : v >= 0.5 ? "warn" : "bad",
-      explain: v => v >= 1.5 ? "Excellent, risque/rendement très favorable."
-        : v >= 1 ? "Bon, au-dessus du marché."
-        : v >= 0.5 ? "Acceptable, dans la moyenne marché."
-        : v >= 0 ? "Faible, le risque n'est pas récompensé."
-        : "Sharpe négatif, perte ajustée du risque.",
-      formula: "Sharpe = R_annualisé / σ_annualisée",
-      formulaDesc: "Rendement par unité de volatilité totale (William Sharpe, 1966).",
+      explain: v => tt(
+        v >= 1.5 ? "Excellent, very favorable risk / return."
+          : v >= 1 ? "Good, above the market."
+          : v >= 0.5 ? "Acceptable, market average."
+          : v >= 0 ? "Weak, the risk is not rewarded."
+          : "Negative Sharpe, risk-adjusted loss.",
+        v >= 1.5 ? "Excellent, risque/rendement très favorable."
+          : v >= 1 ? "Bon, au-dessus du marché."
+          : v >= 0.5 ? "Acceptable, dans la moyenne marché."
+          : v >= 0 ? "Faible, le risque n'est pas récompensé."
+          : "Sharpe négatif, perte ajustée du risque."
+      ),
+      formula: "Sharpe = R_ann / σ_ann",
+      formulaDesc: { en: "Return per unit of total volatility (William Sharpe, 1966).", fr: "Rendement par unité de volatilité totale (William Sharpe, 1966)." },
     },
     ann_return_pct: {
-      label: "Rendement annualisé",
+      label: { en: "Annualized return", fr: "Rendement annualisé" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
-      bench: "S&P long terme ≈ 8% · Bon > 10% · Médiocre < 4%",
+      bench: { en: "S&P long term ≈ 8% · Good > 10% · Mediocre < 4%", fr: "S&P long terme ≈ 8% · Bon > 10% · Médiocre < 4%" },
       status: v => v >= 8 ? "ok" : v >= 0 ? "warn" : "bad",
-      explain: v => v > 0
-        ? `À ce rythme, ton capital double tous les ~${Math.max(1, Math.round(72 / v))} ans (règle de 72).`
-        : "Rendement annualisé négatif, pertes composées.",
-      formula: "CAGR = (1 + moyenne)^252 − 1",
-      formulaDesc: "Le rendement annuel composé, plus pertinent que la moyenne simple.",
+      explain: v => tt(
+        v > 0 ? `At this pace, your capital doubles every ~${Math.max(1, Math.round(72 / v))} years (rule of 72).`
+          : "Negative annualized return, compounded losses.",
+        v > 0 ? `À ce rythme, ton capital double tous les ~${Math.max(1, Math.round(72 / v))} ans (règle de 72).`
+          : "Rendement annualisé négatif, pertes composées."
+      ),
+      formula: "CAGR = (1 + mean)^252 − 1",
+      formulaDesc: { en: "Compound annual growth rate, more relevant than the simple mean.", fr: "Le rendement annuel composé, plus pertinent que la moyenne simple." },
     },
     ann_vol_pct: {
-      label: "Volatilité annualisée",
+      label: { en: "Annualized volatility", fr: "Volatilité annualisée" },
       fmt: v => `${v.toFixed(1)}%`,
-      bench: "S&P ≈ 15% · Calme < 10% · Élevée > 25%",
+      bench: { en: "S&P ≈ 15% · Calm < 10% · High > 25%", fr: "S&P ≈ 15% · Calme < 10% · Élevée > 25%" },
       status: v => v < 15 ? "ok" : v < 25 ? "warn" : "bad",
-      explain: v => `Variation typique de ±${(v / Math.sqrt(252)).toFixed(2)}% par jour.`,
-      formula: "σ_ann = σ_quotidienne × √252",
-      formulaDesc: "Écart-type des returns journaliers mis à l'échelle annuelle.",
+      explain: v => tt(
+        `Typical variation of ±${(v / Math.sqrt(252)).toFixed(2)}% per day.`,
+        `Variation typique de ±${(v / Math.sqrt(252)).toFixed(2)}% par jour.`
+      ),
+      formula: "σ_ann = σ_daily × √252",
+      formulaDesc: { en: "Standard deviation of daily returns scaled to annual.", fr: "Écart-type des returns journaliers mis à l'échelle annuelle." },
     },
     max_drawdown_pct: {
-      label: "Max Drawdown",
+      label: { en: "Max Drawdown", fr: "Max Drawdown" },
       fmt: v => `${v.toFixed(1)}%`,
-      bench: "Calme > −10% · Modéré −10/−25% · Sévère < −25%",
+      bench: { en: "Calm > −10% · Moderate −10/−25% · Severe < −25%", fr: "Calme > −10% · Modéré −10/−25% · Sévère < −25%" },
       status: v => v > -10 ? "ok" : v > -25 ? "warn" : "bad",
-      explain: v => v > -10 ? "Drawdown contenu, résilience confortable."
-        : v > -25 ? "Drawdown modéré, typique."
-        : "Drawdown sévère, proche d'un krach historique.",
+      explain: v => tt(
+        v > -10 ? "Contained drawdown, comfortable resilience."
+          : v > -25 ? "Moderate drawdown, typical."
+          : "Severe drawdown, close to a historical crash.",
+        v > -10 ? "Drawdown contenu, résilience confortable."
+          : v > -25 ? "Drawdown modéré, typique."
+          : "Drawdown sévère, proche d'un krach historique."
+      ),
       formula: "MDD = min((cum − peak) / peak)",
-      formulaDesc: "Pire chute depuis un sommet vers un creux. Indicateur de douleur maximale.",
+      formulaDesc: { en: "Worst peak-to-trough fall. Max pain indicator.", fr: "Pire chute depuis un sommet vers un creux. Indicateur de douleur maximale." },
     },
     r_squared: {
-      label: "R² (qualité d'ajustement)",
+      label: { en: "R² (goodness of fit)", fr: "R² (qualité d'ajustement)" },
       fmt: v => v.toFixed(3),
-      bench: "Bon > 0.7 · Mixte 0.3–0.7 · Faible < 0.3",
+      bench: { en: "Good > 0.7 · Mixed 0.3-0.7 · Weak < 0.3", fr: "Bon > 0.7 · Mixte 0.3-0.7 · Faible < 0.3" },
       status: v => v > 0.7 ? "ok" : v > 0.3 ? "warn" : "bad",
-      explain: v => `${(v * 100).toFixed(0)}% de la variance de y est expliquée par X.`,
+      explain: v => tt(
+        `${(v * 100).toFixed(0)}% of y's variance is explained by X.`,
+        `${(v * 100).toFixed(0)}% de la variance de y est expliquée par X.`
+      ),
       formula: "R² = 1 − SS_res / SS_tot",
-      formulaDesc: "Mesure la qualité de l'ajustement de la régression linéaire.",
+      formulaDesc: { en: "Measures the quality of the linear regression fit.", fr: "Mesure la qualité de l'ajustement de la régression linéaire." },
     },
     correlation: {
-      label: "Corrélation",
+      label: { en: "Correlation", fr: "Corrélation" },
       fmt: v => v.toFixed(3),
-      bench: "−1 (opposé) · 0 (indép.) · +1 (identique)",
+      bench: { en: "−1 (opposite) · 0 (indep.) · +1 (identical)", fr: "−1 (opposé) · 0 (indép.) · +1 (identique)" },
       status: v => Math.abs(v) > 0.7 ? "bad" : Math.abs(v) > 0.4 ? "warn" : "ok",
-      explain: v => Math.abs(v) > 0.7
-        ? "Très forte corrélation, les deux actifs bougent ensemble, diversification illusoire."
-        : Math.abs(v) > 0.4
-        ? "Corrélation modérée, diversification partielle."
-        : "Faible corrélation, vraie diversification possible.",
+      explain: v => tt(
+        Math.abs(v) > 0.7
+          ? "Very strong correlation, the two assets move together, illusory diversification."
+          : Math.abs(v) > 0.4
+          ? "Moderate correlation, partial diversification."
+          : "Weak correlation, real diversification possible.",
+        Math.abs(v) > 0.7
+          ? "Très forte corrélation, les deux actifs bougent ensemble, diversification illusoire."
+          : Math.abs(v) > 0.4
+          ? "Corrélation modérée, diversification partielle."
+          : "Faible corrélation, vraie diversification possible."
+      ),
       formula: "ρ = Cov(A, B) / (σ_A × σ_B)",
-      formulaDesc: "Coefficient de Pearson. Mesure la cohérence linéaire entre deux séries.",
+      formulaDesc: { en: "Pearson coefficient. Measures the linear relationship between two series.", fr: "Coefficient de Pearson. Mesure la cohérence linéaire entre deux séries." },
     },
     slope: {
-      label: "Slope (pente)",
+      label: { en: "Slope", fr: "Slope (pente)" },
       fmt: v => v.toFixed(3),
-      bench: "Sensibilité de y à X",
+      bench: { en: "Sensitivity of y to X", fr: "Sensibilité de y à X" },
       status: () => null,
-      explain: v => `Pour chaque +1 unité de X, y bouge de ${v.toFixed(2)} en moyenne.`,
+      explain: v => tt(
+        `For every +1 unit of X, y moves by ${v.toFixed(2)} on average.`,
+        `Pour chaque +1 unité de X, y bouge de ${v.toFixed(2)} en moyenne.`
+      ),
       formula: "β = Cov(X, y) / Var(X)",
-      formulaDesc: "Coefficient de régression, équivalent au Beta financier si X = marché.",
+      formulaDesc: { en: "Regression coefficient, equivalent to financial Beta if X = market.", fr: "Coefficient de régression, équivalent au Beta financier si X = marché." },
     },
     anomalies: {
-      label: "Anomalies détectées",
+      label: { en: "Anomalies detected", fr: "Anomalies détectées" },
       fmt: v => Math.round(v),
-      bench: "Selon seuil z choisi",
+      bench: { en: "Depends on chosen z threshold", fr: "Selon seuil z choisi" },
       status: () => null,
-      explain: v => `${Math.round(v)} jours classés extrêmes selon le z-score.`,
-      formula: "anomalie ⇔ |x − μ| / σ > seuil",
-      formulaDesc: "Détection naïve par z-score. Un z=2.5 capture ~1% de jours sous loi normale.",
+      explain: v => tt(
+        `${Math.round(v)} days flagged as extreme by z-score.`,
+        `${Math.round(v)} jours classés extrêmes selon le z-score.`
+      ),
+      formula: "anomaly ⇔ |x − μ| / σ > threshold",
+      formulaDesc: { en: "Naive z-score detection. A z=2.5 captures ~1% of days under normal distribution.", fr: "Détection naïve par z-score. Un z=2.5 capture ~1% de jours sous loi normale." },
     },
     anomaly_rate_pct: {
-      label: "Taux d'anomalies",
+      label: { en: "Anomaly rate", fr: "Taux d'anomalies" },
       fmt: v => `${v.toFixed(1)}%`,
-      bench: "Sous loi normale (z=2.5) ≈ 1%",
+      bench: { en: "Under normal dist. (z=2.5) ≈ 1%", fr: "Sous loi normale (z=2.5) ≈ 1%" },
       status: v => v < 2 ? "ok" : v < 5 ? "warn" : "bad",
-      explain: v => v > 1.5
-        ? "Au-dessus de l'attendu sous loi normale, fat tails."
-        : "Cohérent avec une loi normale.",
-      formula: "count(|z| > seuil) / n",
-      formulaDesc: "Proportion de jours dépassant le seuil. Sur-représenté = distribution non-gaussienne.",
+      explain: v => tt(
+        v > 1.5 ? "Above expected under normal distribution, fat tails." : "Consistent with a normal distribution.",
+        v > 1.5 ? "Au-dessus de l'attendu sous loi normale, fat tails." : "Cohérent avec une loi normale."
+      ),
+      formula: "count(|z| > threshold) / n",
+      formulaDesc: { en: "Proportion of days beyond threshold. Over-represented = non-Gaussian distribution.", fr: "Proportion de jours dépassant le seuil. Sur-représenté = distribution non-gaussienne." },
     },
     accuracy_pct: {
-      label: "Accuracy (classifier)",
+      label: { en: "Accuracy (classifier)", fr: "Accuracy (classifier)" },
       fmt: v => `${v.toFixed(1)}%`,
-      bench: "Hasard ≈ 50% · Edge à partir de 53–55%",
+      bench: { en: "Chance ≈ 50% · Edge starts at 53-55%", fr: "Hasard ≈ 50% · Edge à partir de 53-55%" },
       status: v => v > 58 ? "ok" : v > 52 ? "warn" : "bad",
-      explain: v => v > 55
-        ? `${(v - 50).toFixed(1)}pt au-dessus du hasard, signal exploitable.`
-        : "Proche du hasard, pas de signal robuste.",
+      explain: v => tt(
+        v > 55 ? `${(v - 50).toFixed(1)}pt above chance, exploitable signal.` : "Close to chance, no robust signal.",
+        v > 55 ? `${(v - 50).toFixed(1)}pt au-dessus du hasard, signal exploitable.` : "Proche du hasard, pas de signal robuste."
+      ),
       formula: "Acc = (TP + TN) / N",
-      formulaDesc: "Proportion de prédictions correctes. À comparer à la baseline (toujours prédire la classe majoritaire).",
+      formulaDesc: { en: "Proportion of correct predictions. To compare against the baseline (always predict majority class).", fr: "Proportion de prédictions correctes. À comparer à la baseline (toujours prédire la classe majoritaire)." },
     },
     edge_pct: {
-      label: "Edge vs baseline",
+      label: { en: "Edge vs baseline", fr: "Edge vs baseline" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)} pt`,
-      bench: "> 0 = vraie information · > 3pt = signal solide",
+      bench: { en: "> 0 = real information · > 3pt = solid signal", fr: "> 0 = vraie information · > 3pt = signal solide" },
       status: v => v > 2 ? "ok" : v > 0 ? "warn" : "bad",
-      explain: v => v > 0
-        ? `${v.toFixed(1)} pt d'edge, ton modèle apporte de l'information.`
-        : "Pas d'edge, équivalent à toujours prédire la classe majoritaire.",
+      explain: v => tt(
+        v > 0 ? `${v.toFixed(1)} pt edge, your model adds information.` : "No edge, equivalent to always predicting the majority class.",
+        v > 0 ? `${v.toFixed(1)} pt d'edge, ton modèle apporte de l'information.` : "Pas d'edge, équivalent à toujours prédire la classe majoritaire."
+      ),
       formula: "edge = accuracy − baseline",
-      formulaDesc: "Pour évaluer un classifier binaire honnêtement, comparer toujours à la baseline (% de classe majoritaire).",
+      formulaDesc: { en: "To honestly evaluate a binary classifier, always compare against the baseline (% of majority class).", fr: "Pour évaluer un classifier binaire honnêtement, comparer toujours à la baseline (% de classe majoritaire)." },
     },
     trades: {
-      label: "Nombre de trades",
+      label: { en: "Number of trades", fr: "Nombre de trades" },
       fmt: v => Math.round(v),
-      bench: "Stratégie active si > 20",
+      bench: { en: "Active strategy if > 20", fr: "Stratégie active si > 20" },
       status: v => v > 5 ? "ok" : "warn",
-      explain: v => `${Math.round(v)} changements de position. Attention aux frais transaction non simulés ici.`,
+      explain: v => tt(
+        `${Math.round(v)} position changes. Watch out for transaction costs not simulated here.`,
+        `${Math.round(v)} changements de position. Attention aux frais transaction non simulés ici.`
+      ),
       formula: "count(signal_t ≠ signal_{t-1})",
-      formulaDesc: "Plus de trades = plus de frais en réel. Slippage à considérer.",
+      formulaDesc: { en: "More trades = more real-world fees. Slippage matters.", fr: "Plus de trades = plus de frais en réel. Slippage à considérer." },
     },
     vs_buyhold_pct: {
-      label: "Écart vs Buy & Hold",
+      label: { en: "vs Buy & Hold", fr: "Écart vs Buy & Hold" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
-      bench: "> 0 = la stratégie bat B&H · 0 = neutre",
+      bench: { en: "> 0 = strategy beats B&H · 0 = neutral", fr: "> 0 = la stratégie bat B&H · 0 = neutre" },
       status: v => v > 0 ? "ok" : v > -5 ? "warn" : "bad",
-      explain: v => v > 0
-        ? `La stratégie bat un simple buy & hold de ${v.toFixed(1)} points.`
-        : `La stratégie sous-performe buy & hold de ${Math.abs(v).toFixed(1)} pt, la simplicité paye souvent.`,
-      formula: "Δ = R_stratégie − R_buy&hold",
-      formulaDesc: "Si Δ < 0, l'effort de timing ne vaut pas le coup (avant même les frais).",
+      explain: v => tt(
+        v > 0 ? `Strategy beats a simple buy & hold by ${v.toFixed(1)} points.` : `Strategy underperforms buy & hold by ${Math.abs(v).toFixed(1)} pt, simplicity often wins.`,
+        v > 0 ? `La stratégie bat un simple buy & hold de ${v.toFixed(1)} points.` : `La stratégie sous-performe buy & hold de ${Math.abs(v).toFixed(1)} pt, la simplicité paye souvent.`
+      ),
+      formula: "Δ = R_strategy − R_buy&hold",
+      formulaDesc: { en: "If Δ < 0, the timing effort is not worth it (even before fees).", fr: "Si Δ < 0, l'effort de timing ne vaut pas le coup (avant même les frais)." },
     },
     total_return_pct: {
-      label: "Rendement total",
+      label: { en: "Total return", fr: "Rendement total" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
-      bench: "Sur la période backtest",
+      bench: { en: "Over the backtest period", fr: "Sur la période backtest" },
       status: v => v > 0 ? "ok" : "bad",
-      explain: v => v > 0
-        ? `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}.`
-        : `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}, perte.`,
+      explain: v => tt(
+        v > 0 ? `Final capital = initial capital × ${(1 + v / 100).toFixed(2)}.` : `Final capital = initial capital × ${(1 + v / 100).toFixed(2)}, loss.`,
+        v > 0 ? `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}.` : `Capital final = capital initial × ${(1 + v / 100).toFixed(2)}, perte.`
+      ),
     },
     stress_dd_pct: {
-      label: "DD sous stress",
+      label: { en: "Stress drawdown", fr: "DD sous stress" },
       fmt: v => `${v.toFixed(1)}%`,
-      bench: "Suivant le scénario : peut atteindre −55% (2008) à −78% (Dot-com)",
+      bench: { en: "Depending on scenario: can reach −55% (2008) to −78% (Dot-com)", fr: "Suivant le scénario : peut atteindre −55% (2008) à −78% (Dot-com)" },
       status: v => v > -20 ? "ok" : v > -40 ? "warn" : "bad",
-      explain: v => `Sous ce scénario historique, ton actif aurait subi un drawdown de ${v.toFixed(0)}%.`,
+      explain: v => tt(
+        `Under this historical scenario, your asset would have suffered a ${v.toFixed(0)}% drawdown.`,
+        `Sous ce scénario historique, ton actif aurait subi un drawdown de ${v.toFixed(0)}%.`
+      ),
       formula: "DD_stress = (min_value − start_value) / start_value",
     },
     stress_end_pct: {
-      label: "Solde fin de stress",
+      label: { en: "Stress end balance", fr: "Solde fin de stress" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
-      bench: "Récupération complète = 0% · Pas récupéré = < 0%",
+      bench: { en: "Full recovery = 0% · Not recovered = < 0%", fr: "Récupération complète = 0% · Pas récupéré = < 0%" },
       status: v => v >= -5 ? "ok" : v >= -20 ? "warn" : "bad",
-      explain: v => v >= -5 ? "Récupération quasi-complète à la fin du scénario." : `Valeur finale ${v.toFixed(0)}% en dessous du départ, choc persistant.`,
-      formula: "end = (val_finale − val_initiale) / val_initiale",
+      explain: v => tt(
+        v >= -5 ? "Near-complete recovery by the end of the scenario." : `End value ${v.toFixed(0)}% below start, persistent shock.`,
+        v >= -5 ? "Récupération quasi-complète à la fin du scénario." : `Valeur finale ${v.toFixed(0)}% en dessous du départ, choc persistant.`
+      ),
+      formula: "end = (final_val − initial_val) / initial_val",
     },
     news_sentiment: {
-      label: "Sentiment news (pondéré)",
+      label: { en: "News sentiment (weighted)", fr: "Sentiment news (pondéré)" },
       fmt: v => v.toFixed(2),
-      bench: "−1 (très négatif) · 0 (neutre) · +1 (très positif)",
+      bench: { en: "−1 (very negative) · 0 (neutral) · +1 (very positive)", fr: "−1 (très négatif) · 0 (neutre) · +1 (très positif)" },
       status: v => v > 0.3 ? "ok" : v < -0.3 ? "bad" : "warn",
-      explain: v => v > 0.3
-        ? "Sentiment de l'actu positif, narrative favorable."
-        : v < -0.3
-        ? "Sentiment de l'actu négatif, narrative défavorable."
-        : "Sentiment neutre, pas de narrative dominante.",
+      explain: v => tt(
+        v > 0.3 ? "Positive news sentiment, favorable narrative." : v < -0.3 ? "Negative news sentiment, unfavorable narrative." : "Neutral sentiment, no dominant narrative.",
+        v > 0.3 ? "Sentiment de l'actu positif, narrative favorable." : v < -0.3 ? "Sentiment de l'actu négatif, narrative défavorable." : "Sentiment neutre, pas de narrative dominante."
+      ),
       formula: "Σ(sentiment × relevance) / Σ(relevance)",
-      formulaDesc: "Moyenne pondérée par pertinence éditoriale. Permet de filtrer les actus secondaires.",
+      formulaDesc: { en: "Weighted mean by editorial relevance. Filters out secondary news.", fr: "Moyenne pondérée par pertinence éditoriale. Permet de filtrer les actus secondaires." },
     },
     news_count: {
-      label: "Nombre d'actus",
+      label: { en: "News count", fr: "Nombre d'actus" },
       fmt: v => Math.round(v),
-      bench: "Plus élevé = sujet plus médiatisé",
+      bench: { en: "Higher = more media coverage", fr: "Plus élevé = sujet plus médiatisé" },
       status: () => null,
-      explain: v => `${Math.round(v)} actus correspondent aux filtres.`,
+      explain: v => tt(
+        `${Math.round(v)} news items match the filters.`,
+        `${Math.round(v)} actus correspondent aux filtres.`
+      ),
     },
     projected_drift_pct: {
-      label: "Drift projeté (news)",
-      fmt: v => `${v.toFixed(3)}%/j`,
-      bench: "Calculé à partir du sentiment news",
+      label: { en: "Projected drift (news)", fr: "Drift projeté (news)" },
+      fmt: v => `${v.toFixed(3)}%/d`,
+      bench: { en: "Computed from news sentiment", fr: "Calculé à partir du sentiment news" },
       status: v => v > 0 ? "ok" : v < -0.05 ? "bad" : "warn",
-      explain: v => `Le sentiment des actus implique une dérive quotidienne de ${v.toFixed(3)}% sur l'horizon.`,
-      formula: "drift = sentiment_pondéré × 0.0015 × magnitude",
+      explain: v => tt(
+        `News sentiment implies a daily drift of ${v.toFixed(3)}% over the horizon.`,
+        `Le sentiment des actus implique une dérive quotidienne de ${v.toFixed(3)}% sur l'horizon.`
+      ),
+      formula: "drift = weighted_sentiment × 0.0015 × magnitude",
     },
     projected_return_pct: {
-      label: "Return projeté",
+      label: { en: "Projected return", fr: "Return projeté" },
       fmt: v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`,
-      bench: "Sur l'horizon news-impact",
+      bench: { en: "Over the news-impact horizon", fr: "Sur l'horizon news-impact" },
       status: v => v > 0 ? "ok" : v < -3 ? "bad" : "warn",
-      explain: v => v > 0 ? "Trajectoire haussière projetée." : "Trajectoire baissière projetée.",
+      explain: v => tt(
+        v > 0 ? "Bullish trajectory projected." : "Bearish trajectory projected.",
+        v > 0 ? "Trajectoire haussière projetée." : "Trajectoire baissière projetée."
+      ),
     },
     stress_recovery_days: {
-      label: "Jours de récupération",
+      label: { en: "Recovery days", fr: "Jours de récupération" },
       fmt: v => Math.round(v) || "",
-      bench: "Plus c'est court, plus la résilience est forte",
+      bench: { en: "Shorter is better, stronger resilience", fr: "Plus c'est court, plus la résilience est forte" },
       status: v => v > 0 && v < 100 ? "ok" : v > 0 ? "warn" : "bad",
-      explain: v => v > 0 ? `Il faut ~${Math.round(v)} jours après le creux pour revenir à 95% du départ.` : "Pas de récupération observée dans la durée du scénario.",
+      explain: v => tt(
+        v > 0 ? `Takes ~${Math.round(v)} days after the trough to reach 95% of the start.` : "No recovery observed within the scenario duration.",
+        v > 0 ? `Il faut ~${Math.round(v)} jours après le creux pour revenir à 95% du départ.` : "Pas de récupération observée dans la durée du scénario."
+      ),
     },
   };
 
@@ -2251,7 +2326,11 @@
   let chartRegistry = new Map();
   function _statusBadge(s) {
     if (!s) return "";
-    const labels = { ok: "✓ bon", warn: "! moyen", bad: "✗ alerte" };
+    const labels = {
+      ok: tt("✓ good", "✓ bon"),
+      warn: tt("! medium", "! moyen"),
+      bad: tt("✗ alert", "✗ alerte"),
+    };
     return `<span class="result-status ${s}">${labels[s]}</span>`;
   }
 
@@ -2262,21 +2341,25 @@
       return `
         <div class="result-tile-label">${(n.outputs._label || "KPI").toUpperCase()}</div>
         <div class="result-kpi-value"></div>
-        <div class="result-kpi-empty">Connecte un node Stats / Linear Reg / Anomalies / Classifier / RL Agent.</div>
+        <div class="result-kpi-empty">${tt("Connect a Stats / Linear Reg / Anomalies / Classifier / RL Agent node.", "Connecte un node Stats / Linear Reg / Anomalies / Classifier / RL Agent.")}</div>
       `;
     }
     const status = info.status ? info.status(v) : null;
     const formatted = info.fmt ? info.fmt(v) : v.toFixed(2);
+    const label = L(info.label);
+    const bench = L(info.bench);
+    const explain = info.explain ? info.explain(v) : null;
+    const formulaDesc = L(info.formulaDesc);
     return `
-      <div class="result-tile-label">${info.label.toUpperCase()} ${_statusBadge(status)}</div>
+      <div class="result-tile-label">${(label || "").toUpperCase()} ${_statusBadge(status)}</div>
       <div class="result-kpi-value">${formatted}</div>
-      ${info.bench ? `<div class="result-bench">${info.bench}</div>` : ""}
-      ${info.explain ? `<div class="result-explain">${info.explain(v)}</div>` : ""}
+      ${bench ? `<div class="result-bench">${bench}</div>` : ""}
+      ${explain ? `<div class="result-explain">${explain}</div>` : ""}
       ${info.formula ? `
         <details class="result-formula">
-          <summary>Comment c'est calculé ?</summary>
+          <summary>${tt("How is this computed?", "Comment c'est calculé ?")}</summary>
           <code>${info.formula}</code>
-          ${info.formulaDesc ? `<p>${info.formulaDesc}</p>` : ""}
+          ${formulaDesc ? `<p>${formulaDesc}</p>` : ""}
         </details>
       ` : ""}
     `;
@@ -2288,7 +2371,7 @@
       return `
         <div class="result-tile-label">VERDICT</div>
         <div class="result-kpi-value"></div>
-        <div class="result-kpi-empty">Connecte Stats (obligatoire) + Sentiment (optionnel).</div>
+        <div class="result-kpi-empty">${tt("Connect Stats (required) + Sentiment (optional).", "Connecte Stats (obligatoire) + Sentiment (optionnel).")}</div>
       `;
     }
     // Récupère les inputs branchés
@@ -2304,7 +2387,11 @@
     const stars = score > 1 ? 5 : score > 0.5 ? 4 : score > 0 ? 3 : score > -0.5 ? 2 : 1;
     const starStr = "★".repeat(stars) + "☆".repeat(5 - stars);
     const actionCls = d.action === "BUY" ? "buy" : d.action === "SELL" ? "sell" : "hold";
-    const titleFR = { BUY: "Acheter / Renforcer", HOLD: "Conserver", SELL: "Réduire / Vendre" }[d.action];
+    const titleLocalized = {
+      BUY: tt("Buy / Increase", "Acheter / Renforcer"),
+      HOLD: tt("Hold", "Conserver"),
+      SELL: tt("Reduce / Sell", "Réduire / Vendre"),
+    }[d.action];
 
     const components = [];
     if (stats) {
@@ -2316,8 +2403,8 @@
       components.push({ label: "Sentiment", value: sent.value.toFixed(2), status: sentStatus });
     }
     const risk = n.params.risk || "medium";
-    components.push({ label: "Risque", value: risk, status: null });
-    components.push({ label: "Score", value: score.toFixed(2), status: null, total: true });
+    components.push({ label: tt("Risk", "Risque"), value: risk, status: null });
+    components.push({ label: tt("Score", "Score"), value: score.toFixed(2), status: null, total: true });
 
     const compHTML = components.map(c => `
       <div class="vc${c.total ? " vc-total" : ""}">
@@ -2333,12 +2420,15 @@
         <span class="verdict-stars">${starStr}</span>
         <span class="verdict-action-pill ${actionCls}">${d.action}</span>
       </div>
-      <div class="verdict-title-fr">${titleFR}</div>
+      <div class="verdict-title-fr">${titleLocalized}</div>
       <div class="verdict-components">${compHTML}</div>
       <div class="verdict-why">${d.why}</div>
       <details class="result-formula">
-        <summary>Limites du modèle</summary>
-        <p>Le verdict est un score linéaire : <code>min/max(sharpe/2, ±1) + sentiment × 0.5 + biais_risque</code>. Il ne prend pas en compte le drawdown, la corrélation au marché, ni la liquidité.</p>
+        <summary>${tt("Model limits", "Limites du modèle")}</summary>
+        <p>${tt(
+          "The verdict is a linear score: <code>min/max(sharpe/2, ±1) + sentiment × 0.5 + risk_bias</code>. It does not account for drawdown, market correlation, or liquidity.",
+          "Le verdict est un score linéaire : <code>min/max(sharpe/2, ±1) + sentiment × 0.5 + biais_risque</code>. Il ne prend pas en compte le drawdown, la corrélation au marché, ni la liquidité."
+        )}</p>
       </details>
     `;
   }
@@ -2348,7 +2438,7 @@
     if (!s || !s.values?.length) {
       tile.innerHTML = `
         <div class="result-tile-label">CHART</div>
-        <div class="result-kpi-empty">Connecte une série (Asset, Clean, Returns, RL Agent equity, Forecast…).</div>
+        <div class="result-kpi-empty">${tt("Connect a series (Asset, Clean, Returns, RL Agent equity, Forecast…).", "Connecte une série (Asset, Clean, Returns, RL Agent equity, Forecast…).")}</div>
       `;
       return;
     }
@@ -2409,13 +2499,13 @@
     if (!items || !items.length) {
       return `
         <div class="result-tile-label">HEADLINES</div>
-        <div class="result-kpi-empty">Connecte un node <strong>News Feed</strong> ou <strong>News Filter</strong>.</div>
+        <div class="result-kpi-empty">${tt("Connect a <strong>News Feed</strong> or <strong>News Filter</strong> node.", "Connecte un node <strong>News Feed</strong> ou <strong>News Filter</strong>.")}</div>
       `;
     }
     const meta = n.outputs._meta || {};
     const items_html = items.map(it => {
       const cls = it.sentiment > 0.3 ? "pos" : it.sentiment < -0.3 ? "neg" : "neu";
-      const sentLabel = it.sentiment > 0.3 ? "positif" : it.sentiment < -0.3 ? "négatif" : "neutre";
+      const sentLabel = it.sentiment > 0.3 ? tt("positive", "positif") : it.sentiment < -0.3 ? tt("negative", "négatif") : tt("neutral", "neutre");
       return `
         <div class="headline-item">
           <div class="headline-meta">
@@ -2432,7 +2522,7 @@
       `;
     }).join("");
     return `
-      <div class="result-tile-label">📰 HEADLINES · ${meta.topic || "tous"} · ${meta.period || "?"}j</div>
+      <div class="result-tile-label">📰 HEADLINES · ${meta.topic || tt("all", "tous")} · ${meta.period || "?"}${tt("d", "j")}</div>
       <div class="headlines-list">${items_html}</div>
     `;
   }
@@ -2675,7 +2765,10 @@
   function loadDemo(indexOrName) {
     let demo;
     if (typeof indexOrName === "number") demo = DEMOS[indexOrName];
-    else if (typeof indexOrName === "string") demo = DEMOS.find(d => d.name === indexOrName);
+    else if (typeof indexOrName === "string") demo = DEMOS.find(d => {
+      const n = d.name;
+      return typeof n === "object" ? (n.en === indexOrName || n.fr === indexOrName) : n === indexOrName;
+    });
     else demo = DEMOS[0];
     if (!demo) return false;
     return loadGraph(demo);
@@ -2967,7 +3060,7 @@
         const pname = uniqueName(`${n.type.toLowerCase()}.${p.name}`, paramNames);
         groupParams.push({
           name: pname,
-          label: `${spec.title} · ${p.label || p.name}`,
+          label: `${spec.title} · ${L(p.label) || p.name}`,
           type: p.type,
           options: typeof p.options === "function" ? p.options() : p.options,
           default: n.params[p.name],
@@ -3108,7 +3201,12 @@
     setApiKey,
     resetView,
     fitView,
-    refresh: () => { redrawAll(); },
+    refresh: () => {
+      // Full re-render: every existing node DOM is replaced so its param labels and titles pick up the current language.
+      canvas.nodes.forEach(n => renderNode(n));
+      renderPalette();
+      redrawAll();
+    },
     nodeTypes: NODE_TYPES,
     DEMOS,
     saveGraph,
